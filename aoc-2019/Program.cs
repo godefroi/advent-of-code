@@ -18,8 +18,10 @@ namespace aoc_2019
 			//problem_3.Part2(ReadInput(problem_3.Input).ToArray());
 			//problem_4.Part1(null);
 			//problem_4.Part2(null);
-			problem_5.Part1();
-			problem_5.Part2();
+			//problem_5.Part1();
+			//problem_5.Part2();
+			//problem_6.Part1();
+			problem_6.Part2();
 		}
 
 		private static IEnumerable<string> ReadInput(string input)
