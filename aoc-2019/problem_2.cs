@@ -9,25 +9,29 @@ namespace aoc_2019
 
 		public static void Part1(string[] args)
 		{
-			var program = args.Select(a => Convert.ToInt64(a)).ToArray();
+			var program = args.Select(a => Convert.ToInt32(a)).ToArray();
 
 			program[1] = 12;
 			program[2] = 2;
 
-			Console.WriteLine(RunProgram(program));
+			var c = new Intcode.Day2Computer();
+
+			//Console.WriteLine(RunProgram(program.Clone() as int[]));
+			Console.WriteLine(c.Run(program)[0]);
 		}
 
 		public static void Part2(string[] args)
 		{
-			var program = args.Select(a => Convert.ToInt64(a)).ToArray();
+			var program  = args.Select(a => Convert.ToInt32(a)).ToArray();
+			var computer = new Intcode.Day2Computer();
 
 			for( var i = 0; i < 100; i++ ) {
 				for( var j = 0; j < 100; j++ ) {
-					var copy = program.Clone() as long[];
+					var copy = program.Clone() as int[];
 					copy[1] = i;
 					copy[2] = j;
 
-					if( RunProgram(copy) == 19690720 ) {
+					if( computer.Run(copy)[0] == 19690720 ) {
 						Console.WriteLine((i * 100) + j);
 						return;
 					}
@@ -37,7 +41,7 @@ namespace aoc_2019
 			Console.WriteLine("No solution.");
 		}
 
-		private static long RunProgram(long[] ints)
+		private static long RunProgram(int[] ints)
 		{
 			var pos = 0;
 
