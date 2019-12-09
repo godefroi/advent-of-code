@@ -2,14 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
+using aoc_2019.Intcode.Infrastructure;
 
 namespace aoc_2019.Intcode
 {
 	internal abstract class Computer
 	{
+		private Thread m_thread;
+		private bool   m_terminated;
+
 		public Computer()
 		{
 			Instructions = new Dictionary<int, Instruction>();
+			Terminated   = true;
 
 			Console.WriteLine($"Initializing Computer implementation {GetType().Name}");
 
@@ -25,56 +31,99 @@ namespace aoc_2019.Intcode
 			Console.WriteLine();
 		}
 
-		protected int[] Core { get; set; }
+		protected SparseArray<long> Core { get; set; }
 
-		protected InputStream<int> Input { get; set; }
+		protected InputStream<long> Input { get; set; }
 
 		protected Dictionary<int, Instruction> Instructions { get; }
 
-		public List<int> Output { get; private set; }
+		protected OutputStream<long> Output { get; private set; }
 
-		public virtual int[] Run(int[] program, IEnumerable<int> input = null)
+		public bool Terminated
 		{
-			Core   = program;
-			Input  = input == null ? null : new InputStream<int>(input);
-			Output = new List<int>();
-
-			var pos = 0;
-
-			while( true ) {
-				// make sure we didn't blow past the end of the program somehow
-				if( pos > Core.Length - 1 )
-					throw new InvalidOperationException("Executed past end of program");
-
-				// opcode 99 is program end
-				if( Core[pos] == 99 )
-					return Core;
-
-				// get the instruction and build the array of parameters
-				var (inst, modes) = DecodeInstruction(Core[pos]);
-				var prms = new int[inst.ParameterCount];
-
-				// set the paramters based on the mode for each
-				for( var i = 0; i < prms.Length; i++ ) {
-					prms[i] = modes[i] switch {
-						ParameterMode.Immediate => Core[pos + 1 + i],
-						ParameterMode.Position  => Core[Core[pos + 1 + i]],
-						_ => throw new InvalidOperationException($"Unknown parameter mode {modes[i]}")
-					};
-				}
-
-				// execute the instruction
-				var jmp = inst.Execute(prms);
-
-				// either execute the jump, or advance past the opcode plus parameters
-				if( jmp.HasValue )
-					pos = jmp.Value;
-				else
-					pos += inst.ParameterCount + 1;
+			get {
+				lock( this )
+					return m_terminated;
+			}
+			private set {
+				lock( this )
+					m_terminated = value;
 			}
 		}
 
-		protected (Instruction Instruction, List<ParameterMode> Modes) DecodeInstruction(int opcode)
+		public bool AwaitingInput => Input.AwaitingInput;
+
+		public bool Idle => Terminated || AwaitingInput;
+
+		public long RelativeBase { get; protected set; }
+
+		public bool OutputAvailable => Output.OutputAvailable;
+
+		public void AddInput(long input) => Input.AddInput(input);
+
+		public long GetOutput() => Output.Get();
+
+		public virtual SparseArray<long> Run(long[] program, IEnumerable<long> input = null)
+		{
+			RunInThread(program, input);
+
+			m_thread.Join();
+
+			return Core;
+		}
+
+		public virtual void RunInThread(long[] program, IEnumerable<long> input = null)
+		{
+			Core       = new SparseArray<long>(program);
+			Input      = input == null ? new InputStream<long>(new long[0]) : new InputStream<long>(input);
+			Output     = new OutputStream<long>();
+			Terminated = false;
+			RelativeBase = 0;
+
+			m_thread = new Thread(() => {
+				var pos = 0L;
+
+				while( true ) {
+					// make sure we didn't blow past the end of the program somehow
+					//if( pos > Core.Length - 1 )
+					//	throw new InvalidOperationException("Executed past end of program");
+
+					// opcode 99 is program end
+					if( Core[pos] == 99 ) {
+						Terminated = true;
+						return;
+					}
+
+					// get the instruction and build the array of parameters
+					var (inst, modes) = DecodeInstruction(Core[pos]);
+					var prms = new long[inst.ParameterCount];
+
+					// set the paramters based on the mode for each
+					for( var i = 0; i < prms.Length; i++ ) {
+						prms[i] = modes[i] switch
+						{
+							ParameterMode.Immediate => pos + 1 + i,
+							ParameterMode.Position => Core[pos + 1 + i],
+							ParameterMode.Relative => RelativeBase + Core[pos + 1 + i],
+							_ => throw new InvalidOperationException($"Unknown parameter mode {modes[i]}")
+						};
+					}
+
+					// execute the instruction
+					var jmp = inst.Execute(prms);
+
+					// either execute the jump, or advance past the opcode plus parameters
+					if( jmp.HasValue )
+						pos = jmp.Value;
+					else
+						pos += inst.ParameterCount + 1;
+				}
+			});
+
+			m_thread.Start();
+		}
+
+		protected (Instruction Instruction, List<ParameterMode> Modes) DecodeInstruction(long opcode)
 		{
 			var ocstr   = opcode.ToString().PadLeft(2, '0');
 			var inst_id = Convert.ToInt32(ocstr.Substring(ocstr.Length - 2));
@@ -92,11 +141,13 @@ namespace aoc_2019.Intcode
 				modes.Add(ParameterMode.Position);
 
 			// address parameters we treat as immediate
-			foreach( var ap in instr.AddressParameters )
-				modes[ap] = ParameterMode.Immediate;
+			//foreach( var ap in instr.AddressParameters )
+			//	modes[ap] = ParameterMode.Immediate;
 
 			return (instr, modes);
 		}
+
+		public static long[] Parse(string program) => program.Split(',').Select(a => Convert.ToInt64(a)).ToArray();
 
 		[AttributeUsage(AttributeTargets.Method)]
 		protected class OpCodeAttribute : Attribute
@@ -109,9 +160,6 @@ namespace aoc_2019.Intcode
 			public int OpCode { get; }
 		}
 
-		[AttributeUsage(AttributeTargets.Parameter)]
-		protected class AddressAttribute : Attribute { }
-
 		protected class Instruction
 		{
 			private object     m_computer;
@@ -121,16 +169,12 @@ namespace aoc_2019.Intcode
 			public Instruction(Computer computer, MethodInfo method)
 			{
 				var parms = method.GetParameters();
-				var aps   = new List<int>();
 
 				ParameterCount = parms.Length;
 				m_computer     = computer;
 				m_method       = method;
 
 				for( var i = 0; i < parms.Length; i++ ) {
-					if( parms[i].GetCustomAttribute<AddressAttribute>() != null )
-						aps.Add(i);
-
 					if( parms[i].IsOut) {
 						if( i < parms.Length - 1 )
 							throw new InvalidOperationException("Output parameter for IP change is only supported as the final parameter");
@@ -139,15 +183,11 @@ namespace aoc_2019.Intcode
 						m_outp         = true;
 					}
 				}
-
-				AddressParameters = aps.ToArray();
 			}
 
 			public int ParameterCount { get; }
 
-			public int[] AddressParameters { get; }
-
-			public int? Execute(int[] parameters)
+			public long? Execute(long[] parameters)
 			{
 				if( m_outp ) {
 					var prms = new object[parameters.Length + 1];
@@ -156,7 +196,7 @@ namespace aoc_2019.Intcode
 
 					m_method.Invoke(m_computer, prms);
 
-					return (int?)prms[prms.Length - 1];
+					return (long?)prms[prms.Length - 1];
 				} else {
 					m_method.Invoke(m_computer, parameters.Select(i => (object)i).ToArray());
 
@@ -165,30 +205,11 @@ namespace aoc_2019.Intcode
 			}
 		}
 
-		protected class InputStream<T>
-		{
-			private IEnumerable<T> m_input;
-			private IEnumerator<T> m_enumerator;
-
-			public InputStream(IEnumerable<T> input)
-			{
-				m_input      = input;
-				m_enumerator = input.GetEnumerator();
-			}
-
-			public T Next()
-			{
-				if( m_enumerator.MoveNext() )
-					return m_enumerator.Current;
-				else
-					throw new InvalidOperationException("No more input available");
-			}
-		}
-
 		protected enum ParameterMode
 		{
 			Position  = 0,
 			Immediate = 1,
+			Relative  = 2,
 		}
 	}
 }

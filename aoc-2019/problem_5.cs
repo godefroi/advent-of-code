@@ -11,20 +11,20 @@ namespace aoc_2019
 
 		public static void Part1()
 		{
-			var program = Input.Split(',').Select(a => Convert.ToInt32(a)).ToArray();
+			var program = Input.Split(',').Select(a => Convert.ToInt64(a)).ToArray();
 			//var program = "1002,4,3,4,33".Split(',').Select(a => Convert.ToInt32(a)).ToArray();
 
 			var c = new Intcode.Day5Computer();
 
-			c.Run(program, new[] { 1 });
+			c.Run(program, new[] { 1L });
 
-			foreach( var o in c.Output )
-				Console.WriteLine(o);
+			while( c.OutputAvailable )
+				Console.WriteLine(c.GetOutput());
 		}
 
 		public static void Part2()
 		{
-			var program = Input.Split(',').Select(a => Convert.ToInt32(a)).ToArray();
+			var program = Input.Split(',').Select(a => Convert.ToInt64(a)).ToArray();
 			//var program = "3,9,8,9,10,9,4,9,99,-1,8".Split(',').Select(a => Convert.ToInt32(a)).ToArray();
 			//var program = "3,9,7,9,10,9,4,9,99,-1,8".Split(',').Select(a => Convert.ToInt32(a)).ToArray();
 			//var program = "3,3,1108,-1,8,3,4,3,99".Split(',').Select(a => Convert.ToInt32(a)).ToArray();
@@ -34,9 +34,10 @@ namespace aoc_2019
 
 			var c = new Intcode.Day5Computer();
 
-			c.Run(program, new[] { 5 });
-			foreach( var o in c.Output )
-				Console.WriteLine(o);
+			c.Run(program, new[] { 5L });
+
+			while( c.OutputAvailable )
+				Console.WriteLine(c.GetOutput());
 
 			//foreach( var inp in new[] { -1,0,1 } ) {
 			//	c.Run(program.Clone() as int[], new[] { inp });
