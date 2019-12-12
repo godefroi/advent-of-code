@@ -11,6 +11,7 @@ namespace aoc_2019.Intcode
 	{
 		private Thread m_thread;
 		private bool   m_terminated;
+		private long   m_ip;
 
 		public Computer()
 		{
@@ -51,10 +52,6 @@ namespace aoc_2019.Intcode
 			}
 		}
 
-		public bool AwaitingInput => Input.AwaitingInput;
-
-		public bool Idle => Terminated || AwaitingInput;
-
 		public long RelativeBase { get; protected set; }
 
 		public bool OutputAvailable => Output.OutputAvailable;
@@ -63,64 +60,72 @@ namespace aoc_2019.Intcode
 
 		public long GetOutput() => Output.Get();
 
-		public virtual SparseArray<long> Run(long[] program, IEnumerable<long> input = null)
+		public virtual void Initialize(long[] program, IEnumerable<long> input = null)
 		{
-			RunInThread(program, input);
-
-			m_thread.Join();
-
-			return Core;
+			Core         = new SparseArray<long>(program);
+			Input        = input == null ? new InputStream<long>(new long[0]) : new InputStream<long>(input);
+			Output       = new OutputStream<long>();
+			Terminated   = false;
+			RelativeBase = 0;
+			m_ip         = 0;
 		}
 
-		public virtual void RunInThread(long[] program, IEnumerable<long> input = null)
+		public virtual InterruptType Run()
 		{
-			Core       = new SparseArray<long>(program);
-			Input      = input == null ? new InputStream<long>(new long[0]) : new InputStream<long>(input);
-			Output     = new OutputStream<long>();
-			Terminated = false;
-			RelativeBase = 0;
+			while( true ) {
+				// make sure we didn't blow past the end of the program somehow
+				if( m_ip > Core.Length - 1 )
+					throw new InvalidOperationException("Executed past end of program");
 
-			m_thread = new Thread(() => {
-				var pos = 0L;
-
-				while( true ) {
-					// make sure we didn't blow past the end of the program somehow
-					//if( pos > Core.Length - 1 )
-					//	throw new InvalidOperationException("Executed past end of program");
-
-					// opcode 99 is program end
-					if( Core[pos] == 99 ) {
-						Terminated = true;
-						return;
-					}
-
-					// get the instruction and build the array of parameters
-					var (inst, modes) = DecodeInstruction(Core[pos]);
-					var prms = new long[inst.ParameterCount];
-
-					// set the paramters based on the mode for each
-					for( var i = 0; i < prms.Length; i++ ) {
-						prms[i] = modes[i] switch
-						{
-							ParameterMode.Immediate => pos + 1 + i,
-							ParameterMode.Position => Core[pos + 1 + i],
-							ParameterMode.Relative => RelativeBase + Core[pos + 1 + i],
-							_ => throw new InvalidOperationException($"Unknown parameter mode {modes[i]}")
-						};
-					}
-
-					// execute the instruction
-					var jmp = inst.Execute(prms);
-
-					// either execute the jump, or advance past the opcode plus parameters
-					if( jmp.HasValue )
-						pos = jmp.Value;
-					else
-						pos += inst.ParameterCount + 1;
+				// opcode 99 is program end
+				if( Core[m_ip] == 99 ) {
+					Terminated = true;
+					return InterruptType.Terminated;
 				}
-			});
 
-			m_thread.Start();
+				// get the instruction and build the array of parameters
+				var (inst, modes) = DecodeInstruction(Core[m_ip]);
+				var prms = new long[inst.ParameterCount];
+
+				// set the paramters based on the mode for each
+				for( var i = 0; i < prms.Length; i++ ) {
+					prms[i] = modes[i] switch
+					{
+						ParameterMode.Immediate => m_ip + 1 + i,
+						ParameterMode.Position => Core[m_ip + 1 + i],
+						ParameterMode.Relative => RelativeBase + Core[m_ip + 1 + i],
+						_ => throw new InvalidOperationException($"Unknown parameter mode {modes[i]}")
+					};
+				}
+
+				var jmp  = default(long?);
+				var outp = false;
+
+				// execute the instruction
+				try {
+					jmp = inst.Execute(prms);
+				} catch( TargetInvocationException ex ) {
+					switch( ex.InnerException ) {
+						case InputNeededException _:
+							return InterruptType.Input;
+						case OutputReadyException _:
+							outp = true;
+							break;
+						default:
+							throw ex.InnerException;
+					}
+				}
+
+				// either execute the jump, or advance past the opcode plus parameters
+				if( jmp.HasValue )
+					m_ip = jmp.Value;
+				else
+					m_ip += inst.ParameterCount + 1;
+
+				// currently this won't happen, but we can make it happen if we need it
+				if( outp )
+					return InterruptType.Output;
+			}
 		}
 
 		protected (Instruction Instruction, List<ParameterMode> Modes) DecodeInstruction(long opcode)
@@ -174,15 +179,8 @@ namespace aoc_2019.Intcode
 				m_computer     = computer;
 				m_method       = method;
 
-				for( var i = 0; i < parms.Length; i++ ) {
-					if( parms[i].IsOut) {
-						if( i < parms.Length - 1 )
-							throw new InvalidOperationException("Output parameter for IP change is only supported as the final parameter");
-
-						ParameterCount = parms.Length - 1;
-						m_outp         = true;
-					}
-				}
+				if( method.ReturnType == typeof(long?) )
+					m_outp = true;
 			}
 
 			public int ParameterCount { get; }
@@ -190,13 +188,7 @@ namespace aoc_2019.Intcode
 			public long? Execute(long[] parameters)
 			{
 				if( m_outp ) {
-					var prms = new object[parameters.Length + 1];
-
-					Array.Copy(parameters, 0, prms, 0, parameters.Length);
-
-					m_method.Invoke(m_computer, prms);
-
-					return (long?)prms[prms.Length - 1];
+					return m_method.Invoke(m_computer, parameters.Select(i => (object)i).ToArray()) as long?;
 				} else {
 					m_method.Invoke(m_computer, parameters.Select(i => (object)i).ToArray());
 
@@ -210,6 +202,13 @@ namespace aoc_2019.Intcode
 			Position  = 0,
 			Immediate = 1,
 			Relative  = 2,
+		}
+
+		public enum InterruptType
+		{
+			Input,
+			Output,
+			Terminated
 		}
 	}
 }

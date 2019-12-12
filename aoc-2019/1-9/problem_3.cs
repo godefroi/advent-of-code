@@ -6,18 +6,6 @@ namespace aoc_2019
 {
 	internal class problem_3
 	{
-		internal struct Point
-		{
-			public Point(long x, long y)
-			{
-				X = x;
-				Y = y;
-			}
-
-			public readonly long X;
-			public readonly long Y;
-		}
-
 		internal struct Line
 		{
 			public Line(Point p1, Point p2)

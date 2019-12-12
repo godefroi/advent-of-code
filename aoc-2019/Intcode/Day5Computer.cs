@@ -19,15 +19,15 @@ namespace aoc_2019.Intcode
 		}
 
 		[OpCode(5)]
-		protected void JumpIfTrue(long valueAddress, long jumpAddress, out long? destination)
+		protected long? JumpIfTrue(long valueAddress, long jumpAddress)
 		{
-			destination = Core[valueAddress] != 0 ? Core[jumpAddress] : default(long?);
+			return Core[valueAddress] != 0 ? Core[jumpAddress] : default(long?);
 		}
 
 		[OpCode(6)]
-		protected void JumpIfFalse(long valueAddress, long jumpAddress, out long? destination)
+		protected long? JumpIfFalse(long valueAddress, long jumpAddress)
 		{
-			destination = Core[valueAddress] == 0 ? Core[jumpAddress] : default(long?);
+			return Core[valueAddress] == 0 ? Core[jumpAddress] : default(long?);
 		}
 
 		[OpCode(7)]

@@ -10,4 +10,18 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="1-9\problem_2.cs" />
+    <Compile Remove="1-9\problem_5.cs" />
+    <Compile Remove="1-9\problem_7.cs" />
+    <Compile Remove="1-9\problem_9.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="1-9\problem_2.cs" />
+    <None Include="1-9\problem_5.cs" />
+    <None Include="1-9\problem_7.cs" />
+    <None Include="1-9\problem_9.cs" />
+  </ItemGroup>
+
 </Project>

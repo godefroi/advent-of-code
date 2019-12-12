@@ -26,7 +26,13 @@ namespace aoc_2019
 			//problem_7.Part2();
 			//problem_8.Part1();
 			//problem_8.Part2();
-			problem_9.Part1();
+			//problem_9.Part1();
+
+			//problem_10.Part1();
+			//problem_10.Part2();
+
+			//problem_11.Part1();
+			problem_11.Part2();
 		}
 
 		private static IEnumerable<string> ReadInput(string input)
