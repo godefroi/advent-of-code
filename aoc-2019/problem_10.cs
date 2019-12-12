@@ -182,7 +182,7 @@ namespace aoc_2019
 						// no slope to calculate, just find lowest distance
 						var to_kill = sects[i].OrderBy(p => Distance(center, p)).First();
 
-						//Console.WriteLine($"s{i} Killing {to_kill.X},{to_kill.Y}");
+						Console.WriteLine($"s{i} Killing {to_kill.X},{to_kill.Y} with slope {Slope(center, to_kill)}");
 						sects[i].Remove(to_kill);
 
 						if( ++cnt == 200 ) {
@@ -205,7 +205,7 @@ namespace aoc_2019
 						}
 
 						foreach( var p in to_kill ) {
-							//Console.WriteLine($"s{i} Killing {p.X},{p.Y}");
+							Console.WriteLine($"s{i} Killing {p.X},{p.Y} with slope {Slope(center, p)}");
 							sects[i].Remove(p);
 
 							if( ++cnt == 200 ) {
@@ -222,7 +222,7 @@ namespace aoc_2019
 
 		private static bool Blocks(Point from, Point to, Point blocker) => Math.Abs(Distance(from, to) - Distance(from, blocker) - Distance(blocker, to)) == 0;
 
-		private static double Slope(Point p1, Point p2) => Math.Round(((double)p2.Y - (double)p1.Y) / ((double)p2.X - (double)p1.Y), 6);
+		private static double Slope(Point p1, Point p2) => Math.Round(((double)p2.Y - (double)p1.Y) / ((double)p2.X - (double)p1.X), 6);
 
 		private static List<Point> ParseMap(string map)
 		{
@@ -246,6 +246,145 @@ namespace aoc_2019
 			return asteroids;
 		}
 
+		public static void Part2_Michael()
+		{
+			//var laserAsteroid = new Asteroid(27, 19);
+			var laserAsteroid = new Asteroid(22, 19);
 
+			string map = m_map;
+//			string map = @"..#..###....#####....###........#
+//.##.##...#.#.......#......##....#
+//#..#..##.#..###...##....#......##
+//..####...#..##...####.#.......#.#
+//...#.#.....##...#.####.#.###.#..#
+//#..#..##.#.#.####.#.###.#.##.....
+//#.##...##.....##.#......#.....##.
+//.#..##.##.#..#....#...#...#...##.
+//.#..#.....###.#..##.###.##.......
+//.##...#..#####.#.#......####.....
+//..##.#.#.#.###..#...#.#..##.#....
+//.....#....#....##.####....#......
+//.#..##.#.........#..#......###..#
+//#.##....#.#..#.#....#.###...#....
+//.##...##..#.#.#...###..#.#.#..###
+//.#..##..##...##...#.#.#...#..#.#.
+//.#..#..##.##...###.##.#......#...
+//...#.....###.....#....#..#....#..
+//.#...###..#......#.##.#...#.####.
+//....#.##...##.#...#........#.#...
+//..#.##....#..#.......##.##.....#.
+//.#.#....###.#.#.#.#.#............
+//#....####.##....#..###.##.#.#..#.
+//......##....#.#.#...#...#..#.....
+//...#.#..####.##.#.........###..##
+//.......#....#.##.......#.#.###...
+//...#..#.#.........#...###......#.
+//.#.##.#.#.#.#........#.#.##..#...
+//.......#.##.#...........#..#.#...
+//.####....##..#..##.#.##.##..##...
+//.#.#..###.#..#...#....#.###.#..#.
+//............#...#...#.......#.#..
+//.........###.#.....#..##..#.##...";
+
+			List<Asteroid> asteroids = new List<Asteroid>();
+			int currentX = 0;
+			int currentY = 0;
+			foreach( char mapPoint in map ) {
+				//don't stick our laser asteroid in here
+				if( mapPoint == '#' && (currentX != laserAsteroid.X || currentY != laserAsteroid.Y) ) {
+					var targetAsteroid = new Asteroid(currentX, currentY);
+
+					int deltaX = targetAsteroid.X - laserAsteroid.X;
+					int deltaY = targetAsteroid.Y - laserAsteroid.Y;
+					targetAsteroid.Distance = Math.Sqrt(Math.Pow(deltaX, 2) + Math.Pow(deltaY, 2));
+
+					if( deltaY < 0 && deltaX >= 0 ) {
+						//Quadrant1 (NorthEast)
+						targetAsteroid.QuadrantOrder = 1;
+						targetAsteroid.Slope = deltaX != 0 ? (double)deltaY / deltaX : double.MinValue; //undefined slope as min value so it sorts first
+					} else if( deltaY <= 0 && deltaX < 0 ) {
+						//Quadrant4 (NorthWest) -- Yes, I know this is not how Cartesian quadrants are numbered.
+						targetAsteroid.QuadrantOrder = 4;
+						targetAsteroid.Slope = (double)deltaY / deltaX;
+					} else if( deltaY > 0 && deltaX <= 0 ) {
+						//Quadrant3 (SouthWest)
+						targetAsteroid.QuadrantOrder = 3;
+						targetAsteroid.Slope = deltaX != 0 ? (double)deltaY / deltaX : double.MinValue; //undefined slope as min value so it sorts first
+					} else if( deltaY >= 0 && deltaX > 0 ) {
+						//Quadrant2 (SouthEast)
+						targetAsteroid.QuadrantOrder = 2;
+						targetAsteroid.Slope = (double)deltaY / deltaX;
+					}
+
+					asteroids.Add(targetAsteroid);
+				}
+
+				if( mapPoint == '\n' ) {
+					currentX = 0;
+					currentY++;
+				} else {
+					currentX++;
+				}
+			}
+
+			asteroids = asteroids.OrderBy(a => a.QuadrantOrder).ThenBy(a => a.Slope).ThenBy(a => a.Distance).ToList();
+			var finalOrderAsteroids = new List<Asteroid>();
+			int rotationNumber = 1;
+			while( finalOrderAsteroids.Count < 200 && finalOrderAsteroids.Count < asteroids.Count ) {
+				finalOrderAsteroids.AddRange(GetAsteroidsForNthRotation(asteroids, rotationNumber));
+				rotationNumber++;
+			}
+
+			Console.WriteLine($"200th Item: {finalOrderAsteroids[199].X},{finalOrderAsteroids[199].Y}, Quadrant: {finalOrderAsteroids[199].QuadrantOrder}, Slope:{finalOrderAsteroids[199].Slope}, Distance: {finalOrderAsteroids[199].Distance}");
+			Console.WriteLine($"Silly math: {finalOrderAsteroids[199].X * 100 + finalOrderAsteroids[199].Y}");
+		}
+
+		private static List<Asteroid> GetAsteroidsForNthRotation(List<Asteroid> allAsteroidsInOrder, int rotationNumber)
+		{
+			List<Asteroid> AsteroidsForThisRotation = new List<Asteroid>();
+			double previousSlope = 0;
+			int slopesInARow = 1;
+			for( int i = 0; i < allAsteroidsInOrder.Count; i++ ) {
+				if( rotationNumber == 1 && i == 0 ) {
+					Console.WriteLine($"killing {allAsteroidsInOrder[i].X},{allAsteroidsInOrder[i].Y} with slope {allAsteroidsInOrder[i].Slope}");
+					AsteroidsForThisRotation.Add(allAsteroidsInOrder[i]);
+					previousSlope = allAsteroidsInOrder[i].Slope;
+					continue;
+				}
+				if( i == 0 ) {
+					previousSlope = allAsteroidsInOrder[i].Slope;
+					continue;
+				}
+
+				if( previousSlope == allAsteroidsInOrder[i].Slope ) {
+					slopesInARow++;
+				} else {
+					slopesInARow = 1;
+					previousSlope = allAsteroidsInOrder[i].Slope;
+				}
+
+				if( slopesInARow == rotationNumber ) {
+					Console.WriteLine($"killing {allAsteroidsInOrder[i].X},{allAsteroidsInOrder[i].Y} with slope {allAsteroidsInOrder[i].Slope}");
+					AsteroidsForThisRotation.Add(allAsteroidsInOrder[i]);
+				}
+			}
+			return AsteroidsForThisRotation;
+
+		}
+
+		public class Asteroid
+		{
+			public int X { get; private set; }
+			public int Y { get; private set; }
+			public int QuadrantOrder { get; set; }
+			public double Slope { get; set; }
+			public double Distance { get; set; }
+
+			public Asteroid(int x, int y)
+			{
+				X = x;
+				Y = y;
+			}
+		}
 	}
 }
