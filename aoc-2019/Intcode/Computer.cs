@@ -9,9 +9,8 @@ namespace aoc_2019.Intcode
 {
 	internal abstract class Computer
 	{
-		private Thread m_thread;
-		private bool   m_terminated;
-		private long   m_ip;
+		private bool m_terminated;
+		private long m_ip;
 
 		public Computer()
 		{
@@ -39,6 +38,8 @@ namespace aoc_2019.Intcode
 		protected Dictionary<int, Instruction> Instructions { get; }
 
 		protected OutputStream<long> Output { get; private set; }
+
+		public event EventHandler<int> OutputReady;
 
 		public bool Terminated
 		{
@@ -151,6 +152,8 @@ namespace aoc_2019.Intcode
 
 			return (instr, modes);
 		}
+
+		protected virtual void OnOutputReady(int cnt) => OutputReady?.Invoke(this, cnt);
 
 		public static long[] Parse(string program) => program.Split(',').Select(a => Convert.ToInt64(a)).ToArray();
 

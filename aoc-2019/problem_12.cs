@@ -80,7 +80,7 @@ namespace aoc_2019
 		private static long GreatestCommonDenominator(long a, long b) => b == 0 ? a : GreatestCommonDenominator(b, a % b);
 
 		internal class Moon
-		{
+		{ 
 			public Moon(int id, Vector3 position) : this(id, position, Vector3.Zero) { }
 
 			public Moon(int id, Vector3 position, Vector3 velocity)
