@@ -2,9 +2,13 @@
 
 using day_01;
 
+if (string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("AOC_SESSION"))) {
+	throw new InvalidOperationException("Set the AOC_SESSION environment variable.");
+}
+
 var cc = new CookieContainer();
 
-cc.Add(new Cookie("session", "53616c7465645f5f15c3b399a1b4cb0c87c1d92afa8cf82daccd8ec71cdd9c80baeeda5ef47e2aeaf23a8ba42f97c022", "/", "adventofcode.com"));
+cc.Add(new Cookie("session", Environment.GetEnvironmentVariable("AOC_SESSION"), "/", "adventofcode.com"));
 
 using var handler = new HttpClientHandler() {  CookieContainer = cc };
 using var hc      = new HttpClient(handler);
