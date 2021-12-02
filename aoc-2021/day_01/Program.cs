@@ -1,19 +1,10 @@
 ﻿using System.Net;
 
+using aoc_tools;
+
 using day_01;
 
-if (string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("AOC_SESSION"))) {
-	throw new InvalidOperationException("Set the AOC_SESSION environment variable.");
-}
-
-var cc = new CookieContainer();
-
-cc.Add(new Cookie("session", Environment.GetEnvironmentVariable("AOC_SESSION"), "/", "adventofcode.com"));
-
-using var handler = new HttpClientHandler() {  CookieContainer = cc };
-using var hc      = new HttpClient(handler);
-
-var input = await hc.GetStringAsync("https://adventofcode.com/2021/day/1/input");
+var input = await PuzzleInput.GetInput();
 var last  = int.MaxValue;
 var lSum  = int.MaxValue;
 var inc   = 0;
