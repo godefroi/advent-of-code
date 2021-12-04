@@ -14,9 +14,6 @@ foreach (var line in input) {
 
 //var counts = input.SelectMany(line => line.Select((c, index) => (index, value: c == '1' ? 1 : 0))  ).GroupBy(o => o.index).OrderBy(g => g.Key).Select(g => g.Sum(i => i.value)).ToArray();
 
-Console.WriteLine(counts.SequenceEqual(lcounts));
-return;
-
 var gamma   = Convert.ToInt32(new string(counts.Select(c => c > (inpCount - c) ? '1' : '0').ToArray()), 2);
 var epsilon = Convert.ToInt32(new string(counts.Select(c => c > (inpCount - c) ? '0' : '1').ToArray()), 2);
 
