@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "day_01", "day_01\day_01.csproj", "{3E1EC010-52E0-437B-BF92-343FA957181B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aoc-tools", "aoc-tools\aoc-tools.csproj", "{C3469D9F-C9BF-42F3-BADD-E90736314CD1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3E1EC010-52E0-437B-BF92-343FA957181B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E1EC010-52E0-437B-BF92-343FA957181B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E1EC010-52E0-437B-BF92-343FA957181B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E1EC010-52E0-437B-BF92-343FA957181B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3469D9F-C9BF-42F3-BADD-E90736314CD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3469D9F-C9BF-42F3-BADD-E90736314CD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3469D9F-C9BF-42F3-BADD-E90736314CD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3469D9F-C9BF-42F3-BADD-E90736314CD1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0510042C-9496-40F1-BA46-4B1E73D3B568}
+	EndGlobalSection
+EndGlobal
