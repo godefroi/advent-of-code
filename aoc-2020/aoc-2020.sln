@@ -3,21 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "day_01", "day_01\day_01.csproj", "{3E1EC010-52E0-437B-BF92-343FA957181B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "day_01", "day_01\day_01.csproj", "{3E1EC010-52E0-437B-BF92-343FA957181B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aoc-tools", "aoc-tools\aoc-tools.csproj", "{C3469D9F-C9BF-42F3-BADD-E90736314CD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "day_02", "day_02\day_02.csproj", "{1EC75AE5-A557-4E75-9083-031821680540}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "day_02", "day_02\day_02.csproj", "{1EC75AE5-A557-4E75-9083-031821680540}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "day_03", "day_03\day_03.csproj", "{05746773-A77D-43F4-AF9E-9EBC3342AF84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "day_03", "day_03\day_03.csproj", "{05746773-A77D-43F4-AF9E-9EBC3342AF84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "day_04", "day_04\day_04.csproj", "{5AFF68BF-0D38-4310-8FF2-369339A82078}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "day_04", "day_04\day_04.csproj", "{5AFF68BF-0D38-4310-8FF2-369339A82078}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "day_05", "day_05\day_05.csproj", "{25B44311-FB8D-4B5E-BC9F-7A545F4E62A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "day_05", "day_05\day_05.csproj", "{25B44311-FB8D-4B5E-BC9F-7A545F4E62A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "day_06", "day_06\day_06.csproj", "{887EFF7B-6651-477E-9A36-DBE5BEF2B416}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "day_06", "day_06\day_06.csproj", "{887EFF7B-6651-477E-9A36-DBE5BEF2B416}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "day_07", "day_07\day_07.csproj", "{DC4943DD-6777-4599-8D55-80BB25BD8F69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "day_07", "day_07\day_07.csproj", "{DC4943DD-6777-4599-8D55-80BB25BD8F69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "day_08", "day_08\day_08.csproj", "{71F0EB9E-9852-458B-851A-0D70406D2746}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{DC4943DD-6777-4599-8D55-80BB25BD8F69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC4943DD-6777-4599-8D55-80BB25BD8F69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC4943DD-6777-4599-8D55-80BB25BD8F69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71F0EB9E-9852-458B-851A-0D70406D2746}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71F0EB9E-9852-458B-851A-0D70406D2746}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71F0EB9E-9852-458B-851A-0D70406D2746}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71F0EB9E-9852-458B-851A-0D70406D2746}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
