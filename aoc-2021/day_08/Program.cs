@@ -13,10 +13,9 @@
 //".Split(Environment.NewLine).SkipLast(1).ToList();
 
 var input = (await PuzzleInput.GetInputLines()).SkipLast(1);
-
-var p1   = 0;
-var p2   = 0L;
-var segs = "abcdefg";
+var p1    = 0;
+var p2    = 0L;
+var segs  = "abcdefg";
 
 foreach (var line in input) {
 	var parts   = line.Split(" | ");
@@ -37,11 +36,11 @@ foreach (var line in input) {
 	dmaps[8] = inputs.Single(i => i.Length == 7);
 
 	/* a */ smaps[0] = dmaps[7].Except(dmaps[4]).Single();
+	/* b */ smaps[1] = scounts.Single(kvp => kvp.Value == 6).Key;
 	/* c */ smaps[2] = dmaps[4].Single(c => inputs.Count(i => i.Contains(c)) == 8);
 	/* d */ smaps[3] = dmaps[4].Single(c => inputs.Where(i => i.Length == 5).All(i => i.Contains(c)));
 	/* e */ smaps[4] = scounts.Single(kvp => kvp.Value == 4).Key;
 	/* f */ smaps[5] = scounts.Single(kvp => kvp.Value == 9).Key;
-	/* b */ smaps[1] = segs.Single(c => inputs.Count(i => i.Length == 5 && i.Contains(c)) == 1 && c != smaps[4]);
 	/* g */ smaps[6] = segs.Single(c => !smaps.Contains(c));
 
 	dmaps[0] = inputs.Single(i => i.Length == 6 && i.Except(new[] { smaps[0], smaps[1], smaps[2], smaps[4], smaps[5], smaps[6] }).Count() == 0);
@@ -100,7 +99,7 @@ Console.WriteLine($"part 2: {p2}"); // part 2 is 1048410
 // if it has 7 segments, it's a 8
 
 // if it appears in 7 but not 4, it's segment a
-// if it appears in exactly 1 digit that has 5 segments, and it's not segment e, it's segment b
+// if it appears in 6 digits, it's segment b
 // if it appears in 8 digits and 4, it's segment c
 // if it appears in 4 and also in all digits that has 5 segments, it's segment d
 // if it appears in 4 digits, it's segment e
