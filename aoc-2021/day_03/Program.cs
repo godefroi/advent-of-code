@@ -1,6 +1,6 @@
 ﻿using aoc_tools;
 
-var input    = await PuzzleInput.GetInputLines();
+var input    = (await PuzzleInput.GetInputLines()).SkipLast(1);
 var counts   = new int[input.First().Length];
 var inpCount = input.Count();
 
