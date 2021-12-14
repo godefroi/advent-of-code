@@ -1,10 +1,6 @@
-﻿using System.Net;
+﻿using day_01;
 
-using aoc_tools;
-
-using day_01;
-
-var input = await PuzzleInput.GetInput();
+var input = File.ReadAllText(args[0]);
 var last  = int.MaxValue;
 var lSum  = int.MaxValue;
 var inc   = 0;

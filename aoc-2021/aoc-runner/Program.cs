@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Net;
 
-using aoc_tools;
-
 const string ANSI_RESET = "\u001b[0m";
 const string ANSI_GREEN = "\u001b[32m";
 
@@ -16,6 +14,16 @@ if (args != null && args.Length > 0 && args[0] == "all") {
 	}
 
 	return ret;
+} else if (args != null && args.Length > 0) {
+	var pFolder = Path.Combine(solutionFolder, args[0]);
+	var iFile   = Path.Combine(pFolder, "input.txt");
+
+	if (!Directory.Exists(pFolder)) {
+		Console.Error.WriteLine($"Project does not exist: {args[0]}");
+		return 1;
+	}
+
+	return await RunProject(pFolder, iFile);
 } else {
 	var newestProject = Directory.GetDirectories(solutionFolder, "day_??").OrderByDescending(d => int.Parse(d[^2..])).First();
 	var inputFile     = Path.Combine(newestProject, "input.txt");
@@ -51,7 +59,6 @@ static async Task<int> RunProject(string projectFolder, string inputFileName)
 	return process!.ExitCode;
 }
 
-
 static async Task DownloadInput(int day, string fileName)
 {
 	if (string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("AOC_SESSION"))) {
@@ -67,5 +74,5 @@ static async Task DownloadInput(int day, string fileName)
 	using var handler = new HttpClientHandler() { CookieContainer = cc };
 	using var hc = new HttpClient(handler);
 
-	await File.WriteAllLinesAsync(fileName, (await hc.GetStringAsync($"https://adventofcode.com/2021/day/{day}/input")).Split('\n').SkipLast(1));
+	await File.WriteAllTextAsync(fileName, String.Join('\n', (await hc.GetStringAsync($"https://adventofcode.com/2021/day/{day}/input")).Split('\n').SkipLast(1)));
 }
