@@ -1,17 +1,4 @@
-﻿//var input = @"[({(<(())[]>[[{[]{<()<>>
-//[(()[<>])]({[<{<<[]>>(
-//{([(<{}[<>[]}>{[]{[(<()>
-//(((({<>}<{<{<>}{[]{[]{}
-//[[<[([]))<([[{}[[()]]]
-//[{[{({}]{}}([{[{{{}}([]
-//{<[[]]>}<{[{[{[]{()[[[]
-//[<(<(<(<{}))><([]([]()
-//<{([([[(<>()){}]>(<<{{
-//<{([{{}}[<[[[<>{}]]]>[]]
-//".Split(Environment.NewLine).SkipLast(1).ToList();
-
-var input = File.ReadAllLines(args[0]).ToList();
-
+﻿var input  = File.ReadAllLines(args[0]).ToList();
 var starts = new List<char>() { '(', '[', '{', '<' };
 var ends   = new List<char>() { ')', ']', '}', '>' };
 var scores = input.Select(l => ScoreLine(l)).ToList();
