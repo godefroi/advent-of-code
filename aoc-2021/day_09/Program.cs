@@ -1,13 +1,11 @@
-﻿using aoc_tools;
-
-//var input = @"2199943210
+﻿//var input = @"2199943210
 //3987894921
 //9856789892
 //8767896789
 //9899965678
 //".Split(Environment.NewLine).SkipLast(1).ToList();
 
-var input = (await PuzzleInput.GetInputLines()).SkipLast(1).ToList();
+var input = File.ReadAllLines(args[0]).ToList();
 
 var map   = input.SelectMany((line, y) => line.Select((c, x) => new Location(x, y, int.Parse(c.ToString())))).ToList();
 var lows  = map.Where(l => Adjacents(map, l).All(a => a.Height > l.Height)).ToList();

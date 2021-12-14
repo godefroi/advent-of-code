@@ -1,8 +1,6 @@
 ﻿using Xunit;
 using Xunit.Abstractions;
 
-namespace day_01;
-
 public class ProblemTests
 {
 	private readonly ITestOutputHelper output;

@@ -1,6 +1,4 @@
-﻿using aoc_tools;
-
-var input = (await PuzzleInput.GetInputLines()).First().Split(',').Select(s => int.Parse(s)).ToList();
+﻿var input = File.ReadAllLines(args[0]).First().Split(',').Select(s => int.Parse(s)).ToList();
 
 //var input = "16,1,2,0,4,2,7,1,2,14".Split(',').Select(s => int.Parse(s)).ToList();
 

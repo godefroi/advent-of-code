@@ -1,6 +1,4 @@
-﻿using aoc_tools;
-
-//var input = @"[({(<(())[]>[[{[]{<()<>>
+﻿//var input = @"[({(<(())[]>[[{[]{<()<>>
 //[(()[<>])]({[<{<<[]>>(
 //{([(<{}[<>[]}>{[]{[(<()>
 //(((({<>}<{<{<>}{[]{[]{}
@@ -12,7 +10,7 @@
 //<{([{{}}[<[[[<>{}]]]>[]]
 //".Split(Environment.NewLine).SkipLast(1).ToList();
 
-var input = (await PuzzleInput.GetInputLines()).SkipLast(1).ToList();
+var input = File.ReadAllLines(args[0]).ToList();
 
 var starts = new List<char>() { '(', '[', '{', '<' };
 var ends   = new List<char>() { ')', ']', '}', '>' };

@@ -38,10 +38,10 @@ var input = File.ReadAllLines(args[0]);
 //Console.WriteLine();
 
 // part 1 is 7414
-Console.WriteLine(ParseSegments(input).Where(s => s.Start.X == s.End.X || s.Start.Y == s.End.Y).SelectMany(s => ExpandPoints(s)).GroupBy(p => p).Where(g => g.Count() > 1).Count());
+Console.WriteLine($"part 1: {ParseSegments(input).Where(s => s.Start.X == s.End.X || s.Start.Y == s.End.Y).SelectMany(s => ExpandPoints(s)).GroupBy(p => p).Where(g => g.Count() > 1).Count()}");
 
 // part 2 is 19676
-Console.WriteLine(ParseSegments(input).SelectMany(s => ExpandPoints(s)).GroupBy(p => p).Where(g => g.Count() > 1).Count());
+Console.WriteLine($"part 2: {ParseSegments(input).SelectMany(s => ExpandPoints(s)).GroupBy(p => p).Where(g => g.Count() > 1).Count()}");
 
 IEnumerable<Segment> ParseSegments(IEnumerable<string> lines)
 {
