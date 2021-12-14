@@ -1,7 +1,5 @@
 ﻿using aoc_tools;
 
-using System.Collections.Generic;
-
 //var input = @"NNCB
 
 //CH -> B
@@ -43,8 +41,6 @@ foreach (var rule in rules) {
 	}
 }
 
-//Console.WriteLine($"part 1: {groups.Max(g => g.LongCount()) - groups.Min(g => g.LongCount())}"); // part 1 is 2233
-
 for (var i = 0; i < 40; i++) {
 	var ocounts = pcounts.ToDictionary(p => p.Key, p => p.Value);
 	
@@ -54,6 +50,10 @@ for (var i = 0; i < 40; i++) {
 		pcounts[(First: r.Key.First, Second: r.Value)]  += count;
 		pcounts[(First: r.Value, Second: r.Key.Second)] += count;
 		ccounts[r.Value] += count;
+	}
+
+	if (i == 9) {
+		Console.WriteLine($"part 1: {ccounts.Max(kvp => kvp.Value) - ccounts.Min(kvp => kvp.Value)}"); // part 1 is 2233
 	}
 }
 
