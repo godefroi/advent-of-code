@@ -1,8 +1,6 @@
-﻿using aoc_tools;
+﻿using day_02;
 
-using day_02;
-
-using var sr = new StringReader(await PuzzleInput.GetInput());
+using var sr = new StringReader(File.ReadAllText(args[0]));
 
 var part_1_position = new Position();
 var part_2_position = new Position();
@@ -33,5 +31,5 @@ while (sr.Peek() > -1) {
 	}
 }
 
-Console.WriteLine($"Part 1: {part_1_position.X * part_1_position.Depth}");
-Console.WriteLine($"Part 2: {part_2_position.X * part_2_position.Depth}");
+Console.WriteLine($"part 1: {part_1_position.X * part_1_position.Depth}");
+Console.WriteLine($"part 2: {part_2_position.X * part_2_position.Depth}");
