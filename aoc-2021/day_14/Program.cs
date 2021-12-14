@@ -1,5 +1,7 @@
 ﻿using aoc_tools;
 
+using System.Collections.Generic;
+
 //var input = @"NNCB
 
 //CH -> B
@@ -21,53 +23,38 @@
 //".Split(Environment.NewLine).SkipLast(1).ToList();
 
 var input   = (await PuzzleInput.GetInputLines()).SkipLast(1).ToList();
-var cmap    = input.Skip(2).SelectMany(l => new[] { l[0], l[1], l[6] }).Distinct().ToList();
-var polymer = input[0].Select(c => cmap.IndexOf(c)).ToList();
-var counts  = new long[cmap.Count];
-var rules   = new int[cmap.Count, cmap.Count];
+var polymer = input[0].ToList();
+var rules   = input.Skip(2).ToDictionary(r => (First: r[0], Second: r[1]), r => r[6]);
+var ccounts = polymer.GroupBy(c => c).ToDictionary(g => g.Key, g => g.LongCount());
+var pcounts = polymer.Zip(polymer.Skip(1)).ToDictionary(p => (First: p.First, Second: p.Second), p => 1L);
 
-foreach (var line in input.Skip(2)) {
-	rules[cmap.IndexOf(line[0]), cmap.IndexOf(line[1])] = cmap.IndexOf(line[6]);
+foreach (var rule in rules) {
+	if (!pcounts.ContainsKey(rule.Key)) {
+		pcounts.Add(rule.Key, 0L);
+	}
+}
+
+foreach (var rule in rules) {
+	if (!ccounts.ContainsKey(rule.Key.First)) {
+		ccounts.Add(rule.Key.First, 0L);
+	}
+	if (!ccounts.ContainsKey(rule.Key.Second)) {
+		ccounts.Add(rule.Key.Second, 0L);
+	}
 }
 
 //Console.WriteLine($"part 1: {groups.Max(g => g.LongCount()) - groups.Min(g => g.LongCount())}"); // part 1 is 2233
 
-var sw = System.Diagnostics.Stopwatch.StartNew();
-
-try {
-	foreach (var c in Expand(polymer, rules, 22, 0)) {
-		counts[c]++;
-	}
-
-	Console.WriteLine(counts.Max() - counts.Min());
-} finally {
-	Console.WriteLine($"Terminated after {sw.Elapsed}");
-}
-
-static IEnumerable<int> Expand(IEnumerable<int> input, int[,] rules, int maxIterations, int iteration = 1)
-{
-	if (iteration >= maxIterations) {
-		foreach (var c in input) {
-			yield return c;
-			Console.WriteLine($"Yielded {c} from input");
-		}
-
-		yield break;
-	}
-
-	var prev = -1;
-
-	foreach (var cur in Expand(input, rules, maxIterations, iteration + 1)) {
-		if (prev == -1) {
-			yield return cur;
-			prev = cur;
-			continue;
-		}
-
-		yield return rules[prev, cur];
-
-		yield return cur;
-
-		prev = cur;
+for (var i = 0; i < 40; i++) {
+	var ocounts = pcounts.ToDictionary(p => p.Key, p => p.Value);
+	
+	foreach (var r in rules) {
+		var count = ocounts[r.Key];
+		pcounts[r.Key] -= count;
+		pcounts[(First: r.Key.First, Second: r.Value)]  += count;
+		pcounts[(First: r.Value, Second: r.Key.Second)] += count;
+		ccounts[r.Value] += count;
 	}
 }
+
+Console.WriteLine($"part 2: {ccounts.Max(kvp => kvp.Value) - ccounts.Min(kvp => kvp.Value)}"); // part 2 is 2884513602164
