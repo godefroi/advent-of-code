@@ -1,6 +1,4 @@
-﻿using aoc_tools;
-
-//var input = @"start-A
+﻿//var input = @"start-A
 //start-b
 //A-c
 //A-b
@@ -8,7 +6,7 @@
 //A-end
 //b-end
 //".Split(Environment.NewLine).SkipLast(1).ToList();
-var input = (await PuzzleInput.GetInputLines()).SkipLast(1).ToList();
+var input = File.ReadAllLines(args[0]).ToList();
 var nodes = new Dictionary<string, Node>();
 
 foreach (var line in input) {

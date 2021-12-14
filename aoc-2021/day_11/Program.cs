@@ -1,6 +1,4 @@
-﻿using aoc_tools;
-
-//var input = @"5483143223
+﻿//var input = @"5483143223
 //2745854711
 //5264556173
 //6141336146
@@ -19,10 +17,9 @@
 //11111
 //".Split(Environment.NewLine).SkipLast(1).ToList();
 
-var input = (await PuzzleInput.GetInputLines()).SkipLast(1).ToList();
-
-var grid = input.Select(line => line.Select(c => int.Parse(c.ToString())).ToArray()).ToArray();
-var fcnt = 0L;
+var input = File.ReadAllLines(args[0]).ToList();
+var grid  = input.Select(line => line.Select(c => int.Parse(c.ToString())).ToArray()).ToArray();
+var fcnt  = 0L;
 
 //Print(grid);
 
