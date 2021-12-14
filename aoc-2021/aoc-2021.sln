@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "day_01", "day_01\day_01.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "day_02", "day_02\day_02.csproj", "{334B12D9-7B90-4D47-AE92-2874A26ED131}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aoc-tools", "aoc-tools\aoc-tools.csproj", "{D0F81D85-0CCE-4994-85AE-038A1AC696F0}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "day_03", "day_03\day_03.csproj", "{6F99785B-0ADC-4F13-A6DC-85FCF59B9D05}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "day_04", "day_04\day_04.csproj", "{45A02BF3-3272-4CD3-BB31-43D881C377ED}"
@@ -37,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "day_14", "day_14\day_14.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "day_13", "day_13\day_13.csproj", "{7509CA0D-3B14-4E35-93D6-695702E07CF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aoc-runner", "aoc-runner\aoc-runner.csproj", "{08EBEECE-A3CA-486F-AECA-9841145044CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aoc-runner", "aoc-runner\aoc-runner.csproj", "{08EBEECE-A3CA-486F-AECA-9841145044CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,10 +51,6 @@ Global
 		{334B12D9-7B90-4D47-AE92-2874A26ED131}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{334B12D9-7B90-4D47-AE92-2874A26ED131}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{334B12D9-7B90-4D47-AE92-2874A26ED131}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D0F81D85-0CCE-4994-85AE-038A1AC696F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D0F81D85-0CCE-4994-85AE-038A1AC696F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D0F81D85-0CCE-4994-85AE-038A1AC696F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D0F81D85-0CCE-4994-85AE-038A1AC696F0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6F99785B-0ADC-4F13-A6DC-85FCF59B9D05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6F99785B-0ADC-4F13-A6DC-85FCF59B9D05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F99785B-0ADC-4F13-A6DC-85FCF59B9D05}.Release|Any CPU.ActiveCfg = Release|Any CPU
