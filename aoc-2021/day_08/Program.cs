@@ -1,6 +1,4 @@
-﻿using aoc_tools;
-
-//var input = @"be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe
+﻿//var input = @"be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe
 //edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf gc
 //fgaebd cg bdaec gdafb agbcfd gdcbef bgcad gfac gcb cdgabef | cg cg fdcagb cbg
 //fbegcd cbd adcefb dageb afcb bc aefdc ecdab fgdeca fcdbega | efabcd cedba gadfec cb
@@ -12,7 +10,7 @@
 //gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
 //".Split(Environment.NewLine).SkipLast(1).ToList();
 
-var input = (await PuzzleInput.GetInputLines()).SkipLast(1);
+var input = File.ReadAllLines(args[0]);
 var p1    = 0;
 var p2    = 0L;
 var segs  = "abcdefg";
