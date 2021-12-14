@@ -1,5 +1,4 @@
 ﻿var input   = File.ReadAllLines(args[0]).First().Split(',').Select(s => int.Parse(s)).ToList();
-//var input   = "3,4,3,1,2".Split(',').Select(s => int.Parse(s)).ToList();
 var buckets = Enumerable.Range(0, 9).Select(i => input.LongCount(n => n == i)).ToArray();
 
 //Console.WriteLine(input.Count);

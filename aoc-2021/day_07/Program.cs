@@ -1,7 +1,5 @@
 ﻿var input = File.ReadAllLines(args[0]).First().Split(',').Select(s => int.Parse(s)).ToList();
 
-//var input = "16,1,2,0,4,2,7,1,2,14".Split(',').Select(s => int.Parse(s)).ToList();
-
 Console.WriteLine($"part 1: {input.Min(i => input.Sum(ii => Math.Abs(ii - i)))}"); // part 1 is 329389
 Console.WriteLine($"part 2: {Enumerable.Range(input.Min(), input.Max()).Min(i => input.Sum(ii => TriangleNumber(ii - i)))}"); // part 2 is 86397080
 
