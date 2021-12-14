@@ -33,9 +33,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01-05", "01-05", "{D5AB0C44
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "06-10", "06-10", "{AD11C2E5-AD32-47B4-AB82-8FF974CDC385}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "day_14", "day_14\day_14.csproj", "{A0860081-4E5B-4FD1-BC2F-9043C428931C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "day_14", "day_14\day_14.csproj", "{A0860081-4E5B-4FD1-BC2F-9043C428931C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "day_13", "day_13\day_13.csproj", "{7509CA0D-3B14-4E35-93D6-695702E07CF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "day_13", "day_13\day_13.csproj", "{7509CA0D-3B14-4E35-93D6-695702E07CF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aoc-runner", "aoc-runner\aoc-runner.csproj", "{08EBEECE-A3CA-486F-AECA-9841145044CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,6 +105,10 @@ Global
 		{7509CA0D-3B14-4E35-93D6-695702E07CF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7509CA0D-3B14-4E35-93D6-695702E07CF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7509CA0D-3B14-4E35-93D6-695702E07CF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08EBEECE-A3CA-486F-AECA-9841145044CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08EBEECE-A3CA-486F-AECA-9841145044CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08EBEECE-A3CA-486F-AECA-9841145044CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08EBEECE-A3CA-486F-AECA-9841145044CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
