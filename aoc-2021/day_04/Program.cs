@@ -1,6 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-using day_04;
-using aoc_tools;
+﻿using day_04;
 
 //var g = new int[,] {
 //	{ 22, 13, 17, 11,  0 },
@@ -32,8 +30,8 @@ using aoc_tools;
 //22 11 13  6  5
 // 2  0 12  3  7".Split(Environment.NewLine).ToList();
 
-var inp = await PuzzleInput.GetInputLines();
-Console.WriteLine(inp.Count);
+var inp = File.ReadAllLines(args[0]);
+Console.WriteLine(inp.Length);
 var balls  = inp.First().Split(',').Select(s => int.Parse(s)).ToList();
 var boards = inp.Skip(2).Chunk(6).Select(s => new Board(string.Join(" ", s).Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Select(s => int.Parse(s)))).ToArray();
 var part1  = default(int?);
@@ -55,10 +53,11 @@ foreach (var ball in balls) {
 
 			if (boards.Count(b => b != null) == 1) {
 				Console.WriteLine($"part 1: {part1}");
-				Console.WriteLine($"part 2: {score * ball} (board {b} won last)"); // 4809 is too low
+				Console.WriteLine($"part 2: {score * ball}"); // 4809 is too low
+				Console.WriteLine($"(board {b} won last)");
 			}
 
-			Console.WriteLine($"Board {b} wins, removing it");
+			//Console.WriteLine($"Board {b} wins, removing it");
 			boards[b] = null;
 		}
 	}

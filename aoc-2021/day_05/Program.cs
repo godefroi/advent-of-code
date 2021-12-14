@@ -1,7 +1,5 @@
 ﻿using System.Text.RegularExpressions;
 
-using aoc_tools;
-
 //Console.WriteLine(String.Join(", ", ParseSegments(new[] { "9,7 -> 7,9" }).SelectMany(s => ExpandPoints(s))));
 //return;
 //var input = @"0,9 -> 5,9
@@ -15,7 +13,7 @@ using aoc_tools;
 //0,0 -> 8,8
 //5,5 -> 8,2".Split(Environment.NewLine).ToList();
 
-var input = await PuzzleInput.GetInputLines();
+var input = File.ReadAllLines(args[0]);
 
 //foreach (var s in ParseSegments(input)) {
 //	Console.WriteLine($"{s.Start.X},{s.Start.Y} to {s.End.X},{s.End.Y}");
