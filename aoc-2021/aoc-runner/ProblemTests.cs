@@ -12,15 +12,36 @@ public class ProblemTests
 		this.output = output;
 	}
 
-	[Fact]
-	public void TestAll()
+	[Theory]
+	[MemberData(nameof(GetTests))]
+	public void TestAll(TestData testData)
+	{
+		TestTools.ExecuteProject(output, testData.ProjectFolder, testData.InputFile);
+	}
+
+	private static IEnumerable<object[]> GetTests()
 	{
 		var solutionFolder = DirectoryTools.FindSolutionFolder();
 
 		foreach (var folder in Directory.GetDirectories(solutionFolder, "day_??").OrderBy(d => int.Parse(d[^2..]))) {
 			foreach (var input in Directory.GetFiles(folder, "input*.txt")) {
-				TestTools.ExecuteProject(output, folder, Path.GetFileName(input));
+				yield return new object[] { new TestData(folder, Path.GetFileName(input)) };
 			}
 		}
+	}
+
+	public class TestData
+	{
+		public TestData(string projectFolder, string inputFile)
+		{
+			ProjectFolder = projectFolder;
+			InputFile     = inputFile;
+		}
+
+		public string ProjectFolder { get; private set; }
+
+		public string InputFile { get; private set; }
+
+		public override string ToString() => $"{Path.GetFileName(ProjectFolder)} ({InputFile})";
 	}
 }

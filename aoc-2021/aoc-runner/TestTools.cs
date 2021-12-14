@@ -38,17 +38,17 @@ internal static class TestTools
 			StartInfo           = new ProcessStartInfo(Path.GetFileName("dotnet")) {
 				WorkingDirectory       = projectFolder,
 				RedirectStandardOutput = true,
-				Arguments              = $"run -- {inputfile}",
+				Arguments              = $"run --verbosity quiet -- {inputfile}",
 			},
 		};
 
 		process.OutputDataReceived += (s, e) => {
 			if (e.Data != null) {
-				if (e.Data.StartsWith("part 1: ") && !string.IsNullOrWhiteSpace(p1Val)) {
+				if (e!.Data.StartsWith("part 1: ") && !string.IsNullOrWhiteSpace(p1Val)) {
 					p1 = e?.Data?[8..];
 				}
 
-				if (e.Data.StartsWith("part 2: ") && !string.IsNullOrWhiteSpace(p2Val)) {
+				if (e!.Data.StartsWith("part 2: ") && !string.IsNullOrWhiteSpace(p2Val)) {
 					p2 = e?.Data?[8..];
 				}
 			}
