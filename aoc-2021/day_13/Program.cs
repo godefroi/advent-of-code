@@ -1,6 +1,4 @@
-﻿using aoc_tools;
-
-//var input = @"6,10
+﻿//var input = @"6,10
 //0,14
 //9,10
 //0,3
@@ -23,13 +21,10 @@
 //fold along x=5
 //".Split(Environment.NewLine).SkipLast(1).ToList();
 
-//var input = (await PuzzleInput.GetInputLines()).SkipLast(1).ToList();
-var input = (await PuzzleInput.GetInputLines("input_two_point_five.txt")).SkipLast(1).ToList();
+var input = File.ReadAllLines(args[0]).ToList();
+//var input = (await PuzzleInput.GetInputLines("input_two_point_five.txt")).SkipLast(1).ToList();
 var dots  = input.Where(i => i.IndexOf(',') > -1).Select(l => l.Split(',')).Select(p => new Dot(int.Parse(p[0]), int.Parse(p[1]))).ToHashSet();
 var folds = input.Where(i => i.StartsWith("fold")).Select(i => i.Split(' ', '=')).Select(p => (Dimension: p[2][0], Value: int.Parse(p[3]))).ToList();
-
-Console.WriteLine($"x: {dots.Max(d => d.X)} y: {dots.Max(d => d.Y)}");
-return;
 
 Fold(dots, folds.First());
 
@@ -44,7 +39,10 @@ var width = dots.Max(d => d.X);
 foreach (var row in dots.GroupBy(d => d.Y).OrderBy(g => g.Key)) {
 	var lit = row.Select(d => d.X).ToList();
 	Console.WriteLine(new string(Enumerable.Range(0, width + 1).Select(x => row.Any(d => d.X == x) ? '#' : ' ').ToArray()));
-} // part 2 is AHPRPAUZ
+}
+
+Console.WriteLine("part 2: AHPRPAUZ");
+Console.WriteLine("Note: the above is hard-coded!");
 
 void Fold(HashSet<Dot> dots, (char Dimension, int Value) fold)
 {

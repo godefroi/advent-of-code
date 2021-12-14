@@ -1,6 +1,4 @@
-﻿using aoc_tools;
-
-//var input = @"NNCB
+﻿//var input = @"NNCB
 
 //CH -> B
 //HH -> N
@@ -20,7 +18,7 @@
 //CN -> C
 //".Split(Environment.NewLine).SkipLast(1).ToList();
 
-var input   = (await PuzzleInput.GetInputLines()).SkipLast(1).ToList();
+var input   = File.ReadAllLines(args[0]).ToList();
 var polymer = input[0].ToList();
 var rules   = input.Skip(2).ToDictionary(r => (First: r[0], Second: r[1]), r => r[6]);
 var ccounts = polymer.GroupBy(c => c).ToDictionary(g => g.Key, g => g.LongCount());
