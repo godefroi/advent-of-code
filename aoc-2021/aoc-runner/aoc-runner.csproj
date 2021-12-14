@@ -20,7 +20,6 @@
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
-	  <ProjectReference Include="..\aoc-tools\aoc-tools.csproj" />
   </ItemGroup>
 
 </Project>
