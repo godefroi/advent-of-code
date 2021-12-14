@@ -60,14 +60,18 @@ internal static class TestTools
 		process.BeginOutputReadLine();
 		process.WaitForExit();
 
-		if (p1 != null) {
+		if (p1Val != null && p1 != null) {
 			Assert.Equal(p1Val, p1);
 			output.WriteLine($"Validated output {p1} against expected output {p1Val}");
+		} else if (p1Val != null) {
+			throw new Exception($"Validation needed for part 1 against {p1Val}, no output received");
 		}
 
-		if (p2 != null) {
+		if (p2Val != null && p2 != null) {
 			Assert.Equal(p2Val, p2);
 			output.WriteLine($"Validated output {p2} against expected output {p2Val}");
+		} else if (p2Val != null) {
+			throw new Exception($"Validation needed for part 2 against {p2Val}, no output received");
 		}
 
 		Assert.Equal(0, process.ExitCode);
