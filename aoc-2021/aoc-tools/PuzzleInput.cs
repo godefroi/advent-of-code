@@ -12,7 +12,7 @@ public class PuzzleInput
 
 	private static string StartupDirectory => Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
-	public static async Task<string> GetInput()
+	public static async Task<string> GetInput(string fileName = "input.txt")
 	{
 		var dir = StartupDirectory;
 
@@ -25,11 +25,13 @@ public class PuzzleInput
 			dir = Path.GetDirectoryName(dir);
 		}
 
-		var ifn = Path.Combine(dir, "input.txt");
+		var ifn = Path.Combine(dir, fileName);
 
-		if (!File.Exists(ifn)) {
+		if (fileName == "input.txt" && !File.Exists(ifn)) {
 			Console.WriteLine($"Retrieving input file and saving to {ifn}");
 			File.WriteAllText(ifn, await DownloadInput());
+		} else if (!File.Exists(ifn)) {
+			throw new FileNotFoundException($"File {ifn} does not exist.");
 		}
 
 		return File.ReadAllText(ifn);
@@ -51,5 +53,5 @@ public class PuzzleInput
 		return await hc.GetStringAsync($"https://adventofcode.com/2021/day/{Day}/input");
 	}
 
-	public static async Task<List<string>> GetInputLines() => (await GetInput()).Split('\n').ToList();
+	public static async Task<List<string>> GetInputLines(string fileName = "input.txt") => (await GetInput(fileName)).Split('\n').ToList();
 }
