@@ -1,6 +1,4 @@
-﻿using aoc_tools;
-
-var input    = (await PuzzleInput.GetInputLines()).SkipLast(1);
+﻿var input    = File.ReadAllLines(args[0]);
 var counts   = new int[input.First().Length];
 var inpCount = input.Count();
 
@@ -41,7 +39,8 @@ int FindRating(IEnumerable<string> candidates, Func<char, string, int, bool> pre
 
 var oxy_r = FindRating(input, (common, candidate, position) => common == ' ' ? candidate[position] == '1' : candidate[position] == common);
 var co2_r = FindRating(input, (common, candidate, position) => common == ' ' ? candidate[position] == '0' : candidate[position] != common);
-Console.WriteLine($"part 2: {oxy_r * co2_r} (oxy: {oxy_r}, co2: {co2_r})"); // 1353024 (oxy: 486, co2: 2784)
+Console.WriteLine($"part 2: {oxy_r * co2_r}"); // 1353024 (oxy: 486, co2: 2784)
+Console.WriteLine($"(oxy: {oxy_r}, co2: {co2_r})");
 
 var sample_inputs = new List<string>() {
 	"00100",

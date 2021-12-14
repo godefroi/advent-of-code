@@ -53,7 +53,7 @@ internal static class TestTools
 				}
 			}
 
-			output.WriteLine($"{e?.Data}");
+			//output.WriteLine($"{e?.Data}");
 		};
 
 		process.Start();
@@ -62,14 +62,14 @@ internal static class TestTools
 
 		if (p1Val != null && p1 != null) {
 			Assert.Equal(p1Val, p1);
-			output.WriteLine($"Validated output {p1} against expected output {p1Val}");
+			//output.WriteLine($"Validated output {p1} against expected output {p1Val}");
 		} else if (p1Val != null) {
 			throw new Exception($"Validation needed for part 1 against {p1Val}, no output received");
 		}
 
 		if (p2Val != null && p2 != null) {
 			Assert.Equal(p2Val, p2);
-			output.WriteLine($"Validated output {p2} against expected output {p2Val}");
+			//output.WriteLine($"Validated output {p2} against expected output {p2Val}");
 		} else if (p2Val != null) {
 			throw new Exception($"Validation needed for part 2 against {p2Val}, no output received");
 		}
