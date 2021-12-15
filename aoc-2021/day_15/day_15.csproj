@@ -7,16 +7,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="AStar.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="AStar.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Pathfinding" Version="1.0.0" />
-  </ItemGroup>
-
 </Project>
