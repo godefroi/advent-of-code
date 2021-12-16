@@ -148,8 +148,81 @@ public class Problem
 	{
 		var (sum, value) = Main("../../../Day16/input.txt");
 
-		Assert.Equal(843L,           sum);
-		Assert.Equal(5390807940351L, value);
+		Assert.Equal(843,           sum);
+		Assert.Equal(5390807940351, value);
+	}
+
+	[Fact(DisplayName = "Day 16 Literal Value Parsing")]
+	public void LiteralPacketParsesCorrectly()
+	{
+		var binary = ParseHex("D2FE28");
+
+		Assert.Equal("110100101111111000101000", binary);
+
+		var packet = ParsePacket(binary);
+
+		Assert.Equal(6, packet.Version);
+		Assert.Equal(4, packet.Type);
+		Assert.Equal(2021, packet.Value);
+	}
+
+	[Fact(DisplayName = "Day 16 Operator Packet Parsing (first)")]
+	public void OperatorPacket1ParsesCorrectly()
+	{
+		var binary = ParseHex("38006F45291200");
+
+		Assert.Equal("00111000000000000110111101000101001010010001001000000000", binary);
+
+		var packet = ParsePacket(binary);
+
+		Assert.Equal(1, packet.Version);
+		Assert.Equal(6, packet.Type);
+		Assert.Null(packet.Value);
+		Assert.Equal(2, packet.Contents.Count);
+
+		Assert.Equal(10, packet.Contents.Skip(0).First().Value);
+		Assert.Equal(20, packet.Contents.Skip(1).First().Value);
+	}
+
+	[Fact(DisplayName = "Day 16 Operator Packet Parsing (second)")]
+	public void OperatorPacket2ParsesCorrectly()
+	{
+		var binary = ParseHex("EE00D40C823060");
+
+		Assert.Equal("11101110000000001101010000001100100000100011000001100000", binary);
+
+		var packet = ParsePacket(binary);
+
+		Assert.Equal(7, packet.Version);
+		Assert.Equal(3, packet.Type);
+		Assert.Null(packet.Value);
+		Assert.Equal(3, packet.Contents.Count);
+
+		Assert.Equal(1, packet.Contents.Skip(0).First().Value);
+		Assert.Equal(2, packet.Contents.Skip(1).First().Value);
+		Assert.Equal(3, packet.Contents.Skip(2).First().Value);
+	}
+
+	[Fact(DisplayName = "Day 16 Version Sum Samples")]
+	public void PacketSumSamplesWork()
+	{
+		Assert.Equal(16, SumVersions(ParsePacket(ParseHex("8A004A801A8002F478"))));
+		Assert.Equal(12, SumVersions(ParsePacket(ParseHex("620080001611562C8802118E34"))));
+		Assert.Equal(23, SumVersions(ParsePacket(ParseHex("C0015000016115A2E0802F182340"))));
+		Assert.Equal(31, SumVersions(ParsePacket(ParseHex("A0016C880162017C3686B18A3D4780"))));
+	}
+
+	[Fact(DisplayName = "Day 16 Packet Value Samples")]
+	public void PacketValueSamplesWork()
+	{
+		Assert.Equal(3, CalculateValue(ParsePacket(ParseHex("C200B40A82"))));
+		Assert.Equal(54, CalculateValue(ParsePacket(ParseHex("04005AC33890"))));
+		Assert.Equal(7, CalculateValue(ParsePacket(ParseHex("880086C3E88112"))));
+		Assert.Equal(9, CalculateValue(ParsePacket(ParseHex("CE00C43D881120"))));
+		Assert.Equal(1, CalculateValue(ParsePacket(ParseHex("D8005AC2A8F0"))));
+		Assert.Equal(0, CalculateValue(ParsePacket(ParseHex("F600BC2D8F"))));
+		Assert.Equal(0, CalculateValue(ParsePacket(ParseHex("9C005AC2F8F0"))));
+		Assert.Equal(1, CalculateValue(ParsePacket(ParseHex("9C0141080250320F1802104A08"))));
 	}
 
 	public class Packet
