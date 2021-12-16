@@ -2,7 +2,7 @@
 
 using static Dijkstra.Dijkstra;
 
-var input  = File.ReadAllLines(@"C:\Users\mark.parker\source\repos\aoc-2021\day_15\input.txt");
+var input  = File.ReadAllLines(args[0]);
 var graph  = input.SelectMany((line, y) => line.Select((c, x) => new Node(x, y, int.Parse(c.ToString())))).ToDictionary(n => (n.X, n.Y));
 var height = input.Length;
 
