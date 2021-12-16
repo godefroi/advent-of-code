@@ -1,10 +1,12 @@
-﻿namespace Day08;
+﻿using Xunit;
+
+namespace Day08;
 
 public class Problem
 {
-	public static void Main(string[] args)
+	internal static (int, long) Main(string fileName)
 	{
-		var input = File.ReadAllLines(args[0]);
+		var input = File.ReadAllLines(fileName);
 		var p1    = 0;
 		var p2    = 0L;
 		var segs  = "abcdefg";
@@ -76,6 +78,8 @@ public class Problem
 		Console.WriteLine($"part 1: {p1}"); // part 1 is 344
 		Console.WriteLine($"part 2: {p2}"); // part 2 is 1048410
 
+		return (p1, p2);
+
 		// segment a appears in 8 digits (0,    2, 3,    5, 6, 7, 8  9)
 		//         b appears in 6 digits (0,          4, 5, 6,    8, 9)
 		//         c appears in 8 digits (0, 1, 2, 3, 4,       7, 8, 9)
@@ -97,5 +101,23 @@ public class Problem
 		// if it appears in 4 digits, it's segment e
 		// if it appears in 9 digits, it's segment f
 		// otherwise, it's segment g
+	}
+
+	[Fact(DisplayName = "Day 08 Sample Input")]
+	public void SampleInputFunctionCorrectly()
+	{
+		var (p1, p2) = Main("../../../Day08/input_sample.txt");
+
+		Assert.Equal(26, p1);
+		Assert.Equal(61229, p2);
+	}
+
+	[Fact(DisplayName = "Day 08 Main Input")]
+	public void MainInputFunctionCorrectly()
+	{
+		var (p1, p2) = Main("../../../Day08/input.txt");
+
+		Assert.Equal(344, p1);
+		Assert.Equal(1048410, p2);
 	}
 }
