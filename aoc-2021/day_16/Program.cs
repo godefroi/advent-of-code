@@ -1,25 +1,9 @@
 ﻿var padding = "";
 var input   = File.ReadAllLines(@"..\..\..\input.txt").First();
-//var input = "9C0141080250320F1802104A08";
 var packet  = ParsePacket(ParseHex(input));
 
 Console.WriteLine($"part 1: {SumVersions(packet)}");
 Console.WriteLine($"part 2: {CalculateValue(packet)}");
-return;
-
-//foreach (var i in "0123456789ABCDEF".Select(c => Convert.ToInt32(new string(ParseHex(c.ToString())), 2))) { Console.WriteLine(i); } return;
-
-Console.WriteLine(ParseHex("A0016C880162017C3686B18A3D4780"));
-Console.WriteLine(SumVersions(ParsePacket(ParseHex("A0016C880162017C3686B18A3D4780"))));
-return;
-//var input = "D2FE28";
-//var input = "38006F45291200";
-//var input = "EE00D40C823060";
-
-Console.WriteLine(new string(ParseHex(input)));
-var p = ParsePacket(ParseHex(input));
-
-Console.WriteLine($"overall length: {p.Length} binary data length {ParseHex(input).Length}");
 
 static char[] ParseHex(string input) => input.SelectMany(c => c switch {
 		'0' => "0000",
