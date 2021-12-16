@@ -36,11 +36,21 @@ public static class Program
 			await DownloadInput(int.Parse(problem.Namespace![^2..]), inputFilename);
 		}
 
-		var method = problem.GetMethod("Main");
-
 		Console.WriteLine($"{ANSI_GREEN}Running problem {problem.Namespace}{ANSI_RESET}");
 
-		method?.Invoke(null, new[] { new[] { inputFilename } });
+		var flags  = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
+		var method = problem.GetMethod("Main", flags);
+		var parms  = method!.GetParameters();
+
+		if (parms.Length > 1) {
+			throw new NotSupportedException($"Problem {problem.FullName} method {method.Name} takes more than one parameter.");
+		} else if (parms.Length == 1 && parms[0].ParameterType == typeof(string[])) {
+			method?.Invoke(null, new[] { new[] { inputFilename } });
+		} else if (parms.Length == 1 && parms[0].ParameterType == typeof(string)) {
+			method?.Invoke(null, new[] { inputFilename });
+		} else {
+			throw new NotSupportedException($"Problem {problem.FullName} method {method.Name} parameter type {parms[0]} is not supported.");
+		}
 
 		Console.WriteLine();
 	}

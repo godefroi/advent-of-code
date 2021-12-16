@@ -6,7 +6,7 @@ public class Problem
 	{
 		var input  = File.ReadAllLines(args[0]);
 		var balls  = input.First().Split(',').Select(s => int.Parse(s)).ToList();
-		var boards = input.Skip(2).Chunk(6).Select(s => new Board(string.Join(" ", s).Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Select(s => int.Parse(s)))).ToArray();
+		var boards = input.Skip(2).Chunk(6).Select(s => new Board(string.Join(" ", s).Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Select(s => int.Parse(s)))).ToArray() as Board?[];
 		var part1  = default(int?);
 
 		Console.WriteLine($"There are {boards.Length} boards");
@@ -19,7 +19,7 @@ public class Problem
 					continue;
 				}
 
-				var score = boards[b].Mark(ball);
+				var score = boards[b]!.Mark(ball);
 
 				if (score.HasValue) {
 					part1 ??= score * ball;

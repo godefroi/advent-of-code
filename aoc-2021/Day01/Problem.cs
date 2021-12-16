@@ -1,10 +1,12 @@
-﻿namespace Day01;
+﻿using Xunit;
+
+namespace Day01;
 
 public class Problem
 {
-	public static void Main(string[] args)
+	internal static (int inc, int winc) Main(string fileName)
 	{
-		var input = File.ReadAllText(args[0]);
+		var input = File.ReadAllText(fileName);
 		var last  = int.MaxValue;
 		var lSum  = int.MaxValue;
 		var inc   = 0;
@@ -14,7 +16,7 @@ public class Problem
 		using var sr = new StringReader(input);
 
 		while (sr.Peek() > -1) {
-			var cur = int.Parse(sr.ReadLine());
+			var cur = int.Parse(sr.ReadLine()!);
 
 			// add to the window
 			win.Add(cur);
@@ -39,5 +41,25 @@ public class Problem
 
 		Console.WriteLine($"part 1: {inc}");
 		Console.WriteLine($"part 2: {winc}");
+
+		return (inc, winc);
+	}
+
+	[Fact(DisplayName = "Day 01 Sample Input")]
+	public void SampleInputFunctionCorrectly()
+	{
+		var (inc, winc) = Main("../../../Day01/input_sample.txt");
+
+		Assert.Equal(7, inc);
+		Assert.Equal(5, winc);
+	}
+
+	[Fact(DisplayName = "Day 01 Main Input")]
+	public void MainInputFunctionCorrectly()
+	{
+		var (inc, winc) = Main("../../../Day01/input.txt");
+
+		Assert.Equal(1462, inc);
+		Assert.Equal(1497, winc);
 	}
 }
