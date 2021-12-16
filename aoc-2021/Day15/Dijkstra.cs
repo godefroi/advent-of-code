@@ -1,4 +1,4 @@
-﻿namespace Dijkstra;
+﻿namespace Day15;
 
 public class Node
 {
