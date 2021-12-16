@@ -1,35 +1,19 @@
+using Xunit;
+
 namespace Day14;
 
 public class Problem
 {
-	public static void Main(string[] args)
+	internal static (long p1, long p2) Main(string fileName)
 	{
-		//var input = @"NNCB
-		
-		//CH -> B
-		//HH -> N
-		//CB -> H
-		//NH -> C
-		//HB -> C
-		//HC -> B
-		//HN -> C
-		//NN -> C
-		//BH -> H
-		//NC -> B
-		//NB -> B
-		//BN -> B
-		//BB -> N
-		//BC -> B
-		//CC -> N
-		//CN -> C
-		//".Split(Environment.NewLine).SkipLast(1).ToList();
-		
-		var input   = File.ReadAllLines(args[0]).ToList();
+		var input   = File.ReadAllLines(fileName).ToList();
 		var polymer = input[0].ToList();
 		var rules   = input.Skip(2).ToDictionary(r => (First: r[0], Second: r[1]), r => r[6]);
 		var ccounts = polymer.GroupBy(c => c).ToDictionary(g => g.Key, g => g.LongCount());
 		var pcounts = polymer.Zip(polymer.Skip(1)).ToDictionary(p => (First: p.First, Second: p.Second), p => 1L);
 		
+		long p1 = 0, p2 = 0;
+
 		foreach (var rule in rules) {
 			if (!pcounts.ContainsKey(rule.Key)) {
 				pcounts.Add(rule.Key, 0L);
@@ -57,10 +41,32 @@ public class Problem
 			}
 		
 			if (i == 9) {
-				Console.WriteLine($"part 1: {ccounts.Max(kvp => kvp.Value) - ccounts.Min(kvp => kvp.Value)}"); // part 1 is 2233
+				p1 = ccounts.Max(kvp => kvp.Value) - ccounts.Min(kvp => kvp.Value);
+				Console.WriteLine($"part 1: {p1}"); // part 1 is 2233
 			}
 		}
 		
-		Console.WriteLine($"part 2: {ccounts.Max(kvp => kvp.Value) - ccounts.Min(kvp => kvp.Value)}"); // part 2 is 2884513602164
+		p2 = ccounts.Max(kvp => kvp.Value) - ccounts.Min(kvp => kvp.Value);
+		Console.WriteLine($"part 2: {p2}"); // part 2 is 2884513602164
+
+		return (p1, p2);
+	}
+
+	[Fact(DisplayName = "Day 14 Sample Input")]
+	public void SampleInputFunctionCorrectly()
+	{
+		var (p1, p2) = Main("../../../Day14/input_sample.txt");
+
+		Assert.Equal(1588, p1);
+		Assert.Equal(2188189693529, p2);
+	}
+
+	[Fact(DisplayName = "Day 14 Main Input")]
+	public void MainInputFunctionCorrectly()
+	{
+		var (p1, p2) = Main("../../../Day14/input.txt");
+
+		Assert.Equal(2233, p1);
+		Assert.Equal(2884513602164, p2);
 	}
 }
