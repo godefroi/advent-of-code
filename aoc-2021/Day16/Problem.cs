@@ -5,7 +5,7 @@ public class Problem
 	public static void Main(string[] args)
 	{
 		var padding = "";
-		var input   = File.ReadAllLines(@"..\..\..\input.txt").First();
+		var input   = File.ReadAllLines(args[0]).First();
 		var packet  = ParsePacket(ParseHex(input));
 		
 		Console.WriteLine($"part 1: {SumVersions(packet)}");
