@@ -1,49 +1,73 @@
-﻿namespace Day07;
+﻿using Xunit;
+
+namespace Day07;
 
 public class Problem
 {
-	public static void Main(string[] args)
+	internal static (int p1, int p2) Main(string fileName)
 	{
-		var input = File.ReadAllLines(args[0]).First().Split(',').Select(s => int.Parse(s)).ToList();
+		var input = File.ReadAllLines(fileName).First().Split(',').Select(s => int.Parse(s)).ToList();
+		var p1    = input.Min(i => input.Sum(ii => Math.Abs(ii - i)));
+		var p2    = Enumerable.Range(input.Min(), input.Max()).Min(i => input.Sum(ii => TriangleNumber(ii - i)));
 
-		Console.WriteLine($"part 1: {input.Min(i => input.Sum(ii => Math.Abs(ii - i)))}"); // part 1 is 329389
-		Console.WriteLine($"part 2: {Enumerable.Range(input.Min(), input.Max()).Min(i => input.Sum(ii => TriangleNumber(ii - i)))}"); // part 2 is 86397080
+		Console.WriteLine($"part 1: {p1}"); // part 1 is 329389
+		Console.WriteLine($"part 2: {p2}"); // part 2 is 86397080
 
-		static int TriangleNumber(int i)
-		{
-			var ret = 0;
+		return (p1, p2);
+	}
 
-			i = Math.Abs(i);
+	private static int TriangleNumber(int i)
+	{
+		var ret = 0;
 
-			for (var idx = i; idx > 0; idx--) {
-				ret += idx;
-			}
+		i = Math.Abs(i);
 
-			return ret;
+		for (var idx = i; idx > 0; idx--) {
+			ret += idx;
 		}
 
-		static long BinomialCoefficient(long n, long k)
-		{
-			if (k > n) {
-				return 0;
-			}
+		return ret;
+	}
 
-			if (n == k) {
-				return 1; // only one way to chose when n == k
-			}
-
-			if (k > n - k) {
-				k = n - k; // Everything is symmetric around n-k, so it is quicker to iterate over a smaller k than a larger one.
-			}
-
-			long c = 1;
-
-			for (long i = 1; i <= k; i++) {
-				c *= n--;
-				c /= i;
-			}
-
-			return c;
+	private static long BinomialCoefficient(long n, long k)
+	{
+		if (k > n) {
+			return 0;
 		}
+
+		if (n == k) {
+			return 1; // only one way to chose when n == k
+		}
+
+		if (k > n - k) {
+			k = n - k; // Everything is symmetric around n-k, so it is quicker to iterate over a smaller k than a larger one.
+		}
+
+		long c = 1;
+
+		for (long i = 1; i <= k; i++) {
+			c *= n--;
+			c /= i;
+		}
+
+		return c;
+	}
+
+	[Fact(DisplayName = "Day 07 Sample Input")]
+	public void SampleInputFunctionCorrectly()
+	{
+		var (p1, p2) = Main("../../../Day07/input_sample.txt");
+
+		Assert.Equal(37, p1);
+		Assert.Equal(168, p2);
+	}
+
+	[Fact(DisplayName = "Day 07 Main Input")]
+	public void MainInputFunctionCorrectly()
+	{
+		var (p1, p2) = Main("../../../Day07/input.txt");
+
+		Assert.Equal(329389, p1);
+		Assert.Equal(86397080, p2);
 	}
 }

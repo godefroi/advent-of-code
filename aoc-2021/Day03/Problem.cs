@@ -1,10 +1,12 @@
-﻿namespace Day03;
+﻿using Xunit;
+
+namespace Day03;
 
 public class Problem
 {
-	public static void Main(string[] args)
+	internal static (int p1, int p2) Main(string fileName)
 	{
-		var input    = File.ReadAllLines(args[0]);
+		var input    = File.ReadAllLines(fileName);
 		var counts   = new int[input.First().Length];
 		var inpCount = input.Count();
 
@@ -23,47 +25,49 @@ public class Problem
 
 		Console.WriteLine($"part 1: {gamma * epsilon}"); // 1082324
 
-		int FindRating(IEnumerable<string> candidates, Func<char, string, int, bool> predicate, int position = 0)
-		{
-			var ccnt = candidates.Count();
-
-			if (ccnt == 0) {
-				throw new InvalidOperationException("Filtered out everything; something went wrong.");
-			}
-
-			// if there's only one, return it
-			if (ccnt == 1) {
-				return Convert.ToInt32(candidates.Single(), 2);
-			}
-
-			// otherwise, filter by the criteria at the given position
-			var sum    = candidates.Sum(c => int.Parse(c[position].ToString()));
-			var common = sum == (ccnt - sum) ? ' ' : (sum > (ccnt - sum) ? '1' : '0');
-
-			return FindRating(candidates.Where(c => predicate(common, c, position)).ToList(), predicate, position + 1);
-		}
-
 		var oxy_r = FindRating(input, (common, candidate, position) => common == ' ' ? candidate[position] == '1' : candidate[position] == common);
 		var co2_r = FindRating(input, (common, candidate, position) => common == ' ' ? candidate[position] == '0' : candidate[position] != common);
-		Console.WriteLine($"part 2: {oxy_r * co2_r}"); // 1353024 (oxy: 486, co2: 2784)
-		Console.WriteLine($"(oxy: {oxy_r}, co2: {co2_r})");
 
-		var sample_inputs = new List<string>() {
-			"00100",
-			"11110",
-			"10110",
-			"10111",
-			"10101",
-			"01111",
-			"00111",
-			"11100",
-			"10000",
-			"11001",
-			"00010",
-			"01010"
-		};
+		Console.WriteLine($"part 2: {oxy_r * co2_r} (oxy: {oxy_r}, co2: {co2_r})"); // 1353024 (oxy: 486, co2: 2784)
 
-		Console.WriteLine(FindRating(sample_inputs, (common, candidate, position) => common == ' ' ? candidate[position] == '1' : candidate[position] == common));
-		Console.WriteLine(FindRating(sample_inputs, (common, candidate, position) => common == ' ' ? candidate[position] == '0' : candidate[position] != common));
+		return (gamma * epsilon, oxy_r * co2_r);
+	}
+
+	private static int FindRating(IEnumerable<string> candidates, Func<char, string, int, bool> predicate, int position = 0)
+	{
+		var ccnt = candidates.Count();
+
+		if (ccnt == 0) {
+			throw new InvalidOperationException("Filtered out everything; something went wrong.");
+		}
+
+		// if there's only one, return it
+		if (ccnt == 1) {
+			return Convert.ToInt32(candidates.Single(), 2);
+		}
+
+		// otherwise, filter by the criteria at the given position
+		var sum    = candidates.Sum(c => int.Parse(c[position].ToString()));
+		var common = sum == (ccnt - sum) ? ' ' : (sum > (ccnt - sum) ? '1' : '0');
+
+		return FindRating(candidates.Where(c => predicate(common, c, position)).ToList(), predicate, position + 1);
+	}
+
+	[Fact(DisplayName = "Day 03 Sample Input")]
+	public void SampleInputFunctionCorrectly()
+	{
+		var (p1, p2) = Main("../../../Day03/input_sample.txt");
+
+		Assert.Equal(198, p1);
+		Assert.Equal(230, p2);
+	}
+
+	[Fact(DisplayName = "Day 03 Main Input")]
+	public void MainInputFunctionCorrectly()
+	{
+		var (p1, p2) = Main("../../../Day03/input.txt");
+
+		Assert.Equal(1082324, p1);
+		Assert.Equal(1353024, p2);
 	}
 }
