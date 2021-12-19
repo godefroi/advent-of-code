@@ -4,18 +4,8 @@ namespace Day18;
 
 public class Problem
 {
-	internal static void Main(string fileName)
+	internal static (long, long) Main(string fileName)
 	{
-		// The largest magnitude of the sum of any two snailfish numbers in this list is 3993. This is the magnitude of  + , which reduces to 
-		//var i_l = "[[2,[[7,7],7]],[[5,8],[[9,3],[0,2]]]]".Select(c => ParseComponent(c)).ToList();
-		//var i_r = "[[[0,[5,8]],[[1,7],[9,6]]],[[4,[1,2]],[[1,4],2]]]".Select(c => ParseComponent(c)).ToList();
-		//var sum = Add(i_l, i_r);
-
-		//Reduce(sum);
-		//Console.WriteLine(Stringify(sum));
-		//Console.WriteLine(Stringify(sum) == "[[[[7,8],[6,6]],[[6,0],[7,7]]],[[[7,8],[8,8]],[[7,9],[0,6]]]]");
-
-		//return;
 		var inputs = File.ReadAllLines(fileName);
 		var left   = inputs[0].Select(c => ParseComponent(c)).ToList();
 
@@ -27,42 +17,25 @@ public class Problem
 			Reduce(left);
 		}
 
-		Console.WriteLine($"part 1: {Magnitude(left)}"); // part 1 is 3981 on main input
+		var p1 = Magnitude(left);
+
 
 		var max = 0L;
 
 		for (var i = 0; i < inputs.Length; i++) {
 			for (var j = 0; j < inputs.Length; j++) {
-				if (inputs[i] == inputs[j]) {
+				if (i == j) {
 					continue;
 				}
 
-				var l = inputs[i].Select(c => ParseComponent(c)).ToList();
-				var r = inputs[j].Select(c => ParseComponent(c)).ToList();
-
-				var s = Add(l, r);
-				Reduce(s);
-
-				var m1 = Magnitude(s);
-
-				s = Add(r, l);
-				Reduce(s);
-
-				var m2 = Magnitude(s);
-
-				max = Math.Max(max, m1);
-				max = Math.Max(max, m2);
+				max = Math.Max(max, Magnitude(Reduce(Add(inputs[i].Select(c => ParseComponent(c)).ToList(), inputs[j].Select(c => ParseComponent(c)).ToList()))));
 			}
 		}
 
+		Console.WriteLine($"part 1: {p1}"); // part 1 is 3981 on main input
 		Console.WriteLine($"part 2: {max}"); // part 2 is 4687
-		//var input = "[1,2]";
 
-		//var node = ParseNode("[[[[[9,8],1],2],3],4]".ToCharArray()).Item1;
-
-		//var components = "[1,2]".Select(c => ParseComponent(c)).ToList();
-
-		//Console.WriteLine(Magnitude("[[9,1],[1,9]]".Select(c => ParseComponent(c)).ToList()));
+		return (p1, max);
 	}
 
 	private static void Print(IEnumerable<Component> components) => Console.WriteLine(Stringify(components));
@@ -148,21 +121,6 @@ public class Problem
 		}
 
 		throw new Exception("Should not have arrived here.");
-	}
-
-	private static Node Add(Node left, Node right)
-	{
-		var ret = new Node(left, right);
-
-		var depth = 0;
-		var cur   = ret;
-
-		while (cur != null) {
-			cur = cur.Left;
-			depth += 1;
-		}
-
-		return ret;
 	}
 
 	private static List<Component> Add(List<Component> left, List<Component> right)
@@ -256,11 +214,6 @@ public class Problem
 		}
 
 		return false;
-	}
-
-	private static (int? AddToLeft, int? AddToRight) Explode(Node node)
-	{
-		return (null, null);
 	}
 
 	private static Component ParseComponent(char character) => (character) switch {
@@ -410,6 +363,15 @@ public class Problem
 		Console.WriteLine(max);
 		Console.WriteLine(ml);
 		Console.WriteLine(mr);
+	}
+
+	[Fact(DisplayName = "Day 18 Main Input")]
+	public void MainInputFunctionCorrectly()
+	{
+		var (p1, p2) = Main("../../../Day18/input.txt");
+
+		Assert.Equal(3981, p1);
+		Assert.Equal(4687, p2);
 	}
 
 	public enum ComponentType
