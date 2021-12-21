@@ -47,7 +47,11 @@ public static class Program
 		} else if (parms.Length == 1 && parms[0].ParameterType == typeof(string[])) {
 			method?.Invoke(null, new[] { new[] { inputFilename } });
 		} else if (parms.Length == 1 && parms[0].ParameterType == typeof(string)) {
-			method?.Invoke(null, new[] { inputFilename });
+			if (problem.BaseType == typeof(ProblemBase)) {
+				method?.Invoke(null, new[] { "input.txt" });
+			} else {
+				method?.Invoke(null, new[] { inputFilename });
+			}
 		} else {
 			throw new NotSupportedException($"Problem {problem.FullName} method {method.Name} parameter type {parms[0]} is not supported.");
 		}
