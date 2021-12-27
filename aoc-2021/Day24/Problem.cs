@@ -4,8 +4,20 @@ namespace Day24;
 
 public class Problem : ProblemBase
 {
+	internal static void Main(string fileName)
+	{
+		var lines = File.ReadAllLines(GetFilePath(fileName));
 
-	internal static (int w, int x, int y, int z) Main(string fileName)
+		Console.WriteLine("DIV  CHECK  OFFSET");
+
+		for (var i = 0; i < lines.Length; i++) {
+			if (lines[i].StartsWith("inp w")) {
+				Console.WriteLine($"{lines[i + 4].Split(' ')[2],3}    {lines[i + 5].Split(' ')[2],3}     {lines[i + 15].Split(' ')[2],3}");
+			}
+		}
+	}
+
+	internal static (int w, int x, int y, int z) BruteForce(string fileName)
 	{
 		for (var d1 = 9; d1 > 0; d1--) {
 			for (var d2 = 9; d2 > 0; d2--) {

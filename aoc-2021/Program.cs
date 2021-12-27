@@ -25,6 +25,8 @@ public static class Program
 			foreach (var type in problemTypes) {
 				await RunProblem(type, projectFolder);
 			}
+		} else {
+			await RunProblem(problemTypes.Single(t => t.Namespace!.Contains(args[0], StringComparison.OrdinalIgnoreCase)), projectFolder);
 		}
 	}
 

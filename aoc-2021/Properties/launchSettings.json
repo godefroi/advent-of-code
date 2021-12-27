@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "WSL": {
+      "commandName": "WSL2",
+      "environmentVariables": {},
+      "distributionName": ""
+    },
+    "aoc-2021 (day24)": {
+      "commandName": "Project",
+      "commandLineArgs": "day24"
+    },
+    "aoc-2021": {
+      "commandName": "Project"
+    }
+  }
+}
