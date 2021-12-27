@@ -15,6 +15,39 @@ public class Problem : ProblemBase
 				Console.WriteLine($"{lines[i + 4].Split(' ')[2],3}    {lines[i + 5].Split(' ')[2],3}     {lines[i + 15].Split(' ')[2],3}");
 			}
 		}
+
+		/*
+			DIV  CHECK  OFFSET
+			  1     11       6      PUSH input[0] + 6
+			  1     13      14      PUSH input[1] + 14
+			  1     15      14      PUSH input[2] + 14
+			 26     -8      10      POP, must have input[3] == (input[2] + 14) - 8
+			  1     13       9      PUSH input[4] + 9
+			  1     15      12      PUSH input[5] + 12
+			 26    -11       8      POP, must have input[6] == (input[5] + 12) - 11
+			 26     -4      13      POP, must have input[7] == (input[4] + 9) - 4
+			 26    -15      12      POP, must have input[8] == (input[1] + 14) - 15
+			  1     14       6      PUSH input[9] + 6
+			  1     14       9      PUSH input[10] + 9
+			 26     -1      15      POP, must have input[11] == (input[10] + 9) - 1
+			 26     -8       4      POP, must have input[12] == (input[9] + 6) - 8
+			 26    -14      10      POP, must have input[13] == (input[0] + 6) - 14
+
+			input[3] = input[2] + 6
+			input[6] = input[5] + 1
+			input[7] = input[4] + 5
+			input[8] = input[1] - 1
+			input[11] = input[10] + 8
+			input[12] = input[9] - 2
+			input[13] = input[0] - 8
+
+			01234567890123
+			99394899891971 (largest)
+
+
+			01234567890123
+			92171126131911 (smallest)
+		*/
 	}
 
 	internal static (int w, int x, int y, int z) BruteForce(string fileName)
