@@ -29,7 +29,7 @@ public static class Program
 	private static async Task RunProblem(Type problem)
 	{
 		var projectFolder = FindProjectFolder();
-		var inputFilename = Path.Join(projectFolder, problem.Namespace, "input.txt");
+		var inputFilename = Path.Join(projectFolder, problem.Namespace!.Split('.').Last(), "input.txt");
 
 		if (!File.Exists(inputFilename)) {
 			await DownloadInput(int.Parse(problem.Namespace![^2..]), inputFilename);
