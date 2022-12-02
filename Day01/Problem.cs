@@ -1,10 +1,10 @@
-﻿namespace Day01;
+﻿namespace aoc_2022.Day01;
 
 public class Problem
 {
 	internal static (long max, long topThree) Main(string fileName)
 	{
-		var lines = File.ReadAllLines(GetFilePath(fileName));
+		var lines = ReadFileLines(fileName);
 		var elves = ChunkByEmpty(lines).Select(group => group.Select(s => long.Parse(s)).Sum()).OrderDescending().ToList();
 		var ret   = (elves.First(), elves.Take(3).Sum());
 
