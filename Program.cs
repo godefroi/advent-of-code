@@ -2,8 +2,8 @@
 
 public static class Program
 {
-	const string ANSI_RESET = "\u001b[0m";
-	const string ANSI_GREEN = "\u001b[32m";
+	private const string ANSI_RESET = "\u001b[0m";
+	private const string ANSI_GREEN = "\u001b[32m";
 
 	public static async Task Main(string[] args)
 	{
@@ -65,7 +65,7 @@ public static class Program
 		using var handler = new HttpClientHandler() { CookieContainer = cc };
 		using var hc      = new HttpClient(handler);
 
-		await File.WriteAllTextAsync(fileName, String.Join('\n', (await hc.GetStringAsync($"https://adventofcode.com/2022/day/{day}/input")).Split('\n').SkipLast(1)));
+		await File.WriteAllTextAsync(fileName, string.Join('\n', (await hc.GetStringAsync($"https://adventofcode.com/2022/day/{day}/input")).Split('\n').SkipLast(1)));
 	}
 
 	private static string FindProjectFolder()
