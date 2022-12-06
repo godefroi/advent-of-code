@@ -99,9 +99,9 @@ public class Problem
 		var instructions = Parse("inputSample.txt").Instructions.Select(ParseInstruction);
 
 		Assert.Collection(instructions,
-			i => Assert.Equal((2, 1, 1), i),
-			i => Assert.Equal((1, 3, 3), i),
-			i => Assert.Equal((2, 1, 2), i),
-			i => Assert.Equal((1, 2, 1), i));
+			i => Assert.Equal((1, 0, 1), i),
+			i => Assert.Equal((0, 2, 3), i),
+			i => Assert.Equal((1, 0, 2), i),
+			i => Assert.Equal((0, 1, 1), i));
 	}
 }
