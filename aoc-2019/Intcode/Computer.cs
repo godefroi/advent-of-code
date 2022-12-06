@@ -14,6 +14,9 @@ namespace aoc_2019.Intcode
 
 		public Computer()
 		{
+			Core         = new SparseArray<long>(Enumerable.Empty<long>());
+			Input        = new InputStream<long>(Enumerable.Empty<long>());
+			Output       = new OutputStream<long>();
 			Instructions = new Dictionary<int, Instruction>();
 			Terminated   = true;
 
@@ -39,7 +42,7 @@ namespace aoc_2019.Intcode
 
 		protected OutputStream<long> Output { get; private set; }
 
-		public event EventHandler<int> OutputReady;
+		public event EventHandler<int>? OutputReady;
 
 		public bool Terminated
 		{
@@ -61,10 +64,10 @@ namespace aoc_2019.Intcode
 
 		public long GetOutput() => Output.Read();
 
-		public virtual void Initialize(long[] program, IEnumerable<long> input = null)
+		public virtual void Initialize(long[] program, IEnumerable<long>? input = null)
 		{
 			Core         = new SparseArray<long>(program);
-			Input        = input == null ? new InputStream<long>(new long[0]) : new InputStream<long>(input);
+			Input        = input == null ? new InputStream<long>(Array.Empty<long>()) : new InputStream<long>(input);
 			Output       = new OutputStream<long>();
 			Terminated   = false;
 			RelativeBase = 0;
@@ -113,7 +116,7 @@ namespace aoc_2019.Intcode
 							outp = true;
 							break;
 						default:
-							throw ex.InnerException;
+							throw ex.InnerException ?? new Exception();
 					}
 				}
 

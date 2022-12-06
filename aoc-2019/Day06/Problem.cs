@@ -65,7 +65,9 @@ public class Problem
 		ndic.Add("COM", com);
 
 		foreach (var line in input) {
-			(var parent, var child) = line.Split(")");
+			var parts  = line.Split(")");
+			var parent = parts[0];
+			var child  = parts[1];
 
 			if( !ndic.ContainsKey(parent) ) {
 				var pn = new Node(parent);

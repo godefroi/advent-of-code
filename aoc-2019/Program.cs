@@ -44,21 +44,4 @@ public partial class Program
 	}
 
 	private static partial ProblemMetadata[] Problems();
-
-	private static IEnumerable<string> ReadInput(string input)
-	{
-		using( var sr = new StringReader(input) ) {
-			while( sr.Peek() > -1 )
-				yield return sr.ReadLine();
-		}
-	}
-
-	private static void Time(Action action)
-	{
-		action();
-		var sw = Stopwatch.StartNew();
-		action();
-		sw.Stop();
-		Console.WriteLine($"{sw.ElapsedMilliseconds} ms execution time");
-	}
 }
