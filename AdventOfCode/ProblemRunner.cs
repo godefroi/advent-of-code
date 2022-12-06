@@ -60,6 +60,13 @@ public class ProblemRunner
 			throw new InvalidOperationException("Set the AOC_SESSION environment variable.");
 		}
 
+		var assemblyName = System.Reflection.Assembly.GetEntryAssembly().GetName().Name;
+		var yearMatch    = System.Text.RegularExpressions.Regex.Match(assemblyName, "\\d{4}");
+
+		if (!yearMatch.Success) {
+			throw new InvalidOperationException($"Unable to parse year from assembly name {assemblyName}");
+		}
+
 		Console.WriteLine($"{ANSI_GREEN}Retrieving input file and saving to {fileName}{ANSI_RESET}");
 
 		var cc = new CookieContainer();
@@ -69,10 +76,10 @@ public class ProblemRunner
 		using var handler = new HttpClientHandler() { CookieContainer = cc };
 		using var hc      = new HttpClient(handler);
 
-		//var inputLines = (await hc.GetStringAsync($"https://adventofcode.com/2022/day/{day}/input")).Split('\n');
+		//var inputLines = (await hc.GetStringAsync($"https://adventofcode.com/{yearMatch.Value}/day/{day}/input")).Split('\n');
 
 		//File.WriteAllText(fileName, string.Join("\n", inputLines.Take(inputLines.Length - 1)));
 
-		File.WriteAllText(fileName, (await hc.GetStringAsync($"https://adventofcode.com/2022/day/{day}/input")).TrimEnd('\n'));
+		File.WriteAllText(fileName, (await hc.GetStringAsync($"https://adventofcode.com/{yearMatch.Value}/day/{day}/input")).TrimEnd('\n'));
 	}
 }
