@@ -57,9 +57,9 @@ namespace aoc_2019.Intcode
 
 		public bool OutputAvailable => Output.OutputAvailable;
 
-		public void AddInput(long input) => Input.AddInput(input);
+		public void AddInput(long input) => Input.Add(input);
 
-		public long GetOutput() => Output.Get();
+		public long GetOutput() => Output.Read();
 
 		public virtual void Initialize(long[] program, IEnumerable<long> input = null)
 		{

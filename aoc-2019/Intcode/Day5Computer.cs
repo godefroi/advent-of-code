@@ -15,7 +15,7 @@ namespace aoc_2019.Intcode
 		[OpCode(4)]
 		protected void AddOutput(long address)
 		{
-			Output.AddOutput(Core[address]);
+			Output.Write(Core[address]);
 
 			OnOutputReady(Output.Count);
 		}

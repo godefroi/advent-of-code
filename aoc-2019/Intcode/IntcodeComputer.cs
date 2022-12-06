@@ -1,32 +1,14 @@
 ﻿using aoc_2019.Intcode.Infrastructure;
 
-using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace aoc_2019.Intcode;
 
 internal partial class IntcodeComputer
 {
-	private static readonly List<int> _instructions;
-
 	private readonly SparseArray<long> _memory;
 
 	private long _instructionPointer = 0;
-
-	static IntcodeComputer()
-	{
-		_instructions = new List<int>();
-
-		var instructionMethods = typeof(IntcodeComputer)
-			.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
-			.Select(mi => (method: mi, match: InstructionRegex().Match(mi.Name)))
-			.Where(p => p.match.Success)
-			.Select(p => (p.method, opcode: long.Parse(p.match.Groups["opcode"].ValueSpan), name: p.match.Groups["name"].Value));
-
-		foreach (var (method, opcode, name) in instructionMethods) {
-			Console.WriteLine($"{name} ({opcode}) -> {method.Name} ({method.GetParameters().Length} parameters)");
-		}
-	}
 
 	public IntcodeComputer(IEnumerable<long> program)
 	{
@@ -36,6 +18,10 @@ internal partial class IntcodeComputer
 	public IntcodeComputer(IEnumerable<string> program) : this(program.Select(long.Parse)) { }
 
 	public IntcodeComputer(string program) : this(program.Split(',')) { }
+
+	public event EventHandler<OutputEventArgs>? Output;
+
+	public event InputEventHandler? Input;
 
 	public bool Terminated { get; private set; }
 
@@ -51,7 +37,7 @@ internal partial class IntcodeComputer
 			throw new InvalidOperationException("The program has already terminated.");
 		}
 
-		while (true) {
+		while (!Terminated) {
 			// make sure we didn't blow past the end of the program somehow
 			if (_instructionPointer > _memory.Length) {
 				throw new InvalidOperationException("Executed past end of program");
@@ -59,20 +45,25 @@ internal partial class IntcodeComputer
 
 			var currentOpCode = _memory[_instructionPointer];
 
-			// opcode 99 is program end
-			if (currentOpCode == 99) {
-				Terminated = true;
-				return InterruptType.Terminated;
+			// decode the opcode into an instruction
+			var (instruction, parameterModes) = Decode(currentOpCode);
+			var parameters = new long[instruction.ParameterCount];
+
+			// set the paramters based on the mode for each
+			for (var i = 0; i < parameters.Length; i++) {
+				parameters[i] = parameterModes[i] switch {
+					ParameterMode.Immediate => _instructionPointer + 1 + i,
+					ParameterMode.Position  => _memory[_instructionPointer + 1 + i],
+					//ParameterMode.Relative => RelativeBase + Core[m_ip + 1 + i],
+					_ => throw new InvalidOperationException($"Unknown parameter mode {parameterModes[i]}")
+				};
 			}
 
-			// decode the opcode into an instruction
-			var op = Decode(currentOpCode);
-
 			// execute the instruction
-			op(_memory[_instructionPointer + 1], _memory[_instructionPointer + 2], _memory[_instructionPointer + 3]);
+			var ret = instruction.Method.Invoke(this, parameters.Select(i => (object)i).ToArray());
 
 			// advance the instruction pointer
-			_instructionPointer += 4;
+			_instructionPointer += instruction.ParameterCount + 1;
 
 			//// get the instruction and build the array of parameters
 			//var (inst, modes) = DecodeInstruction(_memory[_instructionPointer]);
@@ -116,20 +107,12 @@ internal partial class IntcodeComputer
 			//if (outp)
 			//	return InterruptType.Output;
 		}
+
+		return InterruptType.Terminated;
 	}
 
 	public override string ToString() => _memory.ToString();
 
-	private Action<long, long, long> Decode(long opCode)
-	{
-		switch (opCode) {
-			case 1: return Op01Add;
-			case 2: return Op02Multiply;
-			default : throw new NotImplementedException();
-		}
-	}
-
-	internal readonly record struct Instruction(long opCode);
 	//private (Instruction Instruction, List<ParameterMode> Modes) DecodeInstruction(long opCode)
 	//{
 	//	var ocstr   = opCode.ToString().PadLeft(2, '0');
@@ -154,14 +137,30 @@ internal partial class IntcodeComputer
 	//	return (instr, modes);
 	//}
 
+	public class OutputEventArgs : EventArgs
+	{
+		public OutputEventArgs(long outputValue) => OutputValue = outputValue;
+
+		public long OutputValue { get; private set; }
+	}
+
+	public delegate long InputEventHandler(object? sender, EventArgs args);
 
 	public enum InterruptType
 	{
+		None,
 		Input,
 		Output,
-		Terminated
+		Terminated,
+	}
+
+	protected enum ParameterMode
+	{
+		Position  = 0,
+		Immediate = 1,
+		Relative  = 2,
 	}
 
 	[GeneratedRegex("Op(?<opcode>\\d+)(?<name>.*)")]
-	private static partial Regex InstructionRegex();
+	private static partial Regex InstructionNameRegex();
 }
