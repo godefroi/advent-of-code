@@ -5,16 +5,19 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<StartupObject>aoc_2019.Program</StartupObject>
 	</PropertyGroup>
 
 	<ItemGroup>
 	  <Compile Remove="Day07\Problem.cs" />
 	  <Compile Remove="Day09\Problem.cs" />
+	  <Compile Remove="Day10\Problem.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <None Include="Day07\Problem.cs" />
 	  <None Include="Day09\Problem.cs" />
+	  <None Include="Day10\Problem.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
