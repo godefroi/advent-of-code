@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace aoc_2022;
+namespace AdventOfCode;
 
 public static class Tools
 {
