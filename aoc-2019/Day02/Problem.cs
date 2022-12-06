@@ -1,6 +1,4 @@
-﻿using aoc_2019.Intcode;
-
-namespace aoc_2019.Day02;
+﻿namespace aoc_2019.Day02;
 
 public class Problem
 {

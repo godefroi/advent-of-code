@@ -44,6 +44,7 @@
 		<Using Include="AdventOfCode.Tools" Static="true" />
 
 		<Using Include="aoc_2019" />
+		<Using Include="aoc_2019.Intcode" />
 	</ItemGroup>
 
 </Project>
