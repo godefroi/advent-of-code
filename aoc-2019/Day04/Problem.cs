@@ -1,61 +1,67 @@
-﻿using System;
+﻿namespace aoc_2019.Day04;
 
-namespace aoc_2019
+public class Problem
 {
-	internal static class problem_4
+	public static (int, int) Main(string fileName)
 	{
-		public static void Part1(string[] args)
-		{
-			var low  = 357253;
-			var high = 892942;
-			var cnt  = 0;
+		var (low, high) = ReadFileLines(fileName).Select(l => { var vals = l.Split('-'); return (low: int.Parse(vals[0]), high: int.Parse(vals[1])); }).Single();
+		var part1       = Part1(low, high);
+		var part2       = Part2(low, high);
 
-			for( var i = low; i <= high; i++ ) {
-				var digits = i.ToString().ToCharArray();
-				var found  = false;
+		return (part1, part2);
+	}
 
-				for( var ci = 1; ci < digits.Length; ci++ ) {
-					if( digits[ci] == digits[ci - 1] )
-						found = true;
+	public static int Part1(int low, int high)
+	{
+		var cnt = 0;
 
-					if( digits[ci] < digits[ci - 1] ) {
-						found = false;
-						break;
-					}
+		for (var i = low; i <= high; i++) {
+			var digits = i.ToString().ToCharArray();
+			var found  = false;
+
+			for (var ci = 1; ci < digits.Length; ci++) {
+				if (digits[ci] == digits[ci - 1]) {
+					found = true;
 				}
 
-				if( found )
-					cnt += 1;
+				if (digits[ci] < digits[ci - 1]) {
+					found = false;
+					break;
+				}
 			}
 
-			Console.WriteLine(cnt);
+			if (found) {
+				cnt += 1;
+			}
 		}
 
-		public static void Part2(string[] args)
-		{
-			var low  = 357253;
-			var high = 892942;
-			var cnt  = 0;
+		return cnt;
+	}
 
-			for( var i = low; i <= high; i++ ) {
-				var digits = i.ToString().ToCharArray();
-				var found = false;
+	public static int Part2(int low, int high)
+	{
+		var cnt = 0;
 
-				for( var ci = 1; ci < digits.Length; ci++ ) {
-					if( digits[ci] == digits[ci - 1] && ((ci >= 2 && digits[ci] != digits[ci - 2]) || ci < 2) && ((ci < digits.Length - 1 && digits[ci] != digits[ci + 1]) || ci >= digits.Length - 1) )
-						found = true;
+		for (var i = low; i <= high; i++) {
+			var digits = i.ToString().ToCharArray();
+			var found  = false;
 
-					if( digits[ci] < digits[ci - 1] ) {
-						found = false;
-						break;
-					}
+			for (var ci = 1; ci < digits.Length; ci++) {
+				if (digits[ci] == digits[ci - 1] && ((ci >= 2 && digits[ci] != digits[ci - 2]) || ci < 2) && ((ci < digits.Length - 1 && digits[ci] != digits[ci + 1]) || ci >= digits.Length - 1)) {
+					found = true;
 				}
 
-				if( found )
-					cnt += 1;
+				if (digits[ci] < digits[ci - 1]) {
+					found = false;
+					break;
+				}
 			}
 
-			Console.WriteLine(cnt);
+			if (found) {
+				cnt += 1;
+			}
 		}
+
+		return cnt;
 	}
 }
