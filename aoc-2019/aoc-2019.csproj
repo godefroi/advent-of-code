@@ -8,14 +8,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Day02\Problem.cs" />
 	  <Compile Remove="Day05\Problem.cs" />
 	  <Compile Remove="Day07\Problem.cs" />
 	  <Compile Remove="Day09\Problem.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="Day02\Problem.cs" />
 	  <None Include="Day05\Problem.cs" />
 	  <None Include="Day07\Problem.cs" />
 	  <None Include="Day09\Problem.cs" />
@@ -39,9 +37,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Using Include="System.Net" />
-		<Using Include="System.Reflection" />
-
 		<Using Include="Xunit" />
 		<Using Include="Xunit.Abstractions" />
 
