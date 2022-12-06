@@ -1,25 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace aoc_2019.Intcode.Infrastructure;
 
-namespace aoc_2019.Intcode.Infrastructure
+internal class InputStream<T>
 {
-	internal class InputStream<T>
-	{
-		private Queue<T> m_input;
+	private readonly Queue<T> _input;
 
-		public InputStream(IEnumerable<T> input)
-		{
-			m_input = new Queue<T>(input);
-		}
+	public InputStream(IEnumerable<T> input) => _input = new Queue<T>(input);
 
-		public T Next()
-		{
-			if( m_input.Count > 0 )
-				return m_input.Dequeue();
-			else
-				throw new InputNeededException();
-		}
+	public T Next() => _input.Count > 0 ? _input.Dequeue() : throw new InputNeededException();
 
-		public void AddInput(T input) => m_input.Enqueue(input);
-	}
+	public void Add(T input) => _input.Enqueue(input);
 }

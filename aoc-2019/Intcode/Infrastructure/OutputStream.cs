@@ -1,23 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace aoc_2019.Intcode.Infrastructure;
 
-namespace aoc_2019.Intcode.Infrastructure
+internal class OutputStream<T>
 {
-	internal class OutputStream<T>
-	{
-		private Queue<T> m_output = new Queue<T>();
+	private readonly Queue<T> _output = new();
 
-		public bool OutputAvailable => m_output.Count > 0;
+	public bool OutputAvailable => _output.Count > 0;
 
-		public int Count => m_output.Count;
+	public int Count => _output.Count;
 
-		internal void AddOutput(T output)
-		{
-			m_output.Enqueue(output);
+	public void Write(T output) => _output.Enqueue(output);
 
-			//throw new OutputReadyException();
-		}
-
-		public T Get() => m_output.Dequeue();
-	}
+	public T Read() => _output.Dequeue();
 }
