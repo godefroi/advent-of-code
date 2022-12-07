@@ -9,12 +9,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Day09\Problem.cs" />
 	  <Compile Remove="Day10\Problem.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="Day09\Problem.cs" />
 	  <None Include="Day10\Problem.cs" />
 	</ItemGroup>
 

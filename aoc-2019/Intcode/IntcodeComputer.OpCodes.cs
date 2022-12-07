@@ -83,6 +83,11 @@ internal partial class IntcodeComputer
 		_memory[outputAddress] = _memory[value1Address] == _memory[value2Address] ? 1 : 0;
 	}
 
+	private void Op09AdjustRelativeBase(long valueAddress)
+	{
+		_relativeBase += _memory[valueAddress];
+	}
+
 	private void Op99Terminate()
 	{
 		Terminated = true;
