@@ -44,7 +44,7 @@ public class Problem
 
 	public class Directory
 	{
-		//private readonly Lazy<int> _size;
+		private readonly Lazy<int> _size;
 
 		public Directory(string name)
 		{
@@ -52,7 +52,7 @@ public class Problem
 			Files    = new List<KeyValuePair<string, int>>();
 			Name     = name;
 
-			//_size = new(() => Files.Sum(f => f.Value) + Children.Sum(c => c.Size));
+			_size = new(() => Files.Sum(f => f.Value) + Children.Sum(c => c.Size));
 		}
 
 		public string Name { get; }
@@ -63,8 +63,7 @@ public class Problem
 
 		public IList<KeyValuePair<string, int>> Files { get; }
 
-		//public int Size => _size.Value;
-		public int Size => Files.Sum(f => f.Value) + Children.Sum(c => c.Size);
+		public int Size => _size.Value;
 
 		public void AddChild(Directory child)
 		{
