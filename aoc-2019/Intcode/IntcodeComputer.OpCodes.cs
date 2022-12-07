@@ -20,7 +20,7 @@ internal partial class IntcodeComputer
 		foreach (var (method, opcode, name) in instructionMethods) {
 			var parameters = method.GetParameters();
 
-			Console.WriteLine($"{name} ({opcode}) -> {method.Name} ({parameters.Length} parameters)");
+			//Console.WriteLine($"{name} ({opcode}) -> {method.Name} ({parameters.Length} parameters)");
 
 			_instructions.Add(opcode, new Instruction(opcode, parameters.Length, method));
 		}
