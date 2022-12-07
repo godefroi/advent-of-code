@@ -9,14 +9,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Day10\Problem.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Include="Day10\Problem.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="Microsoft.TestPlatform.TestHost" Version="17.4.0" />
 		<PackageReference Include="xunit" Version="2.4.2" />
 		<PackageReference Include="xunit.runner.console" Version="2.4.2">
