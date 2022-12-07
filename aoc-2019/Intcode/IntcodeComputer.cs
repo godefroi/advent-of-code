@@ -9,6 +9,7 @@ internal partial class IntcodeComputer
 	private readonly SparseArray<long> _memory;
 
 	private long _instructionPointer = 0;
+	private long _relativeBase       = 0;
 
 	public IntcodeComputer(IEnumerable<long> program)
 	{
@@ -54,7 +55,7 @@ internal partial class IntcodeComputer
 				parameters[i] = parameterModes[i] switch {
 					ParameterMode.Immediate => _instructionPointer + 1 + i,
 					ParameterMode.Position  => _memory[_instructionPointer + 1 + i],
-					//ParameterMode.Relative => RelativeBase + Core[m_ip + 1 + i],
+					ParameterMode.Relative  => _relativeBase + _memory[_instructionPointer + 1 + i],
 					_ => throw new InvalidOperationException($"Unknown parameter mode {parameterModes[i]}")
 				};
 			}
