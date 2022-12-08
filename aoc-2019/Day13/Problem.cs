@@ -43,7 +43,7 @@ public class Problem
 		program[0] = 2;
 
 		var _computer  = new IntcodeComputer(program);
-		var _screen    = new Screen(true);
+		var _screen    = new Screen(false);
 		var _outputs   = new List<long>(3);
 		var score      = 0L;
 		var ball_pos   = -1L;
@@ -216,7 +216,7 @@ public class Problem
 	{
 		private Dictionary<long, Dictionary<long, long>> _cells  = new();
 		private bool                                     _draw;
-		private int                                      _origin = Console.CursorTop;
+		private int                                      _origin;
 		private long                                     _width  = 0;
 		private long                                     _height = 0;
 
@@ -224,8 +224,10 @@ public class Problem
 		{
 			_draw = draw;
 
-			if (_draw)
+			if (_draw) {
+				 _origin = Console.CursorTop;
 				Redraw();
+			}
 		}
 
 		public long this[long x, long y]
