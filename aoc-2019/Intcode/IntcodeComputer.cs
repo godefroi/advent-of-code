@@ -1,6 +1,4 @@
-﻿using aoc_2019.Intcode.Infrastructure;
-
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace aoc_2019.Intcode;
 
