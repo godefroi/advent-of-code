@@ -40,9 +40,9 @@ internal partial class IntcodeComputer
 
 		while (!Terminated) {
 			// make sure we didn't blow past the end of the program somehow
-			if (_instructionPointer > _memory.Length) {
-				throw new InvalidOperationException("Executed past end of program");
-			}
+			//if (_instructionPointer > _memory.Length) {
+			//	throw new InvalidOperationException("Executed past end of program");
+			//}
 
 			var currentOpCode = _memory[_instructionPointer];
 
