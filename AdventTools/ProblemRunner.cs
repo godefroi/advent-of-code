@@ -1,6 +1,4 @@
-﻿using System.Net.Http;
-using System.Net;
-using System.Threading.Tasks;
+﻿using System.Net;
 
 using static AdventOfCode.AnsiCodes;
 
@@ -60,8 +58,8 @@ public class ProblemRunner
 			throw new InvalidOperationException("Set the AOC_SESSION environment variable.");
 		}
 
-		var assemblyName = System.Reflection.Assembly.GetEntryAssembly().GetName().Name;
-		var yearMatch    = System.Text.RegularExpressions.Regex.Match(assemblyName, "\\d{4}");
+		var assemblyName = System.Reflection.Assembly.GetEntryAssembly()!.GetName().Name;
+		var yearMatch    = System.Text.RegularExpressions.Regex.Match(assemblyName!, "\\d{4}");
 
 		if (!yearMatch.Success) {
 			throw new InvalidOperationException($"Unable to parse year from assembly name {assemblyName}");
