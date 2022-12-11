@@ -18,4 +18,27 @@ public static class Tools
 
 	public static long GreatestCommonDenominator(long a, long b) => b == 0 ? a : GreatestCommonDenominator(b, a % b);
 
+	public static IEnumerable<IEnumerable<string>> ChunkByEmpty(IEnumerable<string> lines)
+	{
+		var doneEnumerating = false;
+
+		using var enumerator = lines.GetEnumerator();
+
+		while (!doneEnumerating) {
+			yield return EnumerateWhileNotEmpty(enumerator);
+		}
+
+		IEnumerable<string> EnumerateWhileNotEmpty(IEnumerator<string> enumerator)
+		{
+			while (enumerator.MoveNext()) {
+				if (enumerator.Current == string.Empty) {
+					yield break;
+				} else {
+					yield return enumerator.Current;
+				}
+			}
+
+			doneEnumerating = true;
+		}
+	}
 }
