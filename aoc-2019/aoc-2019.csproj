@@ -6,7 +6,18 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<StartupObject>aoc_2019.Program</StartupObject>
+		<RootNamespace>aoc_2019</RootNamespace>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Day16\Problem.cs" />
+	  <Compile Remove="Day17\Problem.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="Day16\Problem.cs" />
+	  <None Include="Day17\Problem.cs" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.TestPlatform.TestHost" Version="17.4.0" />
@@ -22,7 +33,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="../AdventOfCode/AdventOfCode.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
+		<ProjectReference Include="..\AdventTools\AdventTools.csproj" />
+		<ProjectReference Include="..\ProblemGenerator\ProblemGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
 	</ItemGroup>
 
 	<ItemGroup>

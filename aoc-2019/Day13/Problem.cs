@@ -93,8 +93,6 @@ public class Problem
 		private readonly Screen          _screen  = new(true);
 		private readonly List<long>      _outputs = new(3);
 
-		private long _score = 0;
-
 		public Arcade(string program)
 		{
 			_computer = new(program);
