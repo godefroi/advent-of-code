@@ -16,12 +16,12 @@ public class AStarTests
 
 		Assert.NotNull(path);
 		Assert.Collection(path,
-			c => Assert.Equal((10, 10), c),
-			c => Assert.Equal((10, 11), c),
-			c => Assert.Equal((10, 12), c),
-			c => Assert.Equal((10, 13), c),
-			c => Assert.Equal((10, 14), c),
-			c => Assert.Equal((10, 15), c));
+			c => Assert.Equal(new Coordinate(10, 10), c),
+			c => Assert.Equal(new Coordinate(10, 11), c),
+			c => Assert.Equal(new Coordinate(10, 12), c),
+			c => Assert.Equal(new Coordinate(10, 13), c),
+			c => Assert.Equal(new Coordinate(10, 14), c),
+			c => Assert.Equal(new Coordinate(10, 15), c));
 	}
 
 	[Fact]
@@ -46,16 +46,16 @@ public class AStarTests
 
 		Assert.NotNull(path);
 		Assert.Collection(path,
-			c => Assert.Equal((10, 10), c),
-			c => Assert.Equal((11, 10), c),
-			c => Assert.Equal((11, 11), c),
-			c => Assert.Equal((11, 12), c),
-			c => Assert.Equal((12, 12), c),
-			c => Assert.Equal((13, 12), c),
-			c => Assert.Equal((13, 11), c),
-			c => Assert.Equal((14, 11), c),
-			c => Assert.Equal((15, 11), c),
-			c => Assert.Equal((15, 10), c));
+			c => Assert.Equal(new Coordinate(10, 10), c),
+			c => Assert.Equal(new Coordinate(11, 10), c),
+			c => Assert.Equal(new Coordinate(11, 11), c),
+			c => Assert.Equal(new Coordinate(11, 12), c),
+			c => Assert.Equal(new Coordinate(12, 12), c),
+			c => Assert.Equal(new Coordinate(13, 12), c),
+			c => Assert.Equal(new Coordinate(13, 11), c),
+			c => Assert.Equal(new Coordinate(14, 11), c),
+			c => Assert.Equal(new Coordinate(15, 11), c),
+			c => Assert.Equal(new Coordinate(15, 10), c));
 	}
 
 	[Fact]
@@ -82,13 +82,13 @@ public class AStarTests
 
 		Assert.NotNull(path);
 		Assert.Collection(path,
-			c => Assert.Equal((10, 10), c),
-			c => Assert.Equal((11, 10), c),
-			c => Assert.Equal((12, 10), c),
-			c => Assert.Equal((12, 11), c),
-			c => Assert.Equal((13, 11), c),
-			c => Assert.Equal((14, 11), c),
-			c => Assert.Equal((14, 10), c),
-			c => Assert.Equal((15, 10), c));
+			c => Assert.Equal(new Coordinate(10, 10), c),
+			c => Assert.Equal(new Coordinate(11, 10), c),
+			c => Assert.Equal(new Coordinate(12, 10), c),
+			c => Assert.Equal(new Coordinate(12, 11), c),
+			c => Assert.Equal(new Coordinate(13, 11), c),
+			c => Assert.Equal(new Coordinate(14, 11), c),
+			c => Assert.Equal(new Coordinate(14, 10), c),
+			c => Assert.Equal(new Coordinate(15, 10), c));
 	}
 }
