@@ -95,7 +95,11 @@ public static class AStar
 
 	public readonly record struct Coordinate(int x, int y)
 	{
-		public static implicit operator Coordinate((int x, int y) tuple) => new Coordinate(tuple.x, tuple.y);
+		public static implicit operator Coordinate((int x, int y) tuple) => new(tuple.x, tuple.y);
+
+		public static implicit operator (int x, int y)(Coordinate coordinate) => (coordinate.x, coordinate.y);
+
+		public static Coordinate operator +(Coordinate operand1, Coordinate operand2) => new(operand1.x + operand2.x, operand1.y + operand2.y);
 	}
 
 	private static float Heuristic(Coordinate from, Coordinate to) => Math.Abs(from.x - to.x) + Math.Abs(from.y - to.y);
