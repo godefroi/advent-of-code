@@ -41,4 +41,33 @@ public static class Tools
 			doneEnumerating = true;
 		}
 	}
+
+	public static int FindSequence<T>(List<T> toSearch, List<T> toFind, int startIndex = 0)
+	{
+		for (var i = startIndex; (toSearch.Count - i) >= toFind.Count; i++) {
+			if (toSearch.Skip(i).Take(toFind.Count).SequenceEqual(toFind)) {
+				return i;
+			}
+		}
+
+		return -1;
+	}
+
+	public static IEnumerable<int> FindSequence<T>(List<T> toSearch, List<T> toFind, int startIndex, bool allowOverlap)
+	{
+		for (var i = startIndex; (toSearch.Count - i) >= toFind.Count; i++) {
+			var loc = FindSequence(toSearch, toFind, i);
+
+			if (loc > -1) {
+				yield return loc;
+
+				if (!allowOverlap) {
+					i = loc + toFind.Count - 1;
+				}
+			} else {
+				yield break;
+			}
+		}
+	}
+
 }
