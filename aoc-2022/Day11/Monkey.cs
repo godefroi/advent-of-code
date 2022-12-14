@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using System.Numerics;
 using System.Text.RegularExpressions;
 
 namespace aoc_2022.Day11;

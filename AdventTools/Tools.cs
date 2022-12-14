@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace AdventOfCode;
 
@@ -70,4 +71,10 @@ public static class Tools
 		}
 	}
 
+	//public static Span<T> AsSpan<T>(this Array array)
+	//{
+	//	// we would want to .Slice() this for a particular rank when dealing with a multidimensional array
+	//	// https://stackoverflow.com/questions/52750582/span-and-two-dimensional-arrays
+	//	return MemoryMarshal.CreateSpan(ref Unsafe.As<byte, T>(ref MemoryMarshal.GetArrayDataReference(array)), array.Length);
+	//}
 }

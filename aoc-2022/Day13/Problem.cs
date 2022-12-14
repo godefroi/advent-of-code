@@ -107,7 +107,7 @@ public class Problem
 				_list    = null;
 			} else if (jsonNode is JsonArray array) {
 				_integer = null;
-				_list    = array.Select(n => new ListOrInteger(n)).ToList();
+				_list    = array.Select(n => new ListOrInteger(n!)).ToList();
 			}
 		}
 
