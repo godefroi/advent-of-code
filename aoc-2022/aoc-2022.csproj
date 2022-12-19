@@ -33,6 +33,7 @@
 	<ItemGroup>
 		<Using Include="System.Net" />
 		<Using Include="System.Reflection" />
+		<Using Include="System.Text.RegularExpressions" />
 
 		<Using Include="Xunit" />
 		<Using Include="Xunit.Abstractions" />

@@ -1,7 +1,5 @@
 ﻿using Microsoft.Z3;
 
-using System.Text.RegularExpressions;
-
 namespace aoc_2022.Day15;
 
 public partial class Problem
