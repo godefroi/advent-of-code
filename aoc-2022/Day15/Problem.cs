@@ -2,8 +2,6 @@
 
 using System.Text.RegularExpressions;
 
-using static AdventOfCode.AStar;
-
 namespace aoc_2022.Day15;
 
 public partial class Problem
@@ -28,11 +26,11 @@ public partial class Problem
 		solver.Assert(ctx.MkLt(y, ctx.MkInt(4000000)));
 
 		foreach (var sd in ReadFileLines(fileName, Parse)) {
-			var d = Math.Abs(sd.sensor.x - sd.beacon.x) + Math.Abs(sd.sensor.y - sd.beacon.y);
+			var d = Math.Abs(sd.sensor.X - sd.beacon.X) + Math.Abs(sd.sensor.Y - sd.beacon.Y);
 
-			var xDiff = sd.sensor.x - x;
+			var xDiff = sd.sensor.X - x;
 			var xAbs  = ctx.MkITE(ctx.MkLt(xDiff, ctx.MkInt(0)), ctx.MkMul(xDiff, ctx.MkInt(-1)), xDiff);
-			var yDiff = sd.sensor.y - y;
+			var yDiff = sd.sensor.Y - y;
 			var yAbs  = ctx.MkITE(ctx.MkLt(yDiff, ctx.MkInt(0)), ctx.MkMul(yDiff, ctx.MkInt(-1)), yDiff);
 			var dist  = ctx.MkAdd((ArithExpr)xAbs, (ArithExpr)yAbs);
 
@@ -60,8 +58,8 @@ public partial class Problem
 
 		var xMax  = 4000000;
 		var yMax  = 4000000;
-		var p     = candidatePoints.Except(sensors.Select(s => s.beacon)).Where(c => c.x >= 0 && c.x <= xMax && c.y >= 0 && c.y <= yMax).First(c => !sensors.Any(s => ManhattanDistance(c, s.sensor) <= s.Range));
-		var part2 = (p.x * 4000000L) + p.y;
+		var p     = candidatePoints.Except(sensors.Select(s => s.beacon)).Where(c => c.X >= 0 && c.X <= xMax && c.Y >= 0 && c.Y <= yMax).First(c => !sensors.Any(s => ManhattanDistance(c, s.sensor) <= s.Range));
+		var part2 = (p.X * 4000000L) + p.Y;
 
 		return (part1, part2);
 	}
@@ -69,10 +67,10 @@ public partial class Problem
 	private static IEnumerable<Coordinate> ExcludedPoints(Coordinate sensor, Coordinate closestBeacon, int yInterest)
 	{
 		var beaconDistance = ManhattanDistance(sensor, closestBeacon);
-		var xMin = sensor.x - beaconDistance;
-		var xMax = sensor.x + beaconDistance;
-		var yMin = sensor.y - beaconDistance; 
-		var yMax = sensor.y + beaconDistance;
+		var xMin = sensor.X - beaconDistance;
+		var xMax = sensor.X + beaconDistance;
+		var yMin = sensor.Y - beaconDistance; 
+		var yMax = sensor.Y + beaconDistance;
 
 		// shortcut for sensors outside the range of interest
 		//if (yMin > yInterest || yMax < yInterest) {
@@ -84,7 +82,7 @@ public partial class Problem
 		for (var x = xMin; x <= xMax; x++) {
 			//for (var y = yMin; y <= yMax; y++) {
 			for (var y = yInterest; y <= yInterest; y++) {
-				if (ManhattanDistance(x, y, sensor.x, sensor.y) <= beaconDistance) {
+				if (ManhattanDistance(x, y, sensor.X, sensor.Y) <= beaconDistance) {
 					yield return new Coordinate(x, y);
 				}
 			}
@@ -94,11 +92,11 @@ public partial class Problem
 	private static IEnumerable<Coordinate> CandidatePoints(Coordinate sensor, Coordinate closestBeacon)
 	{
 		var beaconDistance = ManhattanDistance(sensor, closestBeacon);
-		var xMin           = sensor.x - beaconDistance - 1;
-		var xMax           = sensor.x + beaconDistance + 1;
-		var yMin           = sensor.y - beaconDistance - 1;
-		var yMax           = sensor.y + beaconDistance + 1;
-		var x              = sensor.x;
+		var xMin           = sensor.X - beaconDistance - 1;
+		var xMax           = sensor.X + beaconDistance + 1;
+		var yMin           = sensor.Y - beaconDistance - 1;
+		var yMax           = sensor.Y + beaconDistance + 1;
+		var x              = sensor.X;
 		var y              = yMin;
 
 		// top-right side
@@ -122,7 +120,7 @@ public partial class Problem
 		}
 	}
 
-	private static int ManhattanDistance(Coordinate point1, Coordinate point2) => Math.Abs(point1.x - point2.x) + Math.Abs(point1.y - point2.y);
+	private static int ManhattanDistance(Coordinate point1, Coordinate point2) => Math.Abs(point1.X - point2.X) + Math.Abs(point1.Y - point2.Y);
 
 	private static int ManhattanDistance(int x1, int y1, int x2, int y2) => Math.Abs(x1 - x2) + Math.Abs(y1 - y2);
 

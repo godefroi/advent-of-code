@@ -14,7 +14,7 @@ public class Problem
 	public static long Part1(string programString)
 	{
 		var cur   = long.MinValue;
-		var perms = GetPermutations(new long[] { 0, 1, 2, 3, 4 }, 5);
+		var perms = new long[] { 0, 1, 2, 3, 4 }.Permutations(5);
 
 		foreach (var perm in perms) {
 			var inp = 0L;
@@ -44,7 +44,7 @@ public class Problem
 	{
 		var cur = long.MinValue;
 
-		foreach (var inps in GetPermutations(new long[] { 5, 6, 7, 8, 9 }, 5).Select(p => p.ToArray())) {
+		foreach (var inps in new long[] { 5, 6, 7, 8, 9 }.Permutations(5).Select(p => p.ToArray())) {
 			//Console.WriteLine($"trying {string.Join(',', inps)}");
 
 			var amps     = Enumerable.Range(0, 5).Select(i => new IntcodeComputer(programString)).ToArray();
@@ -97,13 +97,5 @@ public class Problem
 		}
 
 		return cur;
-	}
-
-	private static IEnumerable<IEnumerable<T>> GetPermutations<T>(IEnumerable<T> list, int length)
-	{
-		if (length == 1)
-			return list.Select(t => new T[] { t });
-
-		return GetPermutations(list, length - 1).SelectMany(t => list.Where(e => !t.Contains(e)), (t1, t2) => t1.Concat(new T[] { t2 }));
 	}
 }

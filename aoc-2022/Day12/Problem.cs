@@ -36,21 +36,21 @@ public class Problem
 		var west    = node + (-1, 0);
 		var width   = map.GetLength(0);
 		var height  = map.GetLength(1);
-		var curElev = map[node.x, node.y];
+		var curElev = map[node.X, node.Y];
 
-		if (north.y >= 0 && map[north.x, north.y] <= curElev + 1) {
+		if (north.Y >= 0 && map[north.X, north.Y] <= curElev + 1) {
 			yield return (north, 1f);
 		}
 
-		if (south.y < height && map[south.x, south.y] <= curElev + 1) {
+		if (south.Y < height && map[south.X, south.Y] <= curElev + 1) {
 			yield return (south, 1f);
 		}
 
-		if (east.x < width && map[east.x, east.y] <= curElev + 1) {
+		if (east.X < width && map[east.X, east.Y] <= curElev + 1) {
 			yield return (east, 1f);
 		}
 
-		if (west.x >= 0 && map[west.x, west.y] <= curElev + 1) {
+		if (west.X >= 0 && map[west.X, west.Y] <= curElev + 1) {
 			yield return (west, 1f);
 		}
 	}

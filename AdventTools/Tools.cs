@@ -77,4 +77,49 @@ public static class Tools
 	//	// https://stackoverflow.com/questions/52750582/span-and-two-dimensional-arrays
 	//	return MemoryMarshal.CreateSpan(ref Unsafe.As<byte, T>(ref MemoryMarshal.GetArrayDataReference(array)), array.Length);
 	//}
+
+	public static IEnumerable<IEnumerable<T>> Permutations<T>(this IEnumerable<T> list, int length)
+	{
+		if (length == 1) {
+			return list.Select(t => new T[] { t });
+		}
+
+		return Permutations(list, length - 1).SelectMany(t => list.Where(e => !t.Contains(e)), (t1, t2) => t1.Concat(new T[] { t2 }));
+	}
+
+	public static void Deconstruct<T>(this T[] array, out T? item0, out T? item1)
+	{
+		item0 = default;
+		item1 = default;
+
+		if (array != null) {
+			if (array.Length > 1) {
+				item1 = array[1];
+			}
+
+			if (array.Length > 0) {
+				item0 = array[0];
+			}
+		}
+	}
+
+	public static void Deconstruct<T>(this IEnumerable<T> items, out T? item0, out T? item1)
+	{
+		item0 = default;
+		item1 = default;
+
+		using var en = items.GetEnumerator();
+
+		if (!en.MoveNext()) {
+			return;
+		}
+
+		item0 = en.Current;
+
+		if (!en.MoveNext()) {
+			return;
+		}
+
+		item1 = en.Current;
+	}
 }

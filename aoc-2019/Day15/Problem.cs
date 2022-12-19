@@ -91,23 +91,23 @@ public class Problem
 		var part1 = AStar.FindPath(origin, oxSysPos.Value, coordinate => {
 			var ret = new List<(int, int)>();
 
-			if (map[coordinate.x + 1, coordinate.y] == Tile.Floor || map[coordinate.x + 1, coordinate.y] == Tile.OxygenSystem) {
-				ret.Add((coordinate.x + 1, coordinate.y));
+			if (map[coordinate.X + 1, coordinate.Y] == Tile.Floor || map[coordinate.X + 1, coordinate.Y] == Tile.OxygenSystem) {
+				ret.Add((coordinate.X + 1, coordinate.Y));
 			}
 
-			if (map[coordinate.x - 1, coordinate.y] == Tile.Floor || map[coordinate.x - 1, coordinate.y] == Tile.OxygenSystem) {
-				ret.Add((coordinate.x - 1, coordinate.y));
+			if (map[coordinate.X - 1, coordinate.Y] == Tile.Floor || map[coordinate.X - 1, coordinate.Y] == Tile.OxygenSystem) {
+				ret.Add((coordinate.X - 1, coordinate.Y));
 			}
 
-			if (map[coordinate.x, coordinate.y + 1] == Tile.Floor || map[coordinate.x, coordinate.y + 1] == Tile.OxygenSystem) {
-				ret.Add((coordinate.x, coordinate.y + 1));
+			if (map[coordinate.X, coordinate.Y + 1] == Tile.Floor || map[coordinate.X, coordinate.Y + 1] == Tile.OxygenSystem) {
+				ret.Add((coordinate.X, coordinate.Y + 1));
 			}
 
-			if (map[coordinate.x, coordinate.y - 1] == Tile.Floor || map[coordinate.x, coordinate.y - 1] == Tile.OxygenSystem) {
-				ret.Add((coordinate.x, coordinate.y - 1));
+			if (map[coordinate.X, coordinate.Y - 1] == Tile.Floor || map[coordinate.X, coordinate.Y - 1] == Tile.OxygenSystem) {
+				ret.Add((coordinate.X, coordinate.Y - 1));
 			}
 
-			return ret.Select(item => (new AStar.Coordinate(item.Item1, item.Item2), 1f));
+			return ret.Select(item => (new Coordinate(item.Item1, item.Item2), 1f));
 		})!.Count;
 
 		// and part 2 is how long the oxygen takes to propagate throughout the entire map
