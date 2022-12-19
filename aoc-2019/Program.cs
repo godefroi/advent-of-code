@@ -1,11 +1,11 @@
-﻿using System.Diagnostics;
-
-namespace aoc_2019;
+﻿namespace aoc_2019;
 
 public partial class Program
 {
 	static async Task Main(string[] args)
 	{
+		//BenchmarkDotNet.Running.BenchmarkRunner.Run<Benchmarks.HashSetVsBitMask>();
+		//return;
 		await ProblemRunner.Execute(args, Problems());
 
 		//problem_1.Run(ReadInput(problem_1.Input).ToArray());

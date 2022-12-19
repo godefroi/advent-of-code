@@ -8,10 +8,10 @@ public class AStarTests
 	public void SimplePathfindingWorks()
 	{
 		var path = FindPath((10, 10), (10, 15), coord => new List<(Coordinate, float)> {
-			((coord.x + 1, coord.y), 1),
-			((coord.x - 1, coord.y), 1),
-			((coord.x, coord.y + 1), 1),
-			((coord.x, coord.y - 1), 1)
+			((coord.X + 1, coord.Y), 1),
+			((coord.X - 1, coord.Y), 1),
+			((coord.X, coord.Y + 1), 1),
+			((coord.X, coord.Y - 1), 1)
 		});
 
 		Assert.NotNull(path);
@@ -35,10 +35,10 @@ public class AStarTests
 
 		var path = FindPath((10, 10), (15, 10), coord => {
 			var ret = new List<(Coordinate, float)>() {
-				((coord.x + 1, coord.y), 1),
-				((coord.x - 1, coord.y), 1),
-				((coord.x, coord.y + 1), 1),
-				((coord.x, coord.y - 1), 1)
+				((coord.X + 1, coord.Y), 1),
+				((coord.X - 1, coord.Y), 1),
+				((coord.X, coord.Y + 1), 1),
+				((coord.X, coord.Y - 1), 1)
 			};
 
 			return ret.Where(item => !excluded.Contains(item.Item1));
@@ -63,10 +63,10 @@ public class AStarTests
 	{
 		var path = AStar.FindPath((10, 10), (15, 10), coord => {
 			var ret = new List<(Coordinate, float)>() {
-				((coord.x + 1, coord.y), 1),
-				((coord.x - 1, coord.y), 1),
-				((coord.x, coord.y + 1), 1),
-				((coord.x, coord.y - 1), 1)
+				((coord.X + 1, coord.Y), 1),
+				((coord.X - 1, coord.Y), 1),
+				((coord.X, coord.Y + 1), 1),
+				((coord.X, coord.Y - 1), 1)
 			};
 
 			if (coord == (12, 10)) {
