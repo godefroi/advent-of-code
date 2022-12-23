@@ -51,7 +51,16 @@ public class Problem
 
 		// make proposals
 		foreach (var (elf, adj) in adjacencies) {
-			if (!(elves.Contains(adj.NW) || elves.Contains(adj.N) || elves.Contains(adj.NE) || elves.Contains(adj.W) || elves.Contains(adj.E) || elves.Contains(adj.SW) || elves.Contains(adj.S) || elves.Contains(adj.SE))) {
+			var containsNW = elves.Contains(adj.NW);
+			var containsN  = elves.Contains(adj.N);
+			var containsNE = elves.Contains(adj.NE);
+			var containsW  = elves.Contains(adj.W);
+			var containsE  = elves.Contains(adj.E);
+			var containsSW = elves.Contains(adj.SW);
+			var containsS  = elves.Contains(adj.S);
+			var containsSE = elves.Contains(adj.SE);
+
+			if (!(containsNW || containsN || containsNE || containsW || containsE || containsSW || containsS || containsSE)) {
 				continue;
 			}
 
@@ -59,22 +68,22 @@ public class Problem
 				var proposeDir = (Direction)((round + i) % 4);
 
 				if (proposeDir == Direction.North) {
-					if (!(elves.Contains(adj.NW) || elves.Contains(adj.N) || elves.Contains(adj.NE))) {
+					if (!(containsNW || containsN || containsNE)) {
 						AddProposal(elf, adj.N);
 						break;
 					}
 				} else if (proposeDir == Direction.South) {
-					if (!(elves.Contains(adj.SW) || elves.Contains(adj.S) || elves.Contains(adj.SE))) {
+					if (!(containsSW || containsS || containsSE)) {
 						AddProposal(elf, adj.S);
 						break;
 					}
 				} else if (proposeDir == Direction.West) {
-					if (!(elves.Contains(adj.NW) || elves.Contains(adj.W) || elves.Contains(adj.SW))) {
+					if (!(containsNW || containsW || containsSW)) {
 						AddProposal(elf, adj.W);
 						break;
 					}
 				} else if (proposeDir == Direction.East) {
-					if (!(elves.Contains(adj.NE) || elves.Contains(adj.E) || elves.Contains(adj.SE))) {
+					if (!(containsNE || containsE || containsSE)) {
 						AddProposal(elf, adj.E);
 						break;
 					}
