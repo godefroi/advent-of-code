@@ -1,4 +1,9 @@
-﻿using System.Net;
+﻿using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Jobs;
+using BenchmarkDotNet.Running;
+
+using System.Net;
+using System.Reflection;
 
 using static AdventOfCode.AnsiCodes;
 
@@ -8,32 +13,99 @@ public class ProblemRunner
 {
 	public static async Task Execute(string[] args, ProblemMetadata[]? problemMetadata)
 	{
-		IEnumerable<ProblemMetadata> problems;
-
 		if (problemMetadata == null || problemMetadata.Length == 0) {
 			Console.Error.WriteLine($"{ANSI_RED}No problem classes found; something went wrong with the generator, maybe?{ANSI_RESET}");
 			return;
 		}
 
 		if (args == null || args.Length == 0) {
-			problems = problemMetadata.OrderByDescending(p => p.Day).Take(1);
+			await RunProblems(problemMetadata.OrderByDescending(p => p.Day).Take(1));
 		} else if (args.Length == 1 && "all".Equals(args[0], StringComparison.OrdinalIgnoreCase)) {
-			problems = problemMetadata.OrderBy(p => p.Day);
+			await RunProblems(problemMetadata.OrderBy(p => p.Day));
 		} else if (int.TryParse(args[0], out var day)) {
-			problems = problemMetadata.Where(p => p.Day == day);
+			await RunProblems(problemMetadata.Where(p => p.Day == day));
 		} else if (args.Length == 1 && "list".Equals(args[0], StringComparison.OrdinalIgnoreCase)) {
 			foreach (var pm in problemMetadata) {
 				Console.WriteLine($"{pm.Day} in {pm.Path}");
 			}
-
-			return;
+		} else if (args.Length > 0 && "bench".Equals(args[0], StringComparison.OrdinalIgnoreCase)) {
+			if (args.Length > 1 && "all".Equals(args[1], StringComparison.OrdinalIgnoreCase)) {
+				await RunBenchmarks(problemMetadata, args.Skip(2).ToArray());
+			} else {
+				await RunBenchmarks(problemMetadata.OrderByDescending(p => p.Day).Take(1), args.Skip(1).ToArray());
+			}
 		} else {
 			Console.Error.WriteLine($"{ANSI_RED}Invalid arguments; try specifying a day number, or 'all'.{ANSI_RESET}");
-			return;
+		}
+	}
+
+	private static List<ProblemMetadata> GetProblems()
+	{
+		var entryAssembly = Assembly.GetEntryAssembly();
+
+		if (entryAssembly == null) {
+			throw new InvalidOperationException("The entry assembly is undetermined.");
 		}
 
-		foreach (var p in problems) {
-			await RunProblem(p);
+		var problems      = new List<ProblemMetadata>(25);
+		var projectFolder = Path.GetDirectoryName(entryAssembly.Location);
+
+		while (projectFolder != null) {
+			if (File.Exists(Path.Combine(projectFolder, "*.csproj"))) {
+				break;
+			}
+
+			projectFolder = Path.GetDirectoryName(projectFolder);
+		}
+
+		if (projectFolder == null) {
+			throw new InvalidOperationException("Unable to determine location of project.");
+		}
+
+		foreach (var typeInfo in entryAssembly.DefinedTypes) {
+			if (typeInfo.Name != "Problem") {
+				continue;
+			}
+
+			if (typeInfo.Namespace == null) {
+				continue;
+			}
+
+			var ns     = typeInfo.Namespace.Split('.').Last();
+			var folder = Path.Combine(projectFolder, ns);
+
+			if (!Directory.Exists(folder)) {
+				continue;
+			}
+
+			if (!int.TryParse(ns.AsSpan(ns.Length - 2), out var dayNumber)) {
+				continue;
+			}
+
+			var mainMethod = typeInfo.DeclaredMethods.SingleOrDefault(m => m.Name == "Main");
+
+			if (mainMethod == null) {
+				continue;
+			}
+
+			var parameters = mainMethod.GetParameters();
+
+			if (parameters.Length != 1 || parameters[0].ParameterType != typeof(string)) {
+				continue;
+			}
+
+			var action = mainMethod.ReturnType == typeof(void) ? mainMethod.CreateDelegate<Action<string>>() : new Action<string>(fn => Console.WriteLine(mainMethod.CreateDelegate<Func<string, object?>>().Invoke(fn)));
+
+			new ProblemMetadata(typeInfo.AsType(), dayNumber, folder, action);
+		}
+
+		return problems;
+	}
+
+	private static async Task RunProblems(IEnumerable<ProblemMetadata> problems)
+	{
+		foreach (var problem in problems) {
+			await RunProblem(problem);
 		}
 	}
 
@@ -50,6 +122,21 @@ public class ProblemRunner
 		problem.Main("input.txt");
 
 		Console.WriteLine();
+	}
+
+	private static async Task RunBenchmarks(IEnumerable<ProblemMetadata> problems, string[] args)
+	{
+		problems = problems.ToList();
+
+		var assemblies = problems.Select(p => p.ProblemType.Assembly).Distinct().ToList();
+		var namespaces = problems.Select(p => p.ProblemType.Namespace).Distinct().ToHashSet();
+		var types      = assemblies.SelectMany(asm => asm.DefinedTypes.Where(t => namespaces.Contains(t.Namespace))).Select(ti => ti.AsType()).ToArray();
+
+		//var config = ManualConfig.CreateEmpty();
+
+		var summary = BenchmarkSwitcher.FromTypes(types).Run(args);
+
+		await Task.CompletedTask;
 	}
 
 	private static async Task DownloadInput(int day, string fileName)

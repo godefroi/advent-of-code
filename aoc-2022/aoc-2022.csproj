@@ -13,7 +13,8 @@
 	  <None Remove=".gitignore" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.TestPlatform.TestHost" Version="17.4.0" />
+		<PackageReference Include="BenchmarkDotNet" Version="0.13.2" />
+		<PackageReference Include="Microsoft.TestPlatform" Version="17.4.1" />
 		<PackageReference Include="Microsoft.Z3" Version="4.11.2" />
 		<PackageReference Include="xunit" Version="2.4.2" />
 		<PackageReference Include="xunit.runner.console" Version="2.4.2">
@@ -27,12 +28,13 @@
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\AdventTools\AdventTools.csproj" />
-		<ProjectReference Include="..\ProblemGenerator\ProblemGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
+		<ProjectReference Include="..\ProblemGenerator\ProblemGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Using Include="System.Net" />
 		<Using Include="System.Reflection" />
+		<Using Include="System.Text" />
 		<Using Include="System.Text.RegularExpressions" />
 
 		<Using Include="Xunit" />
