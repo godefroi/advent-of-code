@@ -7,12 +7,12 @@ public class AStarTests
 	[Fact]
 	public void SimplePathfindingWorks()
 	{
-		var path = FindPath((10, 10), (10, 15), coord => new List<(Coordinate, float)> {
+		var path = FindPath<Coordinate>((10, 10), (10, 15), coord => new List<(Coordinate, float)> {
 			((coord.X + 1, coord.Y), 1),
 			((coord.X - 1, coord.Y), 1),
 			((coord.X, coord.Y + 1), 1),
 			((coord.X, coord.Y - 1), 1)
-		});
+		}, (f, t) => Coordinate.ManhattanDistance(f, t));
 
 		Assert.NotNull(path);
 		Assert.Collection(path,
@@ -33,7 +33,7 @@ public class AStarTests
 			(12, 11),
 		};
 
-		var path = FindPath((10, 10), (15, 10), coord => {
+		var path = FindPath<Coordinate>((10, 10), (15, 10), coord => {
 			var ret = new List<(Coordinate, float)>() {
 				((coord.X + 1, coord.Y), 1),
 				((coord.X - 1, coord.Y), 1),
@@ -42,7 +42,7 @@ public class AStarTests
 			};
 
 			return ret.Where(item => !excluded.Contains(item.Item1));
-		});
+		}, (f, t) => Coordinate.ManhattanDistance(f, t));
 
 		Assert.NotNull(path);
 		Assert.Collection(path,
@@ -61,7 +61,7 @@ public class AStarTests
 	[Fact]
 	public void PathfindingWithWeightsWorks()
 	{
-		var path = AStar.FindPath((10, 10), (15, 10), coord => {
+		var path = AStar.FindPath<Coordinate>((10, 10), (15, 10), coord => {
 			var ret = new List<(Coordinate, float)>() {
 				((coord.X + 1, coord.Y), 1),
 				((coord.X - 1, coord.Y), 1),
@@ -78,7 +78,7 @@ public class AStarTests
 			}
 
 			return ret;
-		});
+		}, (f, t) => Coordinate.ManhattanDistance(f, t));
 
 		Assert.NotNull(path);
 		Assert.Collection(path,

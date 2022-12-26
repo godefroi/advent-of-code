@@ -8,8 +8,8 @@ public class Problem
 	{
 		var (map, start, goal) = ParseMap(fileName);
 
-		var part1 = (FindPath(start, goal, c => FindAdjacentNodes(map, c))?.Count ?? -1) - 1; // -1 because our algo includes the start
-		var part2 = GetStartingPositions(map).Select(candidate => FindPath(candidate, goal, c => FindAdjacentNodes(map, c))?.Count).Where(i => i.HasValue).Min() - 1;
+		var part1 = (FindPath<Coordinate>(start, goal, c => FindAdjacentNodes(map, c), (f, t) => Coordinate.ManhattanDistance(f, t))?.Count ?? -1) - 1; // -1 because our algo includes the start
+		var part2 = GetStartingPositions(map).Select(candidate => FindPath<Coordinate>(candidate, goal, c => FindAdjacentNodes(map, c), (f, t) => Coordinate.ManhattanDistance(f, t))?.Count).Where(i => i.HasValue).Min() - 1;
 
 		return (part1, part2 ?? int.MaxValue);
 	}

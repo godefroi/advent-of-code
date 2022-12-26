@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProblemGenerator", "Problem
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aoc-2019", "aoc-2019\aoc-2019.csproj", "{023C8FF4-A9C5-4564-8968-B89625100D32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventTools", "AdventTools\AdventTools.csproj", "{CD8502C2-5642-41CB-8AC4-45A83A0599A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventTools", "AdventTools\AdventTools.csproj", "{CD8502C2-5642-41CB-8AC4-45A83A0599A5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{5F82276D-FDAA-4CBC-812D-E9A1AD87DD1E}"
 EndProject
