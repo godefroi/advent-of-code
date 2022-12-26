@@ -88,7 +88,7 @@ public class Problem
 		}
 
 		// next, part 1 is the shortest path from the origin to the oxygen system
-		var part1 = AStar.FindPath(origin, oxSysPos.Value, coordinate => {
+		var part1 = AStar.FindPath<Coordinate>(origin, oxSysPos.Value, coordinate => {
 			var ret = new List<(int, int)>();
 
 			if (map[coordinate.X + 1, coordinate.Y] == Tile.Floor || map[coordinate.X + 1, coordinate.Y] == Tile.OxygenSystem) {
@@ -108,7 +108,7 @@ public class Problem
 			}
 
 			return ret.Select(item => (new Coordinate(item.Item1, item.Item2), 1f));
-		})!.Count;
+		}, (f, t) => Coordinate.ManhattanDistance(f, t))!.Count;
 
 		// and part 2 is how long the oxygen takes to propagate throughout the entire map
 		var part2 = PropagateOxygen(map, oxSysPos.Value.x, oxSysPos.Value.y);

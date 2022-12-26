@@ -53,9 +53,6 @@ public static class AStar
 	//	return null;
 	//}
 
-	public static Stack<Coordinate>? FindPath(Coordinate start, Coordinate goal, Func<Coordinate, IEnumerable<(Coordinate coordinate, float weight)>> retrieveAdjacentNodes, Func<Coordinate, Coordinate, float>? heuristic = null) =>
-		FindPath(start, goal, retrieveAdjacentNodes, heuristic ?? Heuristic);
-
 	public static Stack<N>? FindPath<N>(N start, N goal, Func<N, IEnumerable<(N node, float weight)>> retrieveAdjacentNodes, Func<N, N, float> heuristic) where N : notnull, IEquatable<N>
 	{
 		var openSet  = new PriorityQueue<N, float>();
@@ -142,6 +139,4 @@ public static class AStar
 
 		IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)_coordinates).GetEnumerator();
 	}
-
-	private static float Heuristic(Coordinate from, Coordinate to) => Math.Abs(from.X - to.X) + Math.Abs(from.Y - to.Y);
 }
