@@ -1,4 +1,5 @@
-﻿using static AdventOfCode.Tools;
+﻿using static AdventOfCode.FloydWarshall;
+using static AdventOfCode.Tools;
 
 namespace AdventOfCode;
 
@@ -64,5 +65,19 @@ public class ToolsTests
 	public void FindSequencesWorksCorrectly(int[] expectedOffsets, int[] toSearch, int[] toFind, int offset = 0)
 	{
 		Assert.Equal(expectedOffsets, FindSequence(toSearch.ToList(), toFind.ToList(), offset, false));
+	}
+
+	[Fact]
+	public void FloydWarshallWorks()
+	{
+		var inputGraph = new[] {
+			new WeightedEdge<string, int>("1", "3", -2),
+			new WeightedEdge<string, int>("3", "4", 2),
+			new WeightedEdge<string, int>("4", "2", -1),
+			new WeightedEdge<string, int>("2", "1", 4),
+			new WeightedEdge<string, int>("2", "3", 3),
+		};
+
+		ComputeDistances(inputGraph);
 	}
 }
