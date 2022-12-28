@@ -14,6 +14,25 @@ public static class Tools
 
 	public static T[] ReadFileLines<T>(string fileName, Func<string, int, T> selector, [CallerFilePath] string sourceFilePath = "") => File.ReadAllLines(GetFilePath(fileName, sourceFilePath)).Select(selector).ToArray();
 
+	public static char[,] ReadFileAsMap(string fileName, [CallerFilePath] string sourceFilePath = "") => CreateMap(File.ReadAllLines(GetFilePath(fileName, sourceFilePath)), c => c);
+
+	public static T[,] ReadFileAsMap<T>(string fileName, Func<char, T> selector, [CallerFilePath] string sourceFilePath = "") => CreateMap(File.ReadAllLines(GetFilePath(fileName, sourceFilePath)), selector);
+
+	public static T[,] CreateMap<T>(string[] lines, Func<char, T> selector)
+	{
+		var width  = lines[0].Length;
+		var height = lines.Length;
+		var map    = new T[width, height];
+
+		for (var x = 0; x < width; x++) {
+			for (var y = 0; y < height; y++) {
+				map[x, y] = selector(lines[y][x]);
+			}
+		}
+
+		return map;
+	}
+
 	public static long LeastCommonMultiple(long[] numbers) => numbers.Aggregate(LeastCommonMultiple);
 
 	public static long LeastCommonMultiple(long a, long b) => Math.Abs(a * b) / GreatestCommonDenominator(a, b);
@@ -128,4 +147,6 @@ public static class Tools
 
 		item1 = en.Current;
 	}
+
+	public static void Deconstruct<TKey, TValue>(this KeyValuePair<TKey, TValue> source, out TKey Key, out TValue Value) => (Key, Value) = (source.Key, source.Value);
 }
