@@ -24,7 +24,7 @@ public static class AStar
 	//			// we're done... reconstruct the path and get out
 	//			// return reconstruct_path(cameFrom, current)
 	//			var path = new Stack<Coordinate>();
-				
+
 	//			path.Push(current);
 
 	//			while (cameFrom.TryGetValue(current, out current)) {
@@ -53,7 +53,9 @@ public static class AStar
 	//	return null;
 	//}
 
-	public static Stack<N>? FindPath<N>(N start, N goal, Func<N, IEnumerable<(N node, float weight)>> retrieveAdjacentNodes, Func<N, N, float> heuristic) where N : notnull, IEquatable<N>
+	public static Stack<N>? FindPath<N>(N start, N goal, Func<N, IEnumerable<(N node, float weight)>> retrieveAdjacentNodes, Func<N, N, float> heuristic) where N : notnull, IEquatable<N> => FindPath(start, goal, retrieveAdjacentNodes, heuristic, EqualityComparer<N>.Default);
+
+	public static Stack<N>? FindPath<N>(N start, N goal, Func<N, IEnumerable<(N node, float weight)>> retrieveAdjacentNodes, Func<N, N, float> heuristic, IEqualityComparer<N> equalityComparer) where N : notnull
 	{
 		var openSet  = new PriorityQueue<N, float>();
 		var cameFrom = new Dictionary<N, N>();
@@ -67,7 +69,7 @@ public static class AStar
 		while (openSet.Count > 0) {
 			var current = openSet.Dequeue();
 
-			if (current.Equals(goal)) {
+			if (equalityComparer.Equals(current, goal)) {
 				// we're done... reconstruct the path and get out
 				// return reconstruct_path(cameFrom, current)
 				var path = new Stack<N>();
