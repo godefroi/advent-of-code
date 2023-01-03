@@ -50,8 +50,8 @@ public class Problem : ProblemBase
 			{ game, 0 },
 		};
 
-		Print(game);
-		Console.WriteLine();
+		//Print(game);
+		//Console.WriteLine();
 
 		while (states.Count > 0) {
 			var newstates = new Dictionary<char[], int>(new CharArrayComparer());
@@ -68,7 +68,7 @@ public class Problem : ProblemBase
 					//Console.WriteLine();
 
 					if (IsWin(newstate.state)) {
-						Console.WriteLine($"Found a win with cost {newstate.cost}");
+						//Console.WriteLine($"Found a win with cost {newstate.cost}");
 						minwin = Math.Min(minwin, newstate.cost);
 					} else if (newstates.ContainsKey(newstate.state)) {
 						newstates[newstate.state] = Math.Min(newstates[newstate.state], newstate.cost);
