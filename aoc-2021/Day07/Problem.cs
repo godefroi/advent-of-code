@@ -1,12 +1,10 @@
-﻿using Xunit;
-
-namespace Day07;
+﻿namespace aoc_2021.Day07;
 
 public class Problem
 {
-	internal static (int p1, int p2) Main(string fileName)
+	public static (int p1, int p2) Main(string fileName)
 	{
-		var input = File.ReadAllLines(fileName).First().Split(',').Select(s => int.Parse(s)).ToList();
+		var input = ReadFileLines(fileName).First().Split(',').Select(int.Parse).ToList();
 		var p1    = input.Min(i => input.Sum(ii => Math.Abs(ii - i)));
 		var p2    = Enumerable.Range(input.Min(), input.Max()).Min(i => input.Sum(ii => TriangleNumber(ii - i)));
 
@@ -56,7 +54,7 @@ public class Problem
 	[Fact(DisplayName = "Day 07 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day07/input_sample.txt");
+		var (p1, p2) = Main("input_sample.txt");
 
 		Assert.Equal(37, p1);
 		Assert.Equal(168, p2);
@@ -65,7 +63,7 @@ public class Problem
 	[Fact(DisplayName = "Day 07 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day07/input.txt");
+		var (p1, p2) = Main("input.txt");
 
 		Assert.Equal(329389, p1);
 		Assert.Equal(86397080, p2);

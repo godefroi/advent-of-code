@@ -1,4 +1,4 @@
-﻿namespace Day01;
+﻿namespace aoc_2021.Day01;
 
 internal class SlidingWindow
 {

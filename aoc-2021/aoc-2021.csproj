@@ -1,32 +1,48 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net7.0</TargetFramework>
+		<RootNamespace>aoc_2021</RootNamespace>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<StartupObject>aoc_2021.Program</StartupObject>
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+		<PlatformTarget>x64</PlatformTarget>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Remove=".gitignore" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="BenchmarkDotNet" Version="0.13.3" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
+		<PackageReference Include="Microsoft.Z3" Version="4.11.2" />
+		<PackageReference Include="xunit" Version="2.4.2" />
+		<PackageReference Include="xunit.runner.console" Version="2.4.2">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\AdventTools\AdventTools.csproj" />
+		<ProjectReference Include="..\ProblemGenerator\ProblemGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+	</ItemGroup>
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>aoc_runner</RootNamespace>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <GenerateProgramFile>false</GenerateProgramFile>
-    <StartupObject>aoc_runner.Program</StartupObject>
-  </PropertyGroup>
+	<ItemGroup>
+		<Using Include="System.Net" />
+		<Using Include="System.Reflection" />
+		<Using Include="System.Text" />
+		<Using Include="System.Text.RegularExpressions" />
 
-  <ItemGroup>
-    <Compile Remove="day_01_rs\**" />
-    <EmbeddedResource Remove="day_01_rs\**" />
-    <None Remove="day_01_rs\**" />
-  </ItemGroup>
+		<Using Include="Xunit" />
+		<Using Include="Xunit.Abstractions" />
 
-  <ItemGroup>
-	  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
-	  <PackageReference Include="xunit" Version="2.4.1" />
-	  <PackageReference Include="xunit.runner.console" Version="2.4.1">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	  </PackageReference>
-	  <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	  </PackageReference>
-  </ItemGroup>
+		<Using Include="AdventOfCode" />
+		<Using Include="AdventOfCode.Tools" Static="true" />
 
+		<Using Include="aoc_2021" />
+	</ItemGroup>
 </Project>

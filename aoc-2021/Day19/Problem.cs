@@ -1,8 +1,4 @@
-﻿namespace Day19;
-
-using System.Linq;
-
-using Xunit;
+﻿namespace aoc_2021.Day19;
 
 using Transform = Func<(int x, int y, int z), (int x, int y, int z)>;
 
@@ -68,7 +64,6 @@ public class Problem
 	//};
 
 	private const int REQUIRED_MATCHES = 12;
-	private const int COORDINATE_SEARCH_SPACE = 5000;
 
 	internal static Transform[] _transforms = new Transform[] {
 		((int x, int y, int z) inp) => ( inp.x,  inp.y,  inp.z),
@@ -102,19 +97,16 @@ public class Problem
 		((int x, int y, int z) inp) => ( inp.y, -inp.z, -inp.x),
 	};
 
-
-	internal static void Main(string fileName)
+	public static (int, int) Main(string fileName)
 	{
-		var input = ParseInput(File.ReadAllLines(fileName));
-
-		//var input = ParseInput(File.ReadAllLines(GetFilePath("input_sample.txt")));
+		var input   = ParseInput(ReadFileLines(fileName));
 		var destset = input[0].Beacons.ToHashSet();
 		var to_map  = input.Skip(1).ToList();
 		var offset_map = new Dictionary<Scanner, (int x, int y, int z)>();
 
 		while (to_map.Count > 0) {
 			for (var i = 0; i < to_map.Count; i++) {
-				var result = MapBeacons2(destset, to_map[i]);
+				var result = MapBeacons(destset, to_map[i]);
 
 				if (result != null) {
 					offset_map.Add(to_map[i], result.Value.offset);
@@ -131,7 +123,8 @@ public class Problem
 			}
 		}
 
-		var max = 0;
+		var part1 = destset.Count;
+		var max   = 0;
 
 		foreach (var offset1 in offset_map.Values) {
 			foreach (var offset2 in offset_map.Values) {
@@ -142,6 +135,8 @@ public class Problem
 		}
 
 		Console.WriteLine($"part 2: {max}"); // part 2 is 11906
+
+		return (part1, max);
 	}
 
 	private static IEnumerable<(int xOffset, int yOffset, int zOffset)> PossibleOffsets(IEnumerable<(int x, int y, int z)> first, IEnumerable<(int x, int y, int z)> second)
@@ -154,72 +149,7 @@ public class Problem
 		}
 	}
 
-	private static List<(int x, int y, int z)>? MapBeacons1(IEnumerable<(int x, int y, int z)> from, Scanner to)
-	{
-		var targ_x_coords = from.Select(b => b.x).ToList();
-		var targ_y_coords = from.Select(b => b.y).ToList();
-		var targ_z_coords = from.Select(b => b.z).ToList();
-		var xmin          = targ_x_coords.Min() - 1000;
-		var ymin          = targ_y_coords.Min() - 1000;
-		var zmin          = targ_z_coords.Min() - 1000;
-		var xmax          = targ_x_coords.Max() + 1000;
-		var ymax          = targ_y_coords.Max() + 1000;
-		var zmax          = targ_z_coords.Max() + 1000;
-
-		foreach (var t in _transforms) {
-			var tidx = Array.IndexOf(_transforms, t);
-
-			// transform all the points based on this transform
-			var cpoints = to.Beacons.Select(b => t(b)).ToList();
-
-			// then, search through offsets
-			for (var x = xmin; x <= xmax; x++) {
-				var offset_x = cpoints.Select(p => (x: p.x + x, p.y, p.z)).ToList();
-				var x_coords = offset_x.Select(p => p.x).ToList();
-
-				var xmatches = x_coords.Intersect(targ_x_coords).Count();
-
-				if (xmatches < REQUIRED_MATCHES) {
-					continue;
-				}
-
-				//Console.WriteLine($"transform {tidx} offset {x} x-matches {xmatches}");
-
-				for (var y = ymin; y <= ymax; y++) {
-					var offset_xy = offset_x.Select(p => (p.x, y: p.y + y, p.z)).ToList();
-					var y_coords  = offset_xy.Select(p => p.y).ToList();
-
-					var ymatches = y_coords.Intersect(targ_y_coords).Count();
-
-					if (ymatches < REQUIRED_MATCHES) {
-						continue;
-					}
-
-					//Console.WriteLine($"  transform {tidx} offset {y} y-matches {ymatches}");
-
-					for (var z = zmin; z <= zmax; z++) {
-						var offset_xyz = offset_xy.Select(p => (p.x, p.y, z: p.z + z)).ToList();
-						var z_coords   = offset_xyz.Select(p => p.z).ToList();
-
-						var zmatches = z_coords.Intersect(targ_z_coords).Count();
-
-						if (zmatches < REQUIRED_MATCHES) {
-							continue;
-						}
-
-						//Console.WriteLine($"    transform {tidx} offset {z} z-matches {zmatches}");
-						Console.WriteLine($"    *** Mapping scanner {to.Id} using transform {tidx} offset ({x},{y},{z})");
-
-						return offset_xyz;
-					}
-				}
-			}
-		}
-
-		return null;
-	}
-
-	private static ((int x, int y, int z) offset, List<(int x, int y, int z)> beacons)? MapBeacons2(IEnumerable<(int x, int y, int z)> from, Scanner to)
+	private static ((int x, int y, int z) offset, List<(int x, int y, int z)> beacons)? MapBeacons(IEnumerable<(int x, int y, int z)> from, Scanner to)
 	{
 		//***Mapping scanner 5 using transform 2 offset(48, 24, 1236)
 
@@ -245,8 +175,6 @@ public class Problem
 
 		return null;
 	}
-
-	private static string GetFilePath(string fileName, [System.Runtime.CompilerServices.CallerFilePath]string sourceFilepPath = "") => Path.Combine(Path.GetDirectoryName(sourceFilepPath)!, fileName);
 
 	private static List<Scanner> ParseInput(string[] input)
 	{
@@ -285,7 +213,7 @@ public class Problem
 	{
 		static string StringRep(IEnumerable<(int x, int y, int z)> items) => string.Join(';', items.Select(b => b.ToString()).OrderBy(s => s));
 
-		var input = ParseInput(File.ReadAllLines(GetFilePath("transform_tests.txt")));
+		var input = ParseInput(ReadFileLines("transform_tests.txt"));
 
 		Assert.Equal(5, input.Count);
 		Assert.All(input, i => Assert.Equal(0, i.Id));

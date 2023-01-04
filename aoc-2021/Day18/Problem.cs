@@ -1,16 +1,14 @@
-﻿using Xunit;
-
-namespace Day18;
+﻿namespace aoc_2021.Day18;
 
 public class Problem
 {
-	internal static (long, long) Main(string fileName)
+	public static (long, long) Main(string fileName)
 	{
-		var inputs = File.ReadAllLines(fileName);
-		var left   = inputs[0].Select(c => ParseComponent(c)).ToList();
+		var inputs = ReadFileLines(fileName);
+		var left   = inputs[0].Select(ParseComponent).ToList();
 
 		foreach (var l in inputs.Skip(1)) {
-			var right = l.Select(c => ParseComponent(c)).ToList();
+			var right = l.Select(ParseComponent).ToList();
 
 			left = Add(left, right);
 
@@ -18,7 +16,6 @@ public class Problem
 		}
 
 		var p1 = Magnitude(left);
-
 
 		var max = 0L;
 
@@ -28,7 +25,7 @@ public class Problem
 					continue;
 				}
 
-				max = Math.Max(max, Magnitude(Reduce(Add(inputs[i].Select(c => ParseComponent(c)).ToList(), inputs[j].Select(c => ParseComponent(c)).ToList()))));
+				max = Math.Max(max, Magnitude(Reduce(Add(inputs[i].Select(ParseComponent).ToList(), inputs[j].Select(ParseComponent).ToList()))));
 			}
 		}
 
@@ -42,7 +39,7 @@ public class Problem
 
 	private static string Stringify(IEnumerable<Component> components)
 	{
-		var sb = new System.Text.StringBuilder();
+		var sb = new StringBuilder();
 
 		foreach (var component in components) {
 			sb.Append(component.ComponentType switch {
@@ -68,12 +65,14 @@ public class Problem
 	{
 		if (node.Value.HasValue) {
 			return node.Value.Value;
+		} else if (node.Left == null || node.Right == null) {
+			throw new Exception("Left and/or Right are unvalued");
 		} else {
 			return (Magnitude(node.Left) * 3) + (Magnitude(node.Right) * 2);
 		}
 	}
 
-	private static (Node?, int) ParseNode(ArraySegment<char> rest)
+	private static (Node, int) ParseNode(ArraySegment<char> rest)
 	{
 		var ret = new Node();
 		var pos = 0;
@@ -110,6 +109,9 @@ public class Problem
 			pos += 1;
 
 			if (pos >= rest.Count) {
+				if (child == null) {
+					throw new Exception("Child is unvalued.");
+				}
 				return (child, pos);
 			}
 
@@ -368,7 +370,7 @@ public class Problem
 	[Fact(DisplayName = "Day 18 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day18/input.txt");
+		var (p1, p2) = Main("input.txt");
 
 		Assert.Equal(3981, p1);
 		Assert.Equal(4687, p2);

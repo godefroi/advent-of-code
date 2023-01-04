@@ -1,13 +1,11 @@
-﻿using Xunit;
+﻿namespace aoc_2021.Day25;
 
-namespace Day25;
-
-public class Problem : ProblemBase
+public class Problem
 {
-	internal static int Main(string fileName)
+	public static int Main(string fileName)
 	{
-		var map     = ParseMap(File.ReadAllLines(GetFilePath(fileName)));
-		var steps   = 0;
+		var map   = ParseMap(ReadFileLines(fileName));
+		var steps = 0;
 
 		while (true) {
 			var stepped = Step(map);
@@ -24,7 +22,7 @@ public class Problem : ProblemBase
 
 	private static string RenderMap(char[,] map)
 	{
-		var sb = new System.Text.StringBuilder();
+		var sb = new StringBuilder();
 
 		for (var y = 0; y < map.GetLength(1); y++) {
 			for (var x = 0; x < map.GetLength(0); x++) {
@@ -41,7 +39,7 @@ public class Problem : ProblemBase
 
 	private static char[,] ParseMap(string[] map)
 	{
-		if( !map.All(line => line.Length == map[0].Length)) {
+		if (!map.All(line => line.Length == map[0].Length)) {
 			throw new InvalidOperationException("Mismatched map line lengths.");
 		}
 

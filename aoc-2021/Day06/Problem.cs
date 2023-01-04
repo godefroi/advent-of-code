@@ -1,12 +1,10 @@
-﻿using Xunit;
-
-namespace Day06;
+﻿namespace aoc_2021.Day06;
 
 public class Problem
 {
-	internal static (long p1, long p2) Main(string fileName)
+	public static (long p1, long p2) Main(string fileName)
 	{
-		var input   = File.ReadAllLines(fileName).First().Split(',').Select(s => int.Parse(s)).ToList();
+		var input   = ReadFileLines(fileName).First().Split(',').Select(int.Parse).ToList();
 		var buckets = Enumerable.Range(0, 9).Select(i => input.LongCount(n => n == i)).ToArray();
 		long p1 = 0, p2 = 0;
 
@@ -43,7 +41,7 @@ public class Problem
 	[Fact(DisplayName = "Day 06 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day06/input_sample.txt");
+		var (p1, p2) = Main("input_sample.txt");
 
 		Assert.Equal(5934, p1);
 		Assert.Equal(26984457539, p2);
@@ -52,7 +50,7 @@ public class Problem
 	[Fact(DisplayName = "Day 06 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day06/input.txt");
+		var (p1, p2) = Main("input.txt");
 
 		Assert.Equal(346063, p1);
 		Assert.Equal(1572358335990, p2);

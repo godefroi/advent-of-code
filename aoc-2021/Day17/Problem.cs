@@ -1,13 +1,10 @@
-﻿using Xunit;
+﻿namespace aoc_2021.Day17;
 
-namespace Day17;
-
-public class Problem
+public partial class Problem
 {
-	internal static (int, int) Main(string fileName)
+	public static (int, int) Main(string fileName)
 	{
-		var input = File.ReadAllLines(fileName).First();
-		var match = System.Text.RegularExpressions.Regex.Match(input, @"x=(?<xmin>[-\d]+)\.\.(?<xmax>[-\d]+), y=(?<ymin>[-\d]+)\.\.(?<ymax>[-\d]+)");
+		var match = ParseRegex().Match(ReadFileLines(fileName).First());
 		var xmin  = int.Parse(match.Groups["xmin"].Value);
 		var xmax  = int.Parse(match.Groups["xmax"].Value);
 		var ymin  = int.Parse(match.Groups["ymin"].Value);
@@ -84,7 +81,7 @@ public class Problem
 	[Fact(DisplayName = "Day 17 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day17/input_sample.txt");
+		var (p1, p2) = Main("input_sample.txt");
 
 		Assert.Equal(45, p1);
 		Assert.Equal(112, p2);
@@ -93,9 +90,12 @@ public class Problem
 	[Fact(DisplayName = "Day 17 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day17/input.txt");
+		var (p1, p2) = Main("input.txt");
 
 		Assert.Equal(5253, p1);
 		Assert.Equal(1770, p2);
 	}
+
+	[GeneratedRegex("x=(?<xmin>[-\\d]+)\\.\\.(?<xmax>[-\\d]+), y=(?<ymin>[-\\d]+)\\.\\.(?<ymax>[-\\d]+)")]
+	private static partial Regex ParseRegex();
 }

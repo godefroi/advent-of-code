@@ -1,19 +1,17 @@
-﻿using System.Text.RegularExpressions;
+﻿namespace aoc_2021.Day22;
 
-namespace Day22;
-
-internal class Problem : ProblemBase
+internal partial class Problem
 {
-	private static Regex _parser = new Regex(@"(?<state>on|off) x=(?<xmin>[-\d]+)\.\.(?<xmax>[-\d]+),y=(?<ymin>[-\d]+)\.\.(?<ymax>[-\d]+),z=(?<zmin>[-\d]+)\.\.(?<zmax>[-\d]+)");
-
-	internal static void Main(string fileName)
+	internal static (long, long) Main(string fileName)
 	{
-		var instructions = Parse(fileName);
-		var part1 = Calculate(instructions.Where(c => c.Cuboid.MinX >= -50 && c.Cuboid.MaxX <= 50 && c.Cuboid.MinY >= -50 && c.Cuboid.MaxY <= 50 && c.Cuboid.MinZ >= -50 && c.Cuboid.MaxZ <= 50));
-		var part2 = Calculate(instructions);
+		var instructions = ReadFileLines(fileName, Parse);
+		var part1        = Calculate(instructions.Where(c => c.Cuboid.MinX >= -50 && c.Cuboid.MaxX <= 50 && c.Cuboid.MinY >= -50 && c.Cuboid.MaxY <= 50 && c.Cuboid.MinZ >= -50 && c.Cuboid.MaxZ <= 50));
+		var part2        = Calculate(instructions);
 
 		Console.WriteLine(part1);
 		Console.WriteLine(part2);
+
+		return (part1, part2);
 	}
 
 	private static long Calculate(IEnumerable<(bool On, Cuboid Cuboid)> instructions)
@@ -48,15 +46,16 @@ internal class Problem : ProblemBase
 		return cubes.Sum(a => a.Key.Area * a.Value);
 	}
 
-	private static IEnumerable<(bool On, Cuboid Cuboid)> Parse(string fileName) => File.ReadAllLines(GetFilePath(fileName)).Select(l => {
-		var m = _parser.Match(l);
+	private static (bool On, Cuboid Cuboid) Parse(string l)
+	{
+		var m = ParseRegex().Match(l);
 
 		if (!m.Success) {
 			throw new InvalidOperationException($"Unable to match input line {l}");
 		}
 
 		return (m.Groups["state"].Value == "on", new Cuboid(int.Parse(m.Groups["xmin"].Value), int.Parse(m.Groups["xmax"].Value), int.Parse(m.Groups["ymin"].Value), int.Parse(m.Groups["ymax"].Value), int.Parse(m.Groups["zmin"].Value), int.Parse(m.Groups["zmax"].Value)));
-	});
+	}
 
 	private readonly record struct Cuboid(int MinX, int MaxX, int MinY, int MaxY, int MinZ, int MaxZ)
 	{
@@ -92,4 +91,7 @@ internal class Problem : ProblemBase
 
 		public static Cuboid Empty => _empty;
 	}
+
+	[GeneratedRegex("(?<state>on|off) x=(?<xmin>[-\\d]+)\\.\\.(?<xmax>[-\\d]+),y=(?<ymin>[-\\d]+)\\.\\.(?<ymax>[-\\d]+),z=(?<zmin>[-\\d]+)\\.\\.(?<zmax>[-\\d]+)")]
+	private static partial Regex ParseRegex();
 }

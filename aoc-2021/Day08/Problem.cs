@@ -1,12 +1,10 @@
-﻿using Xunit;
-
-namespace Day08;
+﻿namespace aoc_2021.Day08;
 
 public class Problem
 {
-	internal static (int, long) Main(string fileName)
+	public static (int, long) Main(string fileName)
 	{
-		var input = File.ReadAllLines(fileName);
+		var input = ReadFileLines(fileName);
 		var p1    = 0;
 		var p2    = 0L;
 		var segs  = "abcdefg";
@@ -106,7 +104,7 @@ public class Problem
 	[Fact(DisplayName = "Day 08 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day08/input_sample.txt");
+		var (p1, p2) = Main("input_sample.txt");
 
 		Assert.Equal(26, p1);
 		Assert.Equal(61229, p2);
@@ -115,7 +113,7 @@ public class Problem
 	[Fact(DisplayName = "Day 08 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day08/input.txt");
+		var (p1, p2) = Main("input.txt");
 
 		Assert.Equal(344, p1);
 		Assert.Equal(1048410, p2);
