@@ -1,13 +1,11 @@
-﻿using Xunit;
-
-namespace Day04;
+﻿namespace aoc_2021.Day04;
 
 public class Problem
 {
-	internal static (int p1, int p2) Main(string fileName)
+	public static (int p1, int p2) Main(string fileName)
 	{
-		var input  = File.ReadAllLines(fileName);
-		var balls  = input.First().Split(',').Select(s => int.Parse(s)).ToList();
+		var input  = ReadFileLines(fileName);
+		var balls  = input.First().Split(',').Select(int.Parse).ToList();
 		var boards = input.Skip(2).Chunk(6).Select(s => new Board(string.Join(" ", s).Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Select(s => int.Parse(s)))).ToArray() as Board?[];
 		var part1  = default(int?);
 
@@ -46,7 +44,7 @@ public class Problem
 	[Fact(DisplayName = "Day 04 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day04/input_sample.txt");
+		var (p1, p2) = Main("input_sample.txt");
 
 		Assert.Equal(4512, p1);
 		Assert.Equal(1924, p2);
@@ -55,7 +53,7 @@ public class Problem
 	[Fact(DisplayName = "Day 04 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day04/input.txt");
+		var (p1, p2) = Main("input.txt");
 
 		Assert.Equal(54275, p1);
 		Assert.Equal(13158, p2);

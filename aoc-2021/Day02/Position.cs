@@ -1,4 +1,4 @@
-﻿namespace Day02;
+﻿namespace aoc_2021.Day02;
 
 internal class Position
 {

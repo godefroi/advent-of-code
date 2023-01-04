@@ -1,14 +1,10 @@
-﻿using System.Text.RegularExpressions;
-
-using Xunit;
-
-namespace Day05;
+﻿namespace aoc_2021.Day05;
 
 public class Problem
 {
-	internal static (int p1, int p2) Main(string fileName)
+	public static (int p1, int p2) Main(string fileName)
 	{
-		var input = File.ReadAllLines(fileName);
+		var input = ReadFileLines(fileName);
 
 		//foreach (var s in ParseSegments(input)) {
 		//	Console.WriteLine($"{s.Start.X},{s.Start.Y} to {s.End.X},{s.End.Y}");
@@ -82,7 +78,7 @@ public class Problem
 	[Fact(DisplayName = "Day 05 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day05/input_sample.txt");
+		var (p1, p2) = Main("input_sample.txt");
 
 		Assert.Equal(5, p1);
 		Assert.Equal(12, p2);
@@ -91,7 +87,7 @@ public class Problem
 	[Fact(DisplayName = "Day 05 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day05/input.txt");
+		var (p1, p2) = Main("input.txt");
 
 		Assert.Equal(7414, p1);
 		Assert.Equal(19676, p2);

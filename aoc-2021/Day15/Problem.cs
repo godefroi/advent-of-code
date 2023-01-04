@@ -1,6 +1,4 @@
-namespace Day15;
-
-using Xunit;
+namespace aoc_2021.Day15;
 
 using static Dijkstra;
 
@@ -8,7 +6,7 @@ public class Problem
 {
 	public static (int p1, int p2) Main(string fileName)
 	{
-		var input  = File.ReadAllLines(fileName);
+		var input  = ReadFileLines(fileName);
 		var graph  = input.SelectMany((line, y) => line.Select((c, x) => new Node(x, y, int.Parse(c.ToString())))).ToDictionary(n => (n.X, n.Y));
 		var height = input.Length;
 		var p1     = RunDijkstra(graph);
@@ -41,7 +39,7 @@ public class Problem
 	[Fact(DisplayName = "Day 15 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day15/input_sample.txt");
+		var (p1, p2) = Main("input_sample.txt");
 
 		Assert.Equal(40, p1);
 		Assert.Equal(315, p2);
@@ -50,7 +48,7 @@ public class Problem
 	[Fact(DisplayName = "Day 15 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day15/input.txt");
+		var (p1, p2) = Main("input.txt");
 
 		Assert.Equal(745, p1);
 		Assert.Equal(3002, p2);

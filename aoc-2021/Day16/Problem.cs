@@ -1,6 +1,4 @@
-using Xunit;
-
-namespace Day16;
+namespace aoc_2021.Day16;
 
 public class Problem
 {
@@ -8,7 +6,7 @@ public class Problem
 
 	public static (long versionsum, long value) Main(string fileName)
 	{
-		var input   = File.ReadAllLines(fileName).First();
+		var input   = ReadFileLines(fileName).First();
 		var packet  = ParsePacket(ParseHex(input));
 		var ret     = (versionsum: SumVersions(packet), value: CalculateValue(packet));
 
@@ -47,7 +45,7 @@ public class Problem
 		return (len, Convert.ToInt64(new string(bits.ToArray()), 2));
 	}
 
-	private static long SumVersions(Packet packet) => packet.Version + (packet.Contents != null ? packet.Contents.Sum(p => SumVersions(p)) : 0);
+	private static long SumVersions(Packet packet) => packet.Version + (packet.Contents != null ? packet.Contents.Sum(SumVersions) : 0);
 
 	private static char[] ParseHex(string input) => input.SelectMany(c => c switch {
 			'0' => "0000",
@@ -146,7 +144,7 @@ public class Problem
 	[Fact(DisplayName = "Day 16 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (sum, value) = Main("../../../Day16/input.txt");
+		var (sum, value) = Main("input.txt");
 
 		Assert.Equal(843,           sum);
 		Assert.Equal(5390807940351, value);

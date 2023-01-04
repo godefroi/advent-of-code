@@ -1,24 +1,14 @@
-using Xunit;
-
-namespace Day11;
+namespace aoc_2021.Day11;
 
 public class Problem
 {
-	internal static (long p1, int p2) Main(string fileName)
+	public static (long p1, int p2) Main(string fileName)
 	{
-		//var input = @"11111
-		//19991
-		//19191
-		//19991
-		//11111
-		//".Split(Environment.NewLine).SkipLast(1).ToList();
-		
-		var input = File.ReadAllLines(fileName).ToList();
-		var grid  = input.Select(line => line.Select(c => int.Parse(c.ToString())).ToArray()).ToArray();
-		var fcnt  = 0L;
+		var grid = ReadFileLines(fileName, line => line.Select(c => int.Parse(c.ToString())).ToArray());
+		var fcnt = 0L;
 
 		long p1 = 0;
-		int p2 = 0;
+		int  p2 = 0;
 
 		//Print(grid);
 
@@ -127,7 +117,7 @@ public class Problem
 	[Fact(DisplayName = "Day 11 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day11/input_sample.txt");
+		var (p1, p2) = Main("input_sample.txt");
 
 		Assert.Equal(1656, p1);
 		Assert.Equal(195, p2);
@@ -136,7 +126,7 @@ public class Problem
 	[Fact(DisplayName = "Day 11 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day11/input.txt");
+		var (p1, p2) = Main("input.txt");
 
 		Assert.Equal(1601, p1);
 		Assert.Equal(368, p2);

@@ -1,12 +1,10 @@
-﻿using Xunit;
+﻿namespace aoc_2021.Day24;
 
-namespace Day24;
-
-public class Problem : ProblemBase
+public class Problem
 {
-	internal static void Main(string fileName)
+	public static void Main(string fileName)
 	{
-		var lines = File.ReadAllLines(GetFilePath(fileName));
+		var lines = ReadFileLines(fileName);
 
 		Console.WriteLine("DIV  CHECK  OFFSET");
 

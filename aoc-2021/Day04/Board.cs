@@ -1,4 +1,4 @@
-﻿namespace Day04;
+﻿namespace aoc_2021.Day04;
 
 internal class Board
 {

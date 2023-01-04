@@ -1,4 +1,4 @@
-﻿namespace Day15;
+﻿namespace aoc_2021.Day15;
 
 public class Node
 {

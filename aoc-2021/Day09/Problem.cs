@@ -1,12 +1,10 @@
-using Xunit;
-
-namespace Day09;
+namespace aoc_2021.Day09;
 
 public class Problem
 {
 	public static (int p1, int p2) Main(string fileName)
 	{
-		var input = File.ReadAllLines(fileName).ToList();
+		var input = ReadFileLines(fileName);
 		var map   = input.SelectMany((line, y) => line.Select((c, x) => new Location(x, y, int.Parse(c.ToString())))).ToList();
 		var lows  = map.Where(l => Adjacents(map, l).All(a => a.Height > l.Height)).ToList();
 		var sizes = new List<int>();
@@ -25,7 +23,7 @@ public class Problem
 			while (true) {
 				var newLocs = basinLocations.SelectMany(l => Adjacents(map, l).Where(a => a.Height < 9)).ToList();
 		
-				if (newLocs.Where(l => basinLocations.Add(l)).Count() == 0) {
+				if (newLocs.Where(basinLocations.Add).Count() == 0) {
 					break;
 				}
 			}
@@ -48,7 +46,7 @@ public class Problem
 	[Fact(DisplayName = "Day 09 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day09/input_sample.txt");
+		var (p1, p2) = Main("input_sample.txt");
 
 		Assert.Equal(15, p1);
 		Assert.Equal(1134, p2);
@@ -57,7 +55,7 @@ public class Problem
 	[Fact(DisplayName = "Day 09 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day09/input.txt");
+		var (p1, p2) = Main("input.txt");
 
 		Assert.Equal(452, p1);
 		Assert.Equal(1263735, p2);

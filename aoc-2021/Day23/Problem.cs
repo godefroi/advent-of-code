@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Day23;
+namespace aoc_2021.Day23;
 
-public class Problem : ProblemBase
+public class Problem
 {
 	private const int HALL_A_POS_1 = 31;
 	private const int HALL_A_POS_2 = 45;
@@ -38,9 +38,9 @@ public class Problem : ProblemBase
 	private readonly static IReadOnlySet<int> HALL_D     = new HashSet<int>() { HALL_D_POS_1, HALL_D_POS_2, HALL_D_POS_3, HALL_D_POS_4 };
 	private readonly static IReadOnlySet<int> CROSS_HALL = new HashSet<int>() { CROSS_HALL_POS_1, CROSS_HALL_POS_2, CROSS_HALL_POS_3, CROSS_HALL_POS_4, CROSS_HALL_POS_5, CROSS_HALL_POS_6, CROSS_HALL_POS_7 };
 
-	internal static void Main(string fileName)
+	public static void Main(string fileName)
 	{
-		var lines = File.ReadAllLines(GetFilePath(fileName));
+		var lines = ReadFileLines(fileName);
 
 		lines = lines.Take(3).Concat(new[] { "  #D#C#B#A#", "  #D#B#A#C#" }).Concat(lines.TakeLast(2)).ToArray();
 
@@ -89,7 +89,7 @@ public class Problem : ProblemBase
 		foreach (var from in PositionsWhichCanMove(state)) {
 			foreach (var to in PossibleDestinationsFrom(state, from)) {
 				// make a new state with a move from --> to
-				var newstate = state.Clone() as char[];
+				var newstate = (char[])state.Clone();
 
 				var moveCost = state[from] switch {
 					'A' => 1,
@@ -565,126 +565,14 @@ public class Problem : ProblemBase
 
 		var flags = System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static;
 
-		return typeof(Problem).GetFields(flags).Where(f => f.FieldType == typeof(int) && f.IsLiteral && !f.IsInitOnly).Single(f => (int)f.GetValue(null) == position).Name;
-	}
-
-	// ************************************
-	// new stuff here
-
-	private static int? RoomIsAvailable(char[] state, char targetRoom)
-	{
-		switch (targetRoom) {
-			case 'A':
-				if (state[HALL_A_POS_1] == '.' && state[HALL_A_POS_2] == '.' && state[HALL_A_POS_3] == '.' && state[HALL_A_POS_4] == '.') {
-					return HALL_A_POS_4;
-				} else if (state[HALL_A_POS_1] == '.' && state[HALL_A_POS_2] == '.' && state[HALL_A_POS_3] == '.' && state[HALL_A_POS_4] == 'A') {
-					return HALL_A_POS_3;
-				} else if (state[HALL_A_POS_1] == '.' && state[HALL_A_POS_2] == '.' && state[HALL_A_POS_3] == 'A' && state[HALL_A_POS_4] == 'A') {
-					return HALL_A_POS_2;
-				} else if (state[HALL_A_POS_1] == '.' && state[HALL_A_POS_2] == 'A' && state[HALL_A_POS_3] == 'A' && state[HALL_A_POS_4] == 'A') {
-					return HALL_A_POS_1;
-				} else {
-					return null;
-				}
-
-			case 'B':
-				if (state[HALL_B_POS_1] == '.' && state[HALL_B_POS_2] == '.' && state[HALL_B_POS_3] == '.' && state[HALL_B_POS_4] == '.') {
-					return HALL_B_POS_4;
-				} else if (state[HALL_B_POS_1] == '.' && state[HALL_B_POS_2] == '.' && state[HALL_B_POS_3] == '.' && state[HALL_B_POS_4] == 'B') {
-					return HALL_B_POS_3;
-				} else if (state[HALL_B_POS_1] == '.' && state[HALL_B_POS_2] == '.' && state[HALL_B_POS_3] == 'B' && state[HALL_B_POS_4] == 'B') {
-					return HALL_B_POS_2;
-				} else if (state[HALL_B_POS_1] == '.' && state[HALL_B_POS_2] == 'B' && state[HALL_B_POS_3] == 'B' && state[HALL_B_POS_4] == 'B') {
-					return HALL_B_POS_1;
-				} else {
-					return null;
-				}
-
-			case 'C':
-				if (state[HALL_C_POS_1] == '.' && state[HALL_C_POS_2] == '.' && state[HALL_C_POS_3] == '.' && state[HALL_C_POS_4] == '.') {
-					return HALL_C_POS_4;
-				} else if (state[HALL_C_POS_1] == '.' && state[HALL_C_POS_2] == '.' && state[HALL_C_POS_3] == '.' && state[HALL_C_POS_4] == 'C') {
-					return HALL_C_POS_3;
-				} else if (state[HALL_C_POS_1] == '.' && state[HALL_C_POS_2] == '.' && state[HALL_C_POS_3] == 'C' && state[HALL_C_POS_4] == 'C') {
-					return HALL_C_POS_2;
-				} else if (state[HALL_C_POS_1] == '.' && state[HALL_C_POS_2] == 'C' && state[HALL_C_POS_3] == 'C' && state[HALL_C_POS_4] == 'C') {
-					return HALL_C_POS_1;
-				} else {
-					return null;
-				}
-
-			case 'D':
-				if (state[HALL_D_POS_1] == '.' && state[HALL_D_POS_2] == '.' && state[HALL_D_POS_3] == '.' && state[HALL_D_POS_4] == '.') {
-					return HALL_D_POS_4;
-				} else if (state[HALL_D_POS_1] == '.' && state[HALL_D_POS_2] == '.' && state[HALL_D_POS_3] == '.' && state[HALL_D_POS_4] == 'D') {
-					return HALL_D_POS_3;
-				} else if (state[HALL_D_POS_1] == '.' && state[HALL_D_POS_2] == '.' && state[HALL_D_POS_3] == 'D' && state[HALL_D_POS_4] == 'D') {
-					return HALL_D_POS_2;
-				} else if (state[HALL_D_POS_1] == '.' && state[HALL_D_POS_2] == 'D' && state[HALL_D_POS_3] == 'D' && state[HALL_D_POS_4] == 'D') {
-					return HALL_D_POS_1;
-				} else {
-					return null;
-				}
-
-			default:
-				throw new InvalidOperationException($"There is no destination room for {targetRoom}");
-		}
-	}
-
-#pragma warning disable IDE0051 // Remove unused private members
-	private static void GenerateConstants()
-#pragma warning restore IDE0051 // Remove unused private members
-	{
-/*
-#############
-#...........#
-###B#C#B#D###
-  #D#C#B#A#
-  #D#B#A#C#
-  #A#D#C#A#
-  #########
-*/
-		var g1 = @"#############
-#QR.S.T.U.VW#
-###A#E#I#M###
-  #B#F#J#N#
-  #C#G#K#O#
-  #D#H#L#P#
-  #########";
-
-		var g = ParseGame(g1);
-
-		Console.WriteLine($"private const int HALL_A_POS_1 = {Array.IndexOf(g, 'A')};");
-		Console.WriteLine($"private const int HALL_A_POS_2 = {Array.IndexOf(g, 'B')};");
-		Console.WriteLine($"private const int HALL_A_POS_3 = {Array.IndexOf(g, 'C')};");
-		Console.WriteLine($"private const int HALL_A_POS_4 = {Array.IndexOf(g, 'D')};");
-		Console.WriteLine($"private const int HALL_B_POS_1 = {Array.IndexOf(g, 'E')};");
-		Console.WriteLine($"private const int HALL_B_POS_2 = {Array.IndexOf(g, 'F')};");
-		Console.WriteLine($"private const int HALL_B_POS_3 = {Array.IndexOf(g, 'G')};");
-		Console.WriteLine($"private const int HALL_B_POS_4 = {Array.IndexOf(g, 'H')};");
-		Console.WriteLine($"private const int HALL_C_POS_1 = {Array.IndexOf(g, 'I')};");
-		Console.WriteLine($"private const int HALL_C_POS_2 = {Array.IndexOf(g, 'J')};");
-		Console.WriteLine($"private const int HALL_C_POS_3 = {Array.IndexOf(g, 'K')};");
-		Console.WriteLine($"private const int HALL_C_POS_4 = {Array.IndexOf(g, 'L')};");
-		Console.WriteLine($"private const int HALL_D_POS_1 = {Array.IndexOf(g, 'M')};");
-		Console.WriteLine($"private const int HALL_D_POS_2 = {Array.IndexOf(g, 'N')};");
-		Console.WriteLine($"private const int HALL_D_POS_3 = {Array.IndexOf(g, 'O')};");
-		Console.WriteLine($"private const int HALL_D_POS_4 = {Array.IndexOf(g, 'P')};");
-
-		Console.WriteLine($"private const int CROSS_HALL_POS_1 = {Array.IndexOf(g, 'Q')};");
-		Console.WriteLine($"private const int CROSS_HALL_POS_2 = {Array.IndexOf(g, 'R')};");
-		Console.WriteLine($"private const int CROSS_HALL_POS_3 = {Array.IndexOf(g, 'S')};");
-		Console.WriteLine($"private const int CROSS_HALL_POS_4 = {Array.IndexOf(g, 'T')};");
-		Console.WriteLine($"private const int CROSS_HALL_POS_5 = {Array.IndexOf(g, 'U')};");
-		Console.WriteLine($"private const int CROSS_HALL_POS_6 = {Array.IndexOf(g, 'V')};");
-		Console.WriteLine($"private const int CROSS_HALL_POS_7 = {Array.IndexOf(g, 'W')};");
+		return typeof(Problem).GetFields(flags).Where(f => f.FieldType == typeof(int) && f.IsLiteral && !f.IsInitOnly).Single(f => f.GetValue(null) is int val && val == position).Name;
 	}
 
 	internal static char[] ParseGame(string game) => game.ReplaceLineEndings("\n").ToCharArray();
 
 	internal class CharArrayComparer : IEqualityComparer<char[]>
 	{
-		public bool Equals(char[]? x, char[]? y) => x != null && x.SequenceEqual(y);
+		public bool Equals(char[]? x, char[]? y) => x != null && x.SequenceEqual(y ?? Array.Empty<char>());
 
 		public int GetHashCode([DisallowNull]char[] obj)
 		{

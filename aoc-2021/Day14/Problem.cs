@@ -1,16 +1,14 @@
-using Xunit;
-
-namespace Day14;
+namespace aoc_2021.Day14;
 
 public class Problem
 {
-	internal static (long p1, long p2) Main(string fileName)
+	public static (long p1, long p2) Main(string fileName)
 	{
-		var input   = File.ReadAllLines(fileName).ToList();
+		var input   = ReadFileLines(fileName);
 		var polymer = input[0].ToList();
 		var rules   = input.Skip(2).ToDictionary(r => (First: r[0], Second: r[1]), r => r[6]);
 		var ccounts = polymer.GroupBy(c => c).ToDictionary(g => g.Key, g => g.LongCount());
-		var pcounts = polymer.Zip(polymer.Skip(1)).ToDictionary(p => (First: p.First, Second: p.Second), p => 1L);
+		var pcounts = polymer.Zip(polymer.Skip(1)).ToDictionary(p => (p.First, p.Second), p => 1L);
 		
 		long p1 = 0, p2 = 0;
 
@@ -55,7 +53,7 @@ public class Problem
 	[Fact(DisplayName = "Day 14 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day14/input_sample.txt");
+		var (p1, p2) = Main("input_sample.txt");
 
 		Assert.Equal(1588, p1);
 		Assert.Equal(2188189693529, p2);
@@ -64,7 +62,7 @@ public class Problem
 	[Fact(DisplayName = "Day 14 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day14/input.txt");
+		var (p1, p2) = Main("input.txt");
 
 		Assert.Equal(2233, p1);
 		Assert.Equal(2884513602164, p2);

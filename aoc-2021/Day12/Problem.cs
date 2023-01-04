@@ -1,12 +1,10 @@
-using Xunit;
-
-namespace Day12;
+namespace aoc_2021.Day12;
 
 public class Problem
 {
-	internal static (int p1, int p2) Main(string fileName)
+	public static (int p1, int p2) Main(string fileName)
 	{
-		var input = File.ReadAllLines(fileName).ToList();
+		var input = ReadFileLines(fileName);
 		var nodes = new Dictionary<string, Node>();
 		
 		foreach (var line in input) {
@@ -58,10 +56,12 @@ public class Problem
 		}
 	}
 
+	internal readonly record struct Node(string Name, List<Node> Connections, bool Big);
+
 	[Fact(DisplayName = "Day 12 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day12/input_sample.txt");
+		var (p1, p2) = Main("input_sample.txt");
 
 		Assert.Equal(10, p1);
 		Assert.Equal(36, p2);
@@ -70,7 +70,7 @@ public class Problem
 	[Fact(DisplayName = "Day 12 Sample Input (slightly larger)")]
 	public void SampleInput2FunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day12/input_sample_slightly_larger.txt");
+		var (p1, p2) = Main("input_sample_slightly_larger.txt");
 
 		Assert.Equal(19, p1);
 		//Assert.Equal(36, p2); // no official answer given for part 2 on this sample
@@ -79,7 +79,7 @@ public class Problem
 	[Fact(DisplayName = "Day 12 Sample Input (even larger)")]
 	public void SampleInput3FunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day12/input_sample_even_larger.txt");
+		var (p1, p2) = Main("input_sample_even_larger.txt");
 
 		Assert.Equal(226, p1);
 		//Assert.Equal(36, p2); // no official answer given for part 2 on this sample
@@ -88,11 +88,9 @@ public class Problem
 	[Fact(DisplayName = "Day 12 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("../../../Day12/input.txt");
+		var (p1, p2) = Main("input.txt");
 
 		Assert.Equal(3713, p1);
 		Assert.Equal(91292, p2);
 	}
-
-	record class Node(string Name, List<Node> Connections, bool Big);
 }

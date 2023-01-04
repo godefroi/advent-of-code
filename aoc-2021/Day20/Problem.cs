@@ -1,18 +1,15 @@
-﻿namespace Day20;
-
-using Xunit;
+﻿namespace aoc_2021.Day20;
 
 using Image = Dictionary<(int x, int y), char>;
 
-public class Problem : ProblemBase
+public class Problem
 {
-	internal static void Main(string fileName)
+	public static (int, int) Main(string fileName)
 	{
-		//new Problem().DefaultFlipWorksCorrectly();return;
-
-		var input       = File.ReadAllLines(GetFilePath(fileName));
+		var input       = ReadFileLines(fileName);
 		var enhancement = input[0].Select(c => c == '#' ? '1' : '0').ToArray();
 		var image       = new Image();
+		var part1       = -1;
 
 		// this can definitely be more clever
 		for (var y = 2; y < input.Length; y++) {
@@ -27,11 +24,16 @@ public class Problem : ProblemBase
 			image = Enhance(image, enhancement);
 
 			if (i == 1) {
-				Console.WriteLine($"part 1: {image.Values.Count(v => v == '1')}"); // part 1 is 5682
+				part1 = image.Values.Count(v => v == '1');
 			}
 		}
 
-		Console.WriteLine($"part 2: {image.Values.Count(v => v == '1')}"); // part 2 is 17628
+		var part2 = image.Values.Count(v => v == '1');
+
+		Console.WriteLine($"part 1: {part1}"); // part 1 is 5682
+		Console.WriteLine($"part 2: {part2}"); // part 2 is 17628
+
+		return (part1, part2);
 	}
 
 	private static Image Enhance(Image image, char[] enhancement)
