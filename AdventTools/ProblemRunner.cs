@@ -1,5 +1,10 @@
-﻿using BenchmarkDotNet.Configs;
+﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Columns;
+using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Jobs;
+using BenchmarkDotNet.Loggers;
+using BenchmarkDotNet.Parameters;
 using BenchmarkDotNet.Running;
 
 using System.Net;
@@ -26,7 +31,16 @@ public class ProblemRunner
 			await RunProblems(problemMetadata.Where(p => p.Day == day));
 		} else if (args.Length == 1 && "list".Equals(args[0], StringComparison.OrdinalIgnoreCase)) {
 			foreach (var pm in problemMetadata) {
-				Console.WriteLine($"{pm.Day} in {pm.Path}");
+				Console.WriteLine($"Day {pm.Day} in {pm.Path}");
+				foreach (var benchmark in pm.BenchmarkType.GetMethods()) {
+					var attr = benchmark.GetCustomAttribute<BenchmarkAttribute>();
+
+					if (attr == null) {
+						continue;
+					}
+
+					Console.WriteLine($"\t{benchmark.Name} ({attr.Description})");
+				}
 			}
 		} else if (args.Length > 0 && "bench".Equals(args[0], StringComparison.OrdinalIgnoreCase)) {
 			if (args.Length > 1 && "all".Equals(args[1], StringComparison.OrdinalIgnoreCase)) {
@@ -96,7 +110,7 @@ public class ProblemRunner
 
 			var action = mainMethod.ReturnType == typeof(void) ? mainMethod.CreateDelegate<Action<string>>() : new Action<string>(fn => Console.WriteLine(mainMethod.CreateDelegate<Func<string, object?>>().Invoke(fn)));
 
-			new ProblemMetadata(typeInfo.AsType(), dayNumber, folder, action);
+			new ProblemMetadata(typeInfo.AsType(), dayNumber, folder, action, typeof(void));
 		}
 
 		return problems;
@@ -124,17 +138,115 @@ public class ProblemRunner
 		Console.WriteLine();
 	}
 
+	private class MyLogger : ILogger
+	{
+		private bool _writeStatistics = false;
+
+		public string Id => "mylogger?";
+
+		public int Priority => 0;
+
+		public void Flush()
+		{
+			//throw new NotImplementedException();
+		}
+
+		public void Write(LogKind logKind, string text)
+		{
+			if (logKind == LogKind.Info || logKind == LogKind.Header) {
+				return;
+			} else if (logKind == LogKind.Statistic) {
+				Console.Write(text);
+			}
+
+			//Console.Write($"[lk {logKind}]{text}");
+		}
+
+		public void WriteLine()
+		{
+			if (_writeStatistics) {
+				Console.WriteLine();
+			}
+			//Console.WriteLine("[el]");
+		}
+
+		public void WriteLine(LogKind logKind, string text)
+		{
+			if (logKind == LogKind.Header && text == "// * Summary *") {
+				_writeStatistics = true;
+			} else if (logKind == LogKind.Info || logKind == LogKind.Header || logKind == LogKind.Error) {
+				return;
+			} else if (logKind == LogKind.Statistic && _writeStatistics) {
+				Console.WriteLine(text);
+			} else {
+				//Console.WriteLine($"[lk {logKind}]{text}");
+			}
+		}
+	}
+
 	private static async Task RunBenchmarks(IEnumerable<ProblemMetadata> problems, string[] args)
 	{
-		problems = problems.ToList();
+		//ProblemBenchmark.Problems = problems.Order().Take(2).ToList();
+		//BenchmarkRunner.Run<ProblemBenchmark>();
 
-		var assemblies = problems.Select(p => p.ProblemType.Assembly).Distinct().ToList();
-		var namespaces = problems.Select(p => p.ProblemType.Namespace).Distinct().ToHashSet();
-		var types      = assemblies.SelectMany(asm => asm.DefinedTypes.Where(t => namespaces.Contains(t.Namespace))).Select(ti => ti.AsType()).ToArray();
+		var job = new Job().DontEnforcePowerPlan();
 
-		//var config = ManualConfig.CreateEmpty();
+		job.Apply(Job.ShortRun);
+		job.Apply(Job.InProcessDontLogOutput);
 
-		var summary = BenchmarkSwitcher.FromTypes(types).Run(args);
+		//var config = ManualConfig.CreateMinimumViable();
+		//foreach (var cp in config.GetColumnProviders()) { Console.WriteLine(cp.GetType().FullName); }
+		//return;
+		var config = ManualConfig.CreateEmpty();
+
+		config.AddLogger(new MyLogger());
+		config.AddDiagnoser(new MemoryDiagnoser(new MemoryDiagnoserConfig(false)));
+		
+		config.AddColumnProvider(
+			DefaultColumnProviders.Descriptor,
+			DefaultColumnProviders.Job,
+			DefaultColumnProviders.Statistics,
+			DefaultColumnProviders.Params,
+			DefaultColumnProviders.Metrics);
+
+		config.Options |= ConfigOptions.DisableLogFile;
+		config.Options |= ConfigOptions.JoinSummary;
+
+		config.AddJob(job);
+
+		var summary = BenchmarkSwitcher.FromTypes(problems.OrderBy(p => p.Day).Take(4).Select(p => p.BenchmarkType).ToArray()).RunAllJoined(config);
+
+		foreach (var bc in summary.BenchmarksCases) {
+			Console.WriteLine(bc.Descriptor.WorkloadMethodDisplayInfo);
+		}
+
+		//var benchmarkType   = typeof(GenericBenchmark);
+		//var benchmarkMethod = benchmarkType.GetMethod("Execute") ?? throw new Exception("Unable to locate benchmark method");
+
+		////var descriptors = problems.Select(p => new Descriptor(benchmarkType, benchmarkMethod, description: p.ProblemType.Namespace ?? "no-namespace", categories: new[] { "cat1", p.ProblemType.FullName ?? "no fullname" })).ToArray();
+		////var cases       = descriptors.Select(d => BenchmarkCase.Create(d, ))
+
+		//var job = new Job("teh_job");
+
+		//problems.Select(p => {
+		//	var parameterDef  = new ParameterDefinition("mainAction", true, Array.Empty<object>(), true, typeof(Action<string>), 1);
+		//	var parameterInst = new ParameterInstance(parameterDef, p.Main, BenchmarkDotNet.Reports.SummaryStyle.Default);
+		//	var descriptor    = new Descriptor(benchmarkType, benchmarkMethod, description: p.ProblemType.Namespace ?? "no-namespace", categories: new[] { "cat1", p.ProblemType.FullName ?? "no fullname" });
+		//	var benchmarkCase = BenchmarkCase.Create(descriptor, job, new ParameterInstances(new List<ParameterInstance>() { parameterInst }), null);
+		//});
+
+		////var d = new Descriptor()
+		////var bmCase = BenchmarkCase.Create()
+		//var bri = new BenchmarkRunInfo()
+		//BenchmarkRunner.Run()
+
+		//var assemblies = problems.Select(p => p.ProblemType.Assembly).Distinct().ToList();
+		//var namespaces = problems.Select(p => p.ProblemType.Namespace).Distinct().ToHashSet();
+		//var types      = assemblies.SelectMany(asm => asm.DefinedTypes.Where(t => namespaces.Contains(t.Namespace))).Select(ti => ti.AsType()).ToArray();
+
+		////var config = ManualConfig.CreateEmpty();
+
+		//var summary = BenchmarkSwitcher.FromTypes(types).Run(args);
 
 		await Task.CompletedTask;
 	}
@@ -166,5 +278,28 @@ public class ProblemRunner
 		//File.WriteAllText(fileName, string.Join("\n", inputLines.Take(inputLines.Length - 1)));
 
 		File.WriteAllText(fileName, (await hc.GetStringAsync($"https://adventofcode.com/{yearMatch.Value}/day/{day}/input")).TrimEnd('\n'));
+	}
+
+	public class ProblemBenchmark
+	{
+		public static IEnumerable<ProblemMetadata>? Problems { get; set; }
+
+		[Benchmark(Description = "foo")]
+		//[BenchmarkDotNet.Attributes.SimpleJob(BenchmarkDotNet.Engines.RunStrategy.)]
+		//[BenchmarkCategory()]
+		[ArgumentsSource(nameof(Problems))]
+		public void Execute(ProblemMetadata problemMetadata)
+		{
+			problemMetadata.Main("input.txt");
+		}
+
+		public IEnumerable<object[]> GetProblems()
+		{
+			if (Problems == null ) {
+				return Enumerable.Empty<object[]>();
+			}
+			Console.WriteLine($"returning {Problems.Count()} problems");
+			return Problems.Select(p => new object[] { p.Main, "input.txt" });
+		}
 	}
 }
