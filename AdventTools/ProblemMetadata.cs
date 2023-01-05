@@ -1,3 +1,3 @@
 ﻿namespace AdventOfCode;
 
-public readonly record struct ProblemMetadata(Type ProblemType, int Day, string Path, Action<string> Main);
+public readonly record struct ProblemMetadata(Type ProblemType, int Day, string Path, Action<string> Main, Type BenchmarkType);
