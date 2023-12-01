@@ -6,6 +6,8 @@ namespace AdventOfCode;
 
 public static class Tools
 {
+	public static string GetFilePath([CallerFilePath]string sourceFilePath = "") => Path.GetDirectoryName(sourceFilePath)!;
+
 	public static string GetFilePath(string fileName, [CallerFilePath]string sourceFilePath = "") => Path.Combine(Path.GetDirectoryName(sourceFilePath)!, fileName);
 
 	public static string[] ReadFileLines(string fileName, [CallerFilePath]string sourceFilePath = "") => File.ReadAllLines(GetFilePath(fileName, sourceFilePath));
