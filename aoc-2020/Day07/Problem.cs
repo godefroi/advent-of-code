@@ -2,21 +2,23 @@
 
 public partial class Problem
 {
-	public static (int, long) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
-		var input       = ReadFileLines(fileName).ToList();
+		var inputList   = input.ToList();
 		var bdict       = new Dictionary<string, Bag>();
-		var terminators = input.Where(i => i.EndsWith("contain no other bags.")).ToList();
+		var terminators = inputList.Where(i => i.EndsWith("contain no other bags.")).ToList();
 
 		// get all the bags which contain no bags
 		foreach (var terminator in terminators) {
 			var type = terminator[0..^28];
 			bdict.Add(type, new Bag(type, new List<Content>()));
-			input.Remove(terminator);
+			inputList.Remove(terminator);
 		}
 
 		// then parse everything else
-		var pinput = input.Select(ParseBag).ToList();
+		var pinput = inputList.Select(ParseBag).ToList();
 
 		// and create the structure
 		while (pinput.Count > 0) {

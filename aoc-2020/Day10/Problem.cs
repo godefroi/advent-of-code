@@ -4,9 +4,11 @@ namespace aoc_2020.Day10;
 
 public class Problem
 {
-	public static (int, long) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
-		var adapters = ReadFileLines(fileName, int.Parse).Order().ToList();
+		var adapters = input.Select(int.Parse).Order().ToList();
 		var target   = adapters.Last() + 3;
 
 		adapters.Insert(0, 0);

@@ -1,5 +1,6 @@
 ﻿using System.CommandLine;
 using System.Net;
+
 using static AdventOfCode.AnsiCodes;
 
 namespace AdventOfCode;
@@ -12,19 +13,21 @@ public static class Program
 			Commands.List.GetCommand(),
 			Commands.Time.GetCommand(),
 			Commands.Benchmarks.GetCommand(),
+			Commands.Options.Year,
+			Commands.Options.Day,
 			Commands.Options.InputName,
 		};
 
-		command.SetHandler(async (string inputName) => {
-			var problem = Problems.CurrentProblem;
+		command.SetHandler(async (int year, int day, string inputName) => {
+			var problem = Problems.GetProblems(year)[day];
 
-			Console.WriteLine($"{ANSI_GREEN}Running day {problem.Day:d2}{ANSI_RESET}");
+			Console.WriteLine($"{ANSI_GREEN}Running year {problem.Year} day {problem.Day:d2}{ANSI_RESET}");
 
 			var input = await LoadInput(problem, inputName);
 
 			Console.WriteLine(problem.Main(input));
 			Console.WriteLine();
-		}, Commands.Options.InputName);
+		}, Commands.Options.Year, Commands.Options.Day, Commands.Options.InputName);
 
 		return await command.InvokeAsync(args);
 	}

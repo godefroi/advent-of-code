@@ -2,13 +2,13 @@
 
 public partial class Problem
 {
-	public static (int, int) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
 		//var input = @"1-3 a: abcde
 		//1-3 b: cdefg
 		//2-9 c: ccccccccc".Split(Environment.NewLine).ToList();
-
-		var input = ReadFileLines(fileName);
 
 		var v1cnt = 0;
 		var v2cnt = 0;

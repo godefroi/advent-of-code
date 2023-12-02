@@ -2,9 +2,11 @@
 
 public class Problem
 {
-	public static (int, int) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
-		var seats = ReadFileLines(fileName, FindSeat);
+		var seats = input.Select(FindSeat);
 		var part1 = seats.Max();
 		var part2 = Enumerable.Range(seats.Min(), seats.Max()).Single(i => seats.Contains(i + 1) && seats.Contains(i - 1) && !seats.Contains(i));
 

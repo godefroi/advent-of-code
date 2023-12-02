@@ -2,9 +2,10 @@
 
 public class Problem
 {
-	public static (int, int) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
-		var input = ReadFileLines(fileName);
 		var part1 = ParseCredentials(input).Where(l => l.Count == 7).Count();
 		var part2 = ParseCredentials(input).Where(ValidateCredential).Count();
 

@@ -4,9 +4,11 @@ namespace aoc_2020.Day09;
 
 public class Problem
 {
-	public static (long, long) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
-		var nums  = ReadFileLines(fileName, long.Parse);
+		var nums  = input.Select(long.Parse).ToArray();
 		var inval = FindInvalid(nums, nums.Length > 100 ? 25 : 5);
 		var part2 = FindSummingSet(nums, inval);
 

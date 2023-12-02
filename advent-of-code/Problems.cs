@@ -4,6 +4,7 @@ public static class Problems
 {
 	private readonly static Dictionary<int, Lazy<IReadOnlyDictionary<int, ProblemMetadata2>>> _problems = new() {
 		{ 2019, new Lazy<IReadOnlyDictionary<int, ProblemMetadata2>>(() => Year2019.Problems.All) },
+		{ 2020, new Lazy<IReadOnlyDictionary<int, ProblemMetadata2>>(() => Year2020.Problems.All) },
 		{ 2023, new Lazy<IReadOnlyDictionary<int, ProblemMetadata2>>(() => Year2023.Problems.All) },
 	};
 
