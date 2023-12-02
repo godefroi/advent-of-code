@@ -2,9 +2,11 @@
 
 public class Problem
 {
-	public static (int, int) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
-		var program = ReadFileLines(fileName).Single().Split(',').Select(long.Parse).ToList();
+		var program = input.Single().Split(',').Select(long.Parse).ToList();
 		var part1   = Enumerable.Range(0, 50).SelectMany(x => Enumerable.Range(0, 50).Select(y => (x, y))).Count(c => Affected(program, c.x, c.y));
 		var part2   = Part2(program);
 

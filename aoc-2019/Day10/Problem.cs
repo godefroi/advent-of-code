@@ -2,11 +2,12 @@
 
 public class Problem
 {
-	public static ((long x, long y, int count), long) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new((input) => { var (p1, p2) = Main(input); return (p1.ToString(), p2); });
+
+	public static ((long x, long y, int count), long) Main(string[] input)
 	{
-		var lines = ReadFileLines(fileName);
-		var part1 = Part1(lines);
-		var part2 = Part2(lines, part1.x, part1.y);
+		var part1 = Part1(input);
+		var part2 = Part2(input, part1.x, part1.y);
 
 		return (part1, part2);
 	}

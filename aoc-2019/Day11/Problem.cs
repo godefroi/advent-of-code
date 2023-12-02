@@ -1,14 +1,12 @@
-﻿using aoc_2019.Intcode;
-
-using System.Runtime.CompilerServices;
-
-namespace aoc_2019.Day11;
+﻿namespace aoc_2019.Day11;
 
 public class Problem
 {
-	public static (int, int) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
-		var program = ReadFileLines(fileName).Single();
+		var program = input.Single();
 		var part1   = Part1(program);
 
 		Part2(program);

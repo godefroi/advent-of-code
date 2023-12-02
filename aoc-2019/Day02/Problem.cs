@@ -2,9 +2,11 @@
 
 public class Problem
 {
-	public static (long?, long) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
-		var originalProgram = ReadFileLines(fileName).Single().Split(',').Select(long.Parse).ToArray();
+		var originalProgram = input.Single().Split(',').Select(long.Parse).ToArray();
 		var program         = (long[])originalProgram.Clone();
 
 		program[1] = 12;
@@ -14,7 +16,7 @@ public class Problem
 
 		computer.Resume();
 
-		var part1 = computer.GetMemoryValue(0);
+		var part1 = computer.GetMemoryValue(0) ?? throw new InvalidOperationException("No value found at memory location 0");
 
 		for (var noun = 0; noun < 100; noun++) {
 			for (var verb = 0; verb < 100; verb++) {

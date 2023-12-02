@@ -4,9 +4,11 @@ namespace aoc_2019.Day12;
 
 public partial class Problem
 {
-	public static (long, long) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
-		var moons = ReadFileLines(fileName, Parse).Select((vector, idx) => new Moon(idx, vector)).ToArray();
+		var moons = input.Select(Parse).Select((vector, idx) => new Moon(idx, vector)).ToArray();
 		var part1 = Part1(moons);
 		var part2 = Part2(moons);
 

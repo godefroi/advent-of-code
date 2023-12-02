@@ -1,14 +1,13 @@
-﻿using System.Diagnostics;
-
-namespace aoc_2019.Day03;
+﻿namespace aoc_2019.Day03;
 
 public class Problem
 {
-	public static (long, int) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
-		var lines = ReadFileLines(fileName);
-		var part1 = ShortestIntersectionDistance(lines[0], lines[1]);
-		var part2 = FewestStepsToIntersection(lines[0], lines[1]);
+		var part1 = ShortestIntersectionDistance(input[0], input[1]);
+		var part2 = FewestStepsToIntersection(input[0], input[1]);
 
 		return (part1, part2);
 	}

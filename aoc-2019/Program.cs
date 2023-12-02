@@ -4,9 +4,10 @@ public partial class Program
 {
 	static async Task Main(string[] args)
 	{
+		await Task.CompletedTask;
 		//BenchmarkDotNet.Running.BenchmarkRunner.Run<Benchmarks.HashSetVsBitMask>();
 		//return;
-		await ProblemRunner.Execute(args, Problems());
+		//await ProblemRunner.Execute(args, Problems());
 
 		//problem_1.Run(ReadInput(problem_1.Input).ToArray());
 		//problem_1.Part2(ReadInput(problem_1.Input).ToArray());
@@ -43,5 +44,5 @@ public partial class Program
 		//problem_14.Part2();
 	}
 
-	private static partial ProblemMetadata[] Problems();
+	//private static partial ProblemMetadata[] Problems();
 }

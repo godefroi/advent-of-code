@@ -2,9 +2,11 @@
 
 public class Problem
 {
-	public static (int, int) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
-		var (low, high) = ReadFileLines(fileName).Select(l => { var vals = l.Split('-'); return (low: int.Parse(vals[0]), high: int.Parse(vals[1])); }).Single();
+		var (low, high) = input.Select(l => { var vals = l.Split('-'); return (low: int.Parse(vals[0]), high: int.Parse(vals[1])); }).Single();
 		var part1       = Part1(low, high);
 		var part2       = Part2(low, high);
 
