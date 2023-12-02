@@ -4,11 +4,13 @@ namespace aoc_2019.Day18;
 
 public class Problem
 {
-	public static (int, int) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
 		//fileName = "inputSample8.txt";
 
-		var map   = ReadFileAsMap(fileName);
+		var map   = CreateMap(input, c => c);
 		var paths = CalculatePaths(map, out var entrance);
 		var part1 = RecursiveCachingImplementation(entrance, paths);
 		var part2 = FindShortestRoute(SplitMap(map));
@@ -483,7 +485,7 @@ public class Problem
 	[InlineData("inputSample9.txt", 114, 72)]
 	public void SampleMapsWorkCorrectly(string fileName, int expectedPart1, int expectedPart2)
 	{
-		var (part1, part2) = Main(fileName);
+		var (part1, part2) = Main(ReadFileLines(fileName));
 
 		Assert.Equal(expectedPart1, part1);
 		Assert.Equal(expectedPart2, part2);

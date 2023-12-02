@@ -2,9 +2,11 @@
 
 public class Problem
 {
-	public static (long, long) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
-		var originalProgram = ReadFileLines(fileName).Single().Split(',').Select(long.Parse).ToArray();
+		var originalProgram = input.Single().Split(',').Select(long.Parse).ToArray();
 		var computer        = new IntcodeComputer(originalProgram);
 
 		long part1 = default, part2 = default;

@@ -2,9 +2,11 @@ namespace aoc_2019.Day01;
 
 public class Problem
 {
-	public static (long, long) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
-		var moduleMasses = ReadFileLines(fileName, long.Parse);
+		var moduleMasses = input.Select(long.Parse).ToArray();
 		var part1        = moduleMasses.Select(CalculateFuel).Sum();
 		var part2        = moduleMasses.Select(CalculateFuel2).Sum();
 

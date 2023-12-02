@@ -4,11 +4,13 @@ namespace aoc_2019.Day20;
 
 public class Problem
 {
-	public static (int, int) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
 		//fileName = "inputSample3.txt";
 
-		var map        = ReadFileAsMap(fileName);
+		var map        = CreateMap(input, c => c);
 		var width      = map.GetLength(0);
 		var height     = map.GetLength(1);
 		var portals    = FindPortals(map, out var entrance, out var exit);

@@ -4,9 +4,11 @@ namespace aoc_2019.Day17;
 
 public class Problem
 {
-	public static (int, int) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
-		var program = ReadFileLines(fileName).Single();
+		var program = input.Single();
 		var map     = ReadField(program);
 		var part1   = FindIntersections(map);
 

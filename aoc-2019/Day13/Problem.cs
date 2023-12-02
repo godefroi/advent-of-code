@@ -7,9 +7,11 @@ public class Problem
 	private const long TILE_BALL = 4;
 	private const long TILE_PADDLE = 3;
 
-	public static (int, long) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
-		var program = ReadFileLines(fileName).Single();
+		var program = input.Single();
 		var part1   = Part1(program);
 		var part2   = Part2(program);
 

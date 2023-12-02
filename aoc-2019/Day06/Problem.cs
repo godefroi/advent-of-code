@@ -2,9 +2,11 @@
 
 public class Problem
 {
-	public static (int, int) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
-		var (nodeDictionary, centerOfMass) = BuildTree(ReadFileLines(fileName));
+		var (nodeDictionary, centerOfMass) = BuildTree(input);
 
 		Part1(centerOfMass);
 		Part2(nodeDictionary);

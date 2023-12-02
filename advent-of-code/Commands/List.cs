@@ -17,8 +17,12 @@ public static class List
 
 	private static void Execute(bool all)
 	{
-		foreach (var problem in Problems.CurrentYear.Values.OrderBy(m => m.Day)) {
-			Console.WriteLine($"{problem.Year} {problem.Day:00} {problem.Path}");
+		foreach (var year in Problems.Years.Order()) {
+			Console.WriteLine(year);
+
+			foreach (var problem in Problems.GetProblems(year).OrderBy(p => p.Key)) {
+				Console.WriteLine($"\tDay {problem.Key:00} - {problem.Value.Path}");
+			}
 		}
 	}
 }

@@ -16,6 +16,8 @@ public class Problem
 
 	private const bool DRAW_MAP = false;
 
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
 	private static int PropagateOxygen(Tile[,] map, int oxygenX, int oxygenY)
 	{
 		var xmax         = map.GetLength(0);
@@ -72,9 +74,9 @@ public class Problem
 		}
 	}
 
-	public static (int, int) Main(string fileName)
+	public static (long, long) Main(string[] input)
 	{
-		var program     = ReadFileLines(fileName).Single();
+		var program     = input.Single();
 		var computer    = new IntcodeComputer(program);
 
 		// first, explore the complete map to see what we're dealing with

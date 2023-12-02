@@ -2,10 +2,10 @@
 
 public class Problem
 {
-	public static (long, long) Main(string fileName)
-	{
-		var input = ReadFileLines(fileName);
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
 
+	public static (long, long) Main(string[] input)
+	{
 		return (Part1(input), Part2(input));
 	}
 

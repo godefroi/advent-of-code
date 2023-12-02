@@ -25,6 +25,54 @@ public partial record ProblemMetadata2
 		Benchmarks = benchmarkType;
 	}
 
+	[SetsRequiredMembers]
+	public ProblemMetadata2(Func<string[], (long, string)> main, Type? benchmarkType = null, [CallerFilePath]string filePath = "")
+	{
+		var match = GetDateRegex().Match(filePath);
+
+		if (!match.Success) {
+			throw new InvalidOperationException($"Unable to parse year and day from file path {filePath}");
+		}
+
+		Year       = int.Parse(match.Groups["year"].Value);
+		Day        = int.Parse(match.Groups["day"].Value);
+		Main       = input => main(input).ToString();
+		Path       = System.IO.Path.GetDirectoryName(filePath) ?? throw new InvalidOperationException("Unable to find directory name.");
+		Benchmarks = benchmarkType;
+	}
+
+	[SetsRequiredMembers]
+	public ProblemMetadata2(Func<string[], (string, long)> main, Type? benchmarkType = null, [CallerFilePath]string filePath = "")
+	{
+		var match = GetDateRegex().Match(filePath);
+
+		if (!match.Success) {
+			throw new InvalidOperationException($"Unable to parse year and day from file path {filePath}");
+		}
+
+		Year       = int.Parse(match.Groups["year"].Value);
+		Day        = int.Parse(match.Groups["day"].Value);
+		Main       = input => main(input).ToString();
+		Path       = System.IO.Path.GetDirectoryName(filePath) ?? throw new InvalidOperationException("Unable to find directory name.");
+		Benchmarks = benchmarkType;
+	}
+
+	[SetsRequiredMembers]
+	public ProblemMetadata2(Func<string[], (string, string)> main, Type? benchmarkType = null, [CallerFilePath]string filePath = "")
+	{
+		var match = GetDateRegex().Match(filePath);
+
+		if (!match.Success) {
+			throw new InvalidOperationException($"Unable to parse year and day from file path {filePath}");
+		}
+
+		Year       = int.Parse(match.Groups["year"].Value);
+		Day        = int.Parse(match.Groups["day"].Value);
+		Main       = input => main(input).ToString();
+		Path       = System.IO.Path.GetDirectoryName(filePath) ?? throw new InvalidOperationException("Unable to find directory name.");
+		Benchmarks = benchmarkType;
+	}
+
 	public required int Year { get; init; }
 
 	public required int Day { get; init; }
