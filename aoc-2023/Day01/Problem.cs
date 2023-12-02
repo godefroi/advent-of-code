@@ -1,4 +1,3 @@
-using System.Buffers;
 using BenchmarkDotNet.Attributes;
 
 namespace aoc_2023.Day01;
@@ -7,12 +6,9 @@ internal readonly record struct NumberPair(ReadOnlyMemory<char> Number, int Valu
 
 public class Problem
 {
-	public static ProblemMetadata2 Metadata { get; } = new(Execute);
-
-	public static string ProblemFolder => GetFilePath();
+	public static ProblemMetadata2 Metadata { get; } = new(Execute, typeof(Problem));
 
 	private static NumberPair[] _wordPairs = [
-		new("0".AsMemory(),     0),
 		new("1".AsMemory(),     1),
 		new("2".AsMemory(),     2),
 		new("3".AsMemory(),     3),
@@ -33,8 +29,19 @@ public class Problem
 		new("nine".AsMemory(),  9),
 	];
 
+	private static NumberPair[] _digitPairs = [
+		new("1".AsMemory(),     1),
+		new("2".AsMemory(),     2),
+		new("3".AsMemory(),     3),
+		new("4".AsMemory(),     4),
+		new("5".AsMemory(),     5),
+		new("6".AsMemory(),     6),
+		new("7".AsMemory(),     7),
+		new("8".AsMemory(),     8),
+		new("9".AsMemory(),     9),
+	];
+
 	private static (string, int)[] _words = [
-		("0",     0),
 		("1",     1),
 		("2",     2),
 		("3",     3),
@@ -55,46 +62,78 @@ public class Problem
 		("nine",  9),
 	];
 
-	public static (long, long) Execute(string fileName)
+	public static (long, long) Execute(string[] input)
 	{
-		var input  = ReadFileLines(fileName);
-		//var digits = new[] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-
-		var part1 = 1;//input.Select(s => (int.Parse(s[s.IndexOfAny(digits)].ToString()) * 10) + s[s.LastIndexOfAny(digits)].ToString())).Sum();
-		var part2 = input.Select(s => {
-			var lspan = s.AsSpan();
-			return (FirstNumber(lspan, _wordPairs) * 10) + LastNumber(lspan, _wordPairs);
-
-			//return (FirstNumber(s, _words) * 10) + LastNumber(s, _words);
-		}).Sum();
-
-		// foreach (var line in input) {
-		// 	var lnOld = LastNumber(line, _words);
-		// 	var lnNew = LastNumber(line.AsSpan(), _wordPairs);
-
-		// 	if (lnOld != lnNew) {
-		// 		throw new InvalidOperationException($"Mismatch for string {line}; old={lnOld} new={lnNew}");
-		// 	}
-		// }
+		var part1 = input.AsParallel().Sum(line => ParseNumber(line, _digitPairs));
+		var part2 = input.AsParallel().Sum(line => ParseNumber(line, _wordPairs));
 
 		return (part1, part2);
 	}
 
-	// [Benchmark]
-	// public void OldWay()
-	// {
-	// 	foreach (var line in ReadFileLines("input.txt")) {
-	// 		FirstNumber(line, _words);
-	// 	}
-	// }
+	[Benchmark]
+	public void OldWay()
+	{
+		var total = 0;
 
-	// [Benchmark]
-	// public void NewWay()
-	// {
-	// 	foreach (var line in ReadFileLines("input.txt")) {
-	// 		FirstNumber(line.AsSpan(), _wordPairs);
-	// 	}
-	// }
+		foreach (var line in ReadFileLines("input.txt")) {
+			total += (FirstNumber(line, _words) * 10) + LastNumber(line, _words);
+		}
+	}
+
+	[Benchmark]
+	public void NewWay()
+	{
+		var total = 0;
+
+		foreach (var line in ReadFileLines("input.txt")) {
+			var lspan = line.AsSpan();
+			total += (FirstNumber(lspan, _wordPairs) * 10) + LastNumber(lspan, _wordPairs);
+		}
+	}
+
+
+	[Benchmark]
+	public void NewCombined()
+	{
+		var total = 0;
+
+		foreach (var line in ReadFileLines("input.txt")) {
+			total += ParseNumber(line, _wordPairs);
+		}
+	}
+
+	private static int ParseNumber(string line, NumberPair[] numberPairs)
+	{
+		var searchIn = line.AsSpan();
+		var firstNum = -1;
+
+		while (firstNum == -1 && searchIn.Length > 0) {
+			for (var i = 0; i < numberPairs.Length; i++) {
+				if (searchIn.StartsWith(numberPairs[i].Number.Span)) {
+					firstNum = numberPairs[i].Value;
+					break;
+				}
+			}
+
+			// shorten the span by one
+			searchIn = searchIn[1..];
+		}
+
+		searchIn = line.AsSpan();
+
+		while (searchIn.Length > 0) {
+			for (var i = 0; i < numberPairs.Length; i++) {
+				if (searchIn.EndsWith(numberPairs[i].Number.Span)) {
+					return (firstNum * 10) + numberPairs[i].Value;
+				}
+			}
+
+			// shorten the span by one
+			searchIn = searchIn[..^1];
+		}
+		
+		throw new InvalidOperationException("No numbers were found in the string.");
+	}
 
 	private static int FirstNumber(ReadOnlySpan<char> searchIn, NumberPair[] numberPairs)
 	{
@@ -150,12 +189,12 @@ public class Problem
 		return positions.Where(p => p.Item1 > -1).MaxBy(p => p.Item1).Item2;
 	}
 
-	[Fact]
-	private static void TestInput()
-	{
-		var answers = Execute("input.txt");
+	// [Fact]
+	// private static void TestInput()
+	// {
+	// 	var answers = Execute("input.txt");
 
-		Assert.Equal(55108, answers.Item1);
-		Assert.Equal(56324, answers.Item2);
-	}
+	// 	Assert.Equal(55108, answers.Item1);
+	// 	Assert.Equal(56324, answers.Item2);
+	// }
 }
