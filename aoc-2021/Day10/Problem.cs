@@ -5,9 +5,11 @@ public class Problem
 	private static readonly List<char> _starts = new() { '(', '[', '{', '<' };
 	private static readonly List<char> _ends   = new() { ')', ']', '}', '>' };
 
-	public static (long p1, long p2) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long p1, long p2) Main(string[] input)
 	{
-		var scores = ReadFileLines(fileName, ScoreLine).ToList();
+		var scores = input.Select(ScoreLine).ToList();
 		var p1     = scores.Where(s => s > 0).Sum();
 
 		Console.WriteLine($"part 1: {p1}"); // part 1 is 296535
@@ -56,7 +58,7 @@ public class Problem
 	[Fact(DisplayName = "Day 10 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("input_sample.txt");
+		var (p1, p2) = Main(ReadFileLines("input_sample.txt"));
 
 		Assert.Equal(26397, p1);
 		Assert.Equal(288957, p2);
@@ -65,7 +67,7 @@ public class Problem
 	[Fact(DisplayName = "Day 10 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("input.txt");
+		var (p1, p2) = Main(ReadFileLines("input.txt"));
 
 		Assert.Equal(296535, p1);
 		Assert.Equal(4245130838, p2);

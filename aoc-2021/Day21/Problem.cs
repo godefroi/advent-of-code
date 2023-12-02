@@ -6,9 +6,11 @@ public class Problem
 {
 	private const int WINNING_SCORE = 21;
 
-	public static void Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
-		var positions  = ReadFileLines(fileName, l => int.Parse(Regex.Match(l, ": (?<start>\\d+)").Groups["start"].ValueSpan));
+		var positions  = input.Select(l => int.Parse(Regex.Match(l, ": (?<start>\\d+)").Groups["start"].ValueSpan)).ToArray();
 		var rollCounts = new Dictionary<int, int>() {
 			{ 3, 1 },
 			{ 4, 3 },
@@ -61,5 +63,7 @@ public class Problem
 		}
 
 		Console.WriteLine(wins.Max());
+
+		return (-1, -1);
 	}
 }

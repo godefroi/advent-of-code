@@ -38,14 +38,14 @@ public class Problem
 	private readonly static IReadOnlySet<int> HALL_D     = new HashSet<int>() { HALL_D_POS_1, HALL_D_POS_2, HALL_D_POS_3, HALL_D_POS_4 };
 	private readonly static IReadOnlySet<int> CROSS_HALL = new HashSet<int>() { CROSS_HALL_POS_1, CROSS_HALL_POS_2, CROSS_HALL_POS_3, CROSS_HALL_POS_4, CROSS_HALL_POS_5, CROSS_HALL_POS_6, CROSS_HALL_POS_7 };
 
-	public static void Main(string fileName)
-	{
-		var lines = ReadFileLines(fileName);
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
 
-		lines = lines.Take(3).Concat(new[] { "  #D#C#B#A#", "  #D#B#A#C#" }).Concat(lines.TakeLast(2)).ToArray();
+	public static (long, long) Main(string[] input)
+	{
+		input = input.Take(3).Concat(new[] { "  #D#C#B#A#", "  #D#B#A#C#" }).Concat(input.TakeLast(2)).ToArray();
 
 		var minwin = int.MaxValue;
-		var game   = ParseGame(string.Join(Environment.NewLine, lines));
+		var game   = ParseGame(string.Join(Environment.NewLine, input));
 		var states = new Dictionary<char[], int>(new CharArrayComparer()) {
 			{ game, 0 },
 		};
@@ -82,6 +82,8 @@ public class Problem
 		}
 
 		Console.WriteLine(minwin);
+
+		return (-1, -1);
 	}
 
 	private static IEnumerable<(char[] state, int cost)> NextPossibleStates(char[] state, int cost)

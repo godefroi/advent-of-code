@@ -2,9 +2,11 @@
 
 public class Problem
 {
-	public static int Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
-		var map   = ParseMap(ReadFileLines(fileName));
+		var map   = ParseMap(input);
 		var steps = 0;
 
 		while (true) {
@@ -13,7 +15,7 @@ public class Problem
 
 			if (map.Cast<char>().SequenceEqual(stepped.Cast<char>())) {
 				Console.WriteLine($"Stopped moving after {steps} steps.");
-				return steps;
+				return (steps, -1);
 			}
 
 			map = stepped;
@@ -221,6 +223,6 @@ v......", RenderMap(map));
 	[Fact]
 	public void SampleInputStepsCorrectly()
 	{
-		Assert.Equal(58, Main("input_sample.txt"));
+		Assert.Equal(58, Main(ReadFileLines("input_sample.txt")).Item1);
 	}
 }

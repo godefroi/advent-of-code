@@ -2,9 +2,11 @@
 
 internal partial class Problem
 {
-	internal static (long, long) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	internal static (long, long) Main(string[] input)
 	{
-		var instructions = ReadFileLines(fileName, Parse);
+		var instructions = input.Select(Parse).ToArray();
 		var part1        = Calculate(instructions.Where(c => c.Cuboid.MinX >= -50 && c.Cuboid.MaxX <= 50 && c.Cuboid.MinY >= -50 && c.Cuboid.MaxY <= 50 && c.Cuboid.MinZ >= -50 && c.Cuboid.MaxZ <= 50));
 		var part2        = Calculate(instructions);
 

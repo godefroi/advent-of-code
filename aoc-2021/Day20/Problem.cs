@@ -4,9 +4,10 @@ using Image = Dictionary<(int x, int y), char>;
 
 public class Problem
 {
-	public static (int, int) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
-		var input       = ReadFileLines(fileName);
 		var enhancement = input[0].Select(c => c == '#' ? '1' : '0').ToArray();
 		var image       = new Image();
 		var part1       = -1;

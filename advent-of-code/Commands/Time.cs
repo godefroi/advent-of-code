@@ -9,18 +9,20 @@ public static class Time
 	{
 		var command = new Command("time", "Time the execution of a problem (or problems)") {
 			Options.All,
+			Options.Year,
+			Options.Day,
 			Options.Warmups,
 			Options.Executions,
 		};
 
-		command.SetHandler(Execute, Options.All, Options.Warmups, Options.Executions);
+		command.SetHandler(Execute, Options.All, Options.Year, Options.Day, Options.Warmups, Options.Executions);
 
 		return command;
 	}
 
-	private static async Task Execute(bool all, int warmups, int executions)
+	private static async Task Execute(bool all, int year, int day, int warmups, int executions)
 	{
-		var problem = Problems.CurrentProblem;
+		var problem = Problems.GetProblems(year)[day];
 		var console = Console.Out;
 		var sw      = new Stopwatch();
 		var output  = default(string);

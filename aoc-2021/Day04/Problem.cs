@@ -2,9 +2,10 @@
 
 public class Problem
 {
-	public static (int p1, int p2) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long p1, long p2) Main(string[] input)
 	{
-		var input  = ReadFileLines(fileName);
 		var balls  = input.First().Split(',').Select(int.Parse).ToList();
 		var boards = input.Skip(2).Chunk(6).Select(s => new Board(string.Join(" ", s).Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Select(s => int.Parse(s)))).ToArray() as Board?[];
 		var part1  = default(int?);
@@ -44,7 +45,7 @@ public class Problem
 	[Fact(DisplayName = "Day 04 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("input_sample.txt");
+		var (p1, p2) = Main(ReadFileLines("input_sample.txt"));
 
 		Assert.Equal(4512, p1);
 		Assert.Equal(1924, p2);
@@ -53,7 +54,7 @@ public class Problem
 	[Fact(DisplayName = "Day 04 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("input.txt");
+		var (p1, p2) = Main(ReadFileLines("input.txt"));
 
 		Assert.Equal(54275, p1);
 		Assert.Equal(13158, p2);

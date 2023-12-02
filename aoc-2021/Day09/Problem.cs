@@ -2,9 +2,10 @@ namespace aoc_2021.Day09;
 
 public class Problem
 {
-	public static (int p1, int p2) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long p1, long p2) Main(string[] input)
 	{
-		var input = ReadFileLines(fileName);
 		var map   = input.SelectMany((line, y) => line.Select((c, x) => new Location(x, y, int.Parse(c.ToString())))).ToList();
 		var lows  = map.Where(l => Adjacents(map, l).All(a => a.Height > l.Height)).ToList();
 		var sizes = new List<int>();
@@ -46,7 +47,7 @@ public class Problem
 	[Fact(DisplayName = "Day 09 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("input_sample.txt");
+		var (p1, p2) = Main(ReadFileLines("input_sample.txt"));
 
 		Assert.Equal(15, p1);
 		Assert.Equal(1134, p2);
@@ -55,7 +56,7 @@ public class Problem
 	[Fact(DisplayName = "Day 09 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("input.txt");
+		var (p1, p2) = Main(ReadFileLines("input.txt"));
 
 		Assert.Equal(452, p1);
 		Assert.Equal(1263735, p2);

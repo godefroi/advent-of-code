@@ -2,12 +2,13 @@
 
 public class Problem
 {
-	public static (long, long) Main(string fileName)
-	{
-		var inputs = ReadFileLines(fileName);
-		var left   = inputs[0].Select(ParseComponent).ToList();
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
 
-		foreach (var l in inputs.Skip(1)) {
+	public static (long, long) Main(string[] input)
+	{
+		var left = input[0].Select(ParseComponent).ToList();
+
+		foreach (var l in input.Skip(1)) {
 			var right = l.Select(ParseComponent).ToList();
 
 			left = Add(left, right);
@@ -19,13 +20,13 @@ public class Problem
 
 		var max = 0L;
 
-		for (var i = 0; i < inputs.Length; i++) {
-			for (var j = 0; j < inputs.Length; j++) {
+		for (var i = 0; i < input.Length; i++) {
+			for (var j = 0; j < input.Length; j++) {
 				if (i == j) {
 					continue;
 				}
 
-				max = Math.Max(max, Magnitude(Reduce(Add(inputs[i].Select(ParseComponent).ToList(), inputs[j].Select(ParseComponent).ToList()))));
+				max = Math.Max(max, Magnitude(Reduce(Add(input[i].Select(ParseComponent).ToList(), input[j].Select(ParseComponent).ToList()))));
 			}
 		}
 
@@ -370,7 +371,7 @@ public class Problem
 	[Fact(DisplayName = "Day 18 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("input.txt");
+		var (p1, p2) = Main(ReadFileLines("input.txt"));
 
 		Assert.Equal(3981, p1);
 		Assert.Equal(4687, p2);
