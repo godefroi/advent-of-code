@@ -2,17 +2,19 @@
 
 public class Problem
 {
-	public static void Main(string fileName)
-	{
-		var lines = ReadFileLines(fileName);
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
 
+    internal static (long, long) Main(string[] input)
+	{
 		Console.WriteLine("DIV  CHECK  OFFSET");
 
-		for (var i = 0; i < lines.Length; i++) {
-			if (lines[i].StartsWith("inp w")) {
-				Console.WriteLine($"{lines[i + 4].Split(' ')[2],3}    {lines[i + 5].Split(' ')[2],3}     {lines[i + 15].Split(' ')[2],3}");
+		for (var i = 0; i < input.Length; i++) {
+			if (input[i].StartsWith("inp w")) {
+				Console.WriteLine($"{input[i + 4].Split(' ')[2],3}    {input[i + 5].Split(' ')[2],3}     {input[i + 15].Split(' ')[2],3}");
 			}
 		}
+
+		return (-1, -1);
 
 		/*
 			DIV  CHECK  OFFSET

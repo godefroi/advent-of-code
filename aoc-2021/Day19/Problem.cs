@@ -97,11 +97,13 @@ public class Problem
 		((int x, int y, int z) inp) => ( inp.y, -inp.z, -inp.x),
 	};
 
-	public static (int, int) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
-		var input   = ParseInput(ReadFileLines(fileName));
-		var destset = input[0].Beacons.ToHashSet();
-		var to_map  = input.Skip(1).ToList();
+		var inputs  = ParseInput(input);
+		var destset = inputs[0].Beacons.ToHashSet();
+		var to_map  = inputs.Skip(1).ToList();
 		var offset_map = new Dictionary<Scanner, (int x, int y, int z)>();
 
 		while (to_map.Count > 0) {

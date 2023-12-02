@@ -4,10 +4,11 @@ public class Problem
 {
 	private static string _padding = "";
 
-	public static (long versionsum, long value) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long versionsum, long value) Main(string[] input)
 	{
-		var input   = ReadFileLines(fileName).First();
-		var packet  = ParsePacket(ParseHex(input));
+		var packet  = ParsePacket(ParseHex(input.First()));
 		var ret     = (versionsum: SumVersions(packet), value: CalculateValue(packet));
 
 		Console.WriteLine($"part 1: {ret.versionsum}");
@@ -144,7 +145,7 @@ public class Problem
 	[Fact(DisplayName = "Day 16 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (sum, value) = Main("input.txt");
+		var (sum, value) = Main(ReadFileLines("input.txt"));
 
 		Assert.Equal(843,           sum);
 		Assert.Equal(5390807940351, value);

@@ -2,11 +2,13 @@
 
 public class Problem
 {
-	public static (int p1, int p2) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long p1, long p2) Main(string[] input)
 	{
-		var input = ReadFileLines(fileName).First().Split(',').Select(int.Parse).ToList();
-		var p1    = input.Min(i => input.Sum(ii => Math.Abs(ii - i)));
-		var p2    = Enumerable.Range(input.Min(), input.Max()).Min(i => input.Sum(ii => TriangleNumber(ii - i)));
+		var numbers = input.First().Split(',').Select(int.Parse).ToList();
+		var p1      = numbers.Min(i => numbers.Sum(ii => Math.Abs(ii - i)));
+		var p2      = Enumerable.Range(numbers.Min(), numbers.Max()).Min(i => numbers.Sum(ii => TriangleNumber(ii - i)));
 
 		Console.WriteLine($"part 1: {p1}"); // part 1 is 329389
 		Console.WriteLine($"part 2: {p2}"); // part 2 is 86397080
@@ -54,7 +56,7 @@ public class Problem
 	[Fact(DisplayName = "Day 07 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("input_sample.txt");
+		var (p1, p2) = Main(ReadFileLines("input_sample.txt"));
 
 		Assert.Equal(37, p1);
 		Assert.Equal(168, p2);
@@ -63,7 +65,7 @@ public class Problem
 	[Fact(DisplayName = "Day 07 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("input.txt");
+		var (p1, p2) = Main(ReadFileLines("input.txt"));
 
 		Assert.Equal(329389, p1);
 		Assert.Equal(86397080, p2);

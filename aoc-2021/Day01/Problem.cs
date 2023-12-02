@@ -2,16 +2,18 @@
 
 public class Problem
 {
-	public static (int inc, int winc) Main(string fileName)
-	{
-		var input = ReadFileLines(fileName, int.Parse);
-		var last  = int.MaxValue;
-		var lSum  = int.MaxValue;
-		var inc   = 0;
-		var winc  = 0;
-		var win   = new SlidingWindow(3);
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
 
-		foreach (var cur in input) {
+	public static (long inc, long winc) Main(string[] input)
+	{
+		var numbers = input.Select(int.Parse);
+		var last    = int.MaxValue;
+		var lSum    = int.MaxValue;
+		var inc     = 0;
+		var winc    = 0;
+		var win     = new SlidingWindow(3);
+
+		foreach (var cur in numbers) {
 			// add to the window
 			win.Add(cur);
 
@@ -39,7 +41,7 @@ public class Problem
 	[Fact(DisplayName = "Day 01 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (inc, winc) = Main("input_sample.txt");
+		var (inc, winc) = Main(ReadFileLines("input_sample.txt"));
 
 		Assert.Equal(7, inc);
 		Assert.Equal(5, winc);
@@ -48,7 +50,7 @@ public class Problem
 	[Fact(DisplayName = "Day 01 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (inc, winc) = Main("input.txt");
+		var (inc, winc) = Main(ReadFileLines("input.txt"));
 
 		Assert.Equal(1462, inc);
 		Assert.Equal(1497, winc);

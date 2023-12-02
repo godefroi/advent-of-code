@@ -2,9 +2,10 @@
 
 public class Problem
 {
-	public static (int p1, int p2) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long p1, long p2) Main(string[] input)
 	{
-		var input    = ReadFileLines(fileName);
 		var counts   = new int[input.First().Length];
 		var inpCount = input.Length;
 
@@ -54,7 +55,7 @@ public class Problem
 	[Fact(DisplayName = "Day 03 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("input_sample.txt");
+		var (p1, p2) = Main(ReadFileLines("input_sample.txt"));
 
 		Assert.Equal(198, p1);
 		Assert.Equal(230, p2);
@@ -63,7 +64,7 @@ public class Problem
 	[Fact(DisplayName = "Day 03 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main("input.txt");
+		var (p1, p2) = Main(ReadFileLines("input.txt"));
 
 		Assert.Equal(1082324, p1);
 		Assert.Equal(1353024, p2);
