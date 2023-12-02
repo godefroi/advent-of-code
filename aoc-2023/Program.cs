@@ -1,14 +1,22 @@
 ﻿using System.Diagnostics;
 
-aoc_2023.Day01.Problem.Execute("input.txt");
+namespace AdventOfCode.Year2023;
 
-var sw = Stopwatch.StartNew();
+public class Program
+{
+	public static void Main(string[] args)
+	{
+		aoc_2023.Day01.Problem.Execute(ReadFileLines("input.txt"));
 
-for (var i = 0; i < 10000; i++)
-	aoc_2023.Day01.Problem.Execute("input.txt");
+		var sw = Stopwatch.StartNew();
 
-sw.Stop();
+		for (var i = 0; i < 10000; i++)
+			aoc_2023.Day01.Problem.Execute(ReadFileLines("input.txt"));
 
-Console.WriteLine(sw.Elapsed.TotalMilliseconds / 10000d);
+		sw.Stop();
 
-//BenchmarkDotNet.Running.BenchmarkRunner.Run<aoc_2023.Day01.Problem>();
+		Console.WriteLine($"avg: {sw.Elapsed.TotalMilliseconds / 10000d}");
+
+		//BenchmarkDotNet.Running.BenchmarkRunner.Run<aoc_2023.Day01.Problem>();
+	}
+}
