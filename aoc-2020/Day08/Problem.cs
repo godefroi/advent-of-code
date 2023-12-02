@@ -2,9 +2,11 @@
 
 public class Problem
 {
-	public static (int, int) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
-		var program = ReadFileLines(fileName, ParseInstruction);
+		var program = input.Select(ParseInstruction).ToArray();
 		var result  = RunProgram(program);
 		var part1   = result.accumulator;
 
@@ -12,7 +14,7 @@ public class Problem
 
 		// one of the jmp or nop in result.visited needs to be changed to cause it to halt
 		foreach (var idx in result.visited.Where(v => program[v].instruction == "jmp" || program[v].instruction == "nop")) {
-			var nprogram = program.Clone() as (string instruction, int argument)[];
+			var nprogram = program.Clone() as (string instruction, int argument)[] ?? throw new InvalidOperationException("Uh, it's null.");
 
 			nprogram[idx] = program[idx].instruction switch {
 				"jmp" => ("nop", program[idx].argument),

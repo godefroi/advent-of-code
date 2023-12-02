@@ -17,6 +17,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aoc-2020", "aoc-2020\aoc-20
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aoc-2021", "aoc-2021\aoc-2021.csproj", "{0D5FC5D1-C437-449D-A11A-210BA63E81DB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "advent-of-code", "advent-of-code\advent-of-code.csproj", "{FE1D21E3-1ADB-47E3-A4FA-24E4053096D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aoc-2023", "aoc-2023\aoc-2023.csproj", "{D938037F-EEB7-441E-862A-17C361D82441}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +51,14 @@ Global
 		{0D5FC5D1-C437-449D-A11A-210BA63E81DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D5FC5D1-C437-449D-A11A-210BA63E81DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D5FC5D1-C437-449D-A11A-210BA63E81DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE1D21E3-1ADB-47E3-A4FA-24E4053096D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE1D21E3-1ADB-47E3-A4FA-24E4053096D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE1D21E3-1ADB-47E3-A4FA-24E4053096D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE1D21E3-1ADB-47E3-A4FA-24E4053096D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D938037F-EEB7-441E-862A-17C361D82441}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D938037F-EEB7-441E-862A-17C361D82441}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D938037F-EEB7-441E-862A-17C361D82441}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D938037F-EEB7-441E-862A-17C361D82441}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,9 +2,10 @@
 
 public class Problem
 {
-	public static (int, long) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main);
+
+	public static (long, long) Main(string[] input)
 	{
-		var input  = ReadFileLines(fileName);
 		var mult   = 0L;
 		var slopes = new[] {
 			(right: 1, down: 1),
