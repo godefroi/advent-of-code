@@ -35,7 +35,9 @@ public static class Benchmarks
 
 		var job = new Job()
 			.DontEnforcePowerPlan()
-			.Apply(Job.InProcessDontLogOutput);
+			.Apply(Job.InProcessDontLogOutput)
+			//.Apply(Job.InProcess)
+			;
 
 		//job.Apply(Job.ShortRun);
 		//job.Apply(Job.InProcessDontLogOutput);
