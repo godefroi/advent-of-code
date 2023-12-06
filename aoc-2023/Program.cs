@@ -20,5 +20,6 @@ public class Program
 		//BenchmarkDotNet.Running.BenchmarkRunner.Run<aoc_2023.Day01.Problem>();
 
 		await Task.CompletedTask;
+		//var runner = new Xunit.Sdk.TestRunner<AdventOfCode.Year2023.Day05.IntervalTests>()
 	}
 }
