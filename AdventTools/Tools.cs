@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.CompilerServices;
 
 namespace AdventOfCode;
 
@@ -93,25 +91,37 @@ public static class Tools
 		}
 	}
 
-	public static Span<T> AsSpan<T>(this Array array)
-	{
-		// we would want to .Slice() this for a particular rank when dealing with a multidimensional array
-		// https://stackoverflow.com/questions/52750582/span-and-two-dimensional-arrays
-		return MemoryMarshal.CreateSpan(ref Unsafe.As<byte, T>(ref MemoryMarshal.GetArrayDataReference(array)), array.Length);
-	}
-
-	public static Span<T> AsSpan<T>(this T[,] array)
-	{
-		return MemoryMarshal.CreateSpan(ref Unsafe.As<byte, T>(ref MemoryMarshal.GetArrayDataReference(array)), array.Length);
-	}
-
+	/// <summary>
+	/// Permutations. There are more permutations than combinations.
+	/// </summary>
 	public static IEnumerable<IEnumerable<T>> Permutations<T>(this IEnumerable<T> list, int length)
 	{
 		if (length == 1) {
 			return list.Select(t => new T[] { t });
 		}
 
-		return Permutations(list, length - 1).SelectMany(t => list.Where(e => !t.Contains(e)), (t1, t2) => t1.Concat(new T[] { t2 }));
+		return Permutations(list, length - 1)
+			.SelectMany(t => list.Where(e => !t.Contains(e)), (t1, t2) => t1.Concat(new T[] { t2 }));
+	}
+
+	/// <summary>
+	/// Combinations. There are fewer combinations than permutations.
+	/// </summary>
+	public static IEnumerable<IEnumerable<T>> Combinations<T>(this IEnumerable<T> list, int length)
+	{
+		var i = 0;
+
+		foreach (var item in list) {
+			if (length == 1) {
+				yield return new T[] { item };
+			} else {
+				foreach (var result in Combinations(list.Skip(i + 1), length - 1)) {
+					yield return new T[] { item }.Concat(result);
+				}
+			}
+
+			i++;
+		}
 	}
 
 	public static void Deconstruct<T>(this T[] array, out T? item0, out T? item1)

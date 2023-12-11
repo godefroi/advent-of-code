@@ -8,7 +8,7 @@ public class FloydWarshall
 	/// Compute the shortest distance between all nodes of a directed, weighted graph with positive or negative edge weights (but no negative cycles)
 	/// </summary>
 	/// <typeparam name="T">The type of <see cref="Edge{T}"/> being used</typeparam>
-	/// <typeparam name="W">Tye type of weight being used</typeparam>
+	/// <typeparam name="W">The type of weight being used</typeparam>
 	/// <param name="edges">The set of weighted edges in the graph</param>
 	/// <remarks>
 	/// https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm#Algorithm
