@@ -21,8 +21,6 @@ public partial class Problem
 		var part1Galaxies = ExpandUniverse(galaxies, input[0].Length, input.Length, 1);
 		var part2Galaxies = ExpandUniverse(galaxies, input[0].Length, input.Length, 999999);
 
-		//galaxies.Combinations(2)
-
 		var part1 = part1Galaxies.Combinations(2).Sum(c => Coordinate.ManhattanDistance(c.First(), c.Last()));
 		var part2 = part2Galaxies.Combinations(2).Sum(c => (long)Coordinate.ManhattanDistance(c.First(), c.Last()));
 
