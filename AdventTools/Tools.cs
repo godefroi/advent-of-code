@@ -33,6 +33,20 @@ public static class Tools
 		return map;
 	}
 
+	public static void PrintMap(char[,] map)
+	{
+		var sb = new System.Text.StringBuilder();
+
+		for (var y = 0; y < map.GetLength(1); y++) {
+			for (var x = 0; x < map.GetLength(0); x++) {
+				sb.Append(map[x, y]);
+			}
+
+			Console.WriteLine(sb.ToString());
+			sb.Clear();
+		}
+	}
+
 	public static long LeastCommonMultiple(long[] numbers) => numbers.Aggregate(LeastCommonMultiple);
 
 	public static long LeastCommonMultiple(long a, long b) => Math.Abs(a * b) / GreatestCommonDenominator(a, b);
