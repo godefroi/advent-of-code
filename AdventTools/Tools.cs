@@ -2,6 +2,14 @@
 
 namespace AdventOfCode;
 
+// cycle detection: https://en.wikipedia.org/wiki/Cycle_detection
+// Brent's cycle detection algorithm: https://www.geeksforgeeks.org/brents-cycle-detection-algorithm/
+
+// combintations: https://web.archive.org/web/20160120204911/https://msdn.microsoft.com/en-us/library/aa289166(v=vs.71).aspx
+// or maybe gray codes: https://stackoverflow.com/a/127856/90328
+
+
+
 public static class Tools
 {
 	public static string GetFilePath([CallerFilePath]string sourceFilePath = "") => Path.GetDirectoryName(sourceFilePath)!;
