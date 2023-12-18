@@ -1,5 +1,7 @@
 namespace AdventOfCode.Year2023.Day17;
 
+// https://www.reddit.com/r/adventofcode/comments/18l9mrh
+
 public partial class Problem
 {
 	public static ProblemMetadata2 Metadata { get; } = new(Execute, null);
@@ -22,7 +24,7 @@ public partial class Problem
 			var south       = currentNode + new Coordinate(0, 1);
 			var east        = currentNode + new Coordinate(1, 0);
 			var west        = currentNode + new Coordinate(-1, 0);
-			var ret         = new List<(MapNode node, float weight)>(4); // 3, actually...
+			var ret         = new List<(MapNode node, float weight)>(4);
 
 			// if we have at least one path node, we need it, because
 			// we can never go backwards
