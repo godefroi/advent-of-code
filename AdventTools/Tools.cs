@@ -26,7 +26,9 @@ public static class Tools
 
 	public static T[,] ReadFileAsMap<T>(string fileName, Func<char, T> selector, [CallerFilePath] string sourceFilePath = "") => CreateMap(File.ReadAllLines(GetFilePath(fileName, sourceFilePath)), selector);
 
-	public static T[,] CreateMap<T>(string[] lines, Func<char, T> selector)
+	public static T[,] CreateMap<T>(string[] lines, Func<char, T> selector) => CreateMap(lines, (x, y, c) => selector(c));
+
+	public static T[,] CreateMap<T>(string[] lines, Func<int, int, char, T> selector)
 	{
 		var width  = lines[0].Length;
 		var height = lines.Length;
@@ -34,7 +36,7 @@ public static class Tools
 
 		for (var x = 0; x < width; x++) {
 			for (var y = 0; y < height; y++) {
-				map[x, y] = selector(lines[y][x]);
+				map[x, y] = selector(x, y, lines[y][x]);
 			}
 		}
 

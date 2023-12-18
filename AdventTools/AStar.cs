@@ -102,6 +102,65 @@ public static class AStar
 		return null;
 	}
 
+	public static Stack<N>? FindPath<N>(N start, N goal, Func<Stack<N>, IEnumerable<(N node, float weight)>> retrieveAdjacentNodes, Func<N, N, float> heuristic, IEqualityComparer<N> equalityComparer) where N : notnull
+	{
+		var openSet  = new PriorityQueue<N, float>();
+		var cameFrom = new Dictionary<N, N>();
+		var gScore   = new ScoreSet<N>();
+		var fScore   = new ScoreSet<N>();
+
+		gScore[start] = 0;
+
+		openSet.Enqueue(start, fScore[start]);
+
+		while (openSet.Count > 0) {
+			var current = openSet.Dequeue();
+
+			if (equalityComparer.Equals(current, goal)) {
+				// we're done... reconstruct the path and get out
+				// return reconstruct_path(cameFrom, current)
+				return ReconstructPath(current, cameFrom);
+			}
+
+			// reconstruct the path for retrieveAdjacentNodes
+			// 2023 day 17 needs only the last 3, but we'll reconstruct
+			// the whole thing here just in case some future problem
+			// needs the whole thing
+
+			foreach (var (neighbor, weight) in retrieveAdjacentNodes(ReconstructPath(current, cameFrom))) {
+				var tentativeGScore = gScore[current] + weight;
+
+				if (tentativeGScore < gScore[neighbor]) {
+					cameFrom[neighbor] = current;
+					gScore[neighbor] = tentativeGScore;
+					fScore[neighbor] = tentativeGScore + heuristic(neighbor, goal);
+
+					if (!openSet.UnorderedItems.Any(i => i.Element.Equals(neighbor))) {
+						openSet.Enqueue(neighbor, fScore[neighbor]);
+					}
+				}
+			}
+		}
+
+		// open set is empty but goal was never reached; pathfinding failed
+		return null;
+	}
+
+	private static Stack<N> ReconstructPath<N>(N? current, Dictionary<N, N> cameFrom) where N : notnull
+	{
+		ArgumentNullException.ThrowIfNull(current);
+
+		var path = new Stack<N>();
+
+		path.Push(current);
+
+		while (cameFrom.TryGetValue(current, out current)) {
+			path.Push(current);
+		}
+
+		return path;
+	}
+
 	private class ScoreSet<N> : IDictionary<N, float> where N : notnull
 	{
 		private readonly Dictionary<N, float> _coordinates = new();
