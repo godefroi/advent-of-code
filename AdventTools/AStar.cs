@@ -102,6 +102,21 @@ public static class AStar
 		return null;
 	}
 
+	private static Stack<N> ReconstructPath<N>(N? current, Dictionary<N, N> cameFrom) where N : notnull
+	{
+		ArgumentNullException.ThrowIfNull(current);
+
+		var path = new Stack<N>();
+
+		path.Push(current);
+
+		while (cameFrom.TryGetValue(current, out current)) {
+			path.Push(current);
+		}
+
+		return path;
+	}
+
 	private class ScoreSet<N> : IDictionary<N, float> where N : notnull
 	{
 		private readonly Dictionary<N, float> _coordinates = new();
