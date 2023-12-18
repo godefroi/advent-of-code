@@ -26,14 +26,14 @@ public partial class Problem
 
 			// if we have at least one path node, we need it, because
 			// we can never go backwards
-			if (mostRecentNodes.Count > 0) {
+			if (mostRecentNodes.Count > 1) {
 				prev1 = mostRecentNodes[1].Coordinates;
 			}
 
 			// if we have at least two more, we need two of them, because
 			// if they're in a straight line, we can't keep going in that
 			// direction
-			if (mostRecentNodes.Count >= 2) {
+			if (mostRecentNodes.Count >= 4) {
 				var prev2 = mostRecentNodes[2].Coordinates;
 				var prev3 = mostRecentNodes[3].Coordinates;
 				var dir1  = currentNode - prev1;
