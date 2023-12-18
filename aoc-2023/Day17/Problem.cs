@@ -6,88 +6,75 @@ public partial class Problem
 {
 	public static ProblemMetadata2 Metadata { get; } = new(Execute, null);
 
+	private readonly static Coordinate _north = new(0, -1);
+	private readonly static Coordinate _south = new(0, 1);
+	private readonly static Coordinate _east = new(1, 0);
+	private readonly static Coordinate _west = new(-1, 0);
+
 	public static (long, long) Execute(string[] input)
 	{
-		input = ReadFileLines("inputSample.txt");
-		var map   = CreateMap(input, (x, y, c) => new MapNode(new Coordinate(x, y), int.Parse(c.ToString())));
-		var start = map[0, 0];
-		var goal  = map[map.GetLength(0) - 1, map.GetLength(1) - 1];
+		//input = ReadFileLines("inputSample.txt");
+		var map    = CreateMap(input, (x, y, c) => new MapNode(new Coordinate(x, y), int.Parse(c.ToString())));
+		var width  = map.GetLength(0);
+		var height = map.GetLength(1);
+		var start  = map[0, 0];
+		var goal   = map[map.GetLength(0) - 1, map.GetLength(1) - 1];
 
-		Func<Stack<MapNode>, IEnumerable<(MapNode node, float weight)>> findAdjacentNodes = currentPath => {
-			Coordinate? prev1     = null;
-			Coordinate? forbidden = null;
+		Func<PathState, IEnumerable<(PathState, float)>> findAdjacentNodes = currentState => {
+			var ((currentNode, _), currentDir, dirCount) = currentState;
 
-			var mostRecentNodes = currentPath.TakeLast(4).Reverse().ToList();
+			var north = currentDir == _south ? default(Coordinate?) : currentNode + _north;
+			var south = currentDir == _north ? default(Coordinate?) : currentNode + _south;
+			var east  = currentDir == _west ? default(Coordinate?) : currentNode + _east;
+			var west  = currentDir == _east ? default(Coordinate?) : currentNode + _west;
+			var ret   = new List<(PathState, float)>(4);
 
-			var currentNode = mostRecentNodes[0].Coordinates;
-			var north       = currentNode + new Coordinate(0, -1);
-			var south       = currentNode + new Coordinate(0, 1);
-			var east        = currentNode + new Coordinate(1, 0);
-			var west        = currentNode + new Coordinate(-1, 0);
-			var ret         = new List<(MapNode node, float weight)>(4);
+			// we can't go more than three steps in the same direction in a row
+			if (north != null && currentDir == _north && dirCount >= 3) north = null;
+			if (south != null && currentDir == _south && dirCount >= 3) south = null;
+			if (east  != null && currentDir == _east  && dirCount >= 3) east  = null;
+			if (west  != null && currentDir == _west  && dirCount >= 3) west  = null;
 
-			// if we have at least one path node, we need it, because
-			// we can never go backwards
-			if (mostRecentNodes.Count > 1) {
-				prev1 = mostRecentNodes[1].Coordinates;
+			// ensure we don't go off the edge of the map
+			if (north != null && north.Value.Y < 0) north = null;
+			if (south != null && south.Value.Y > height - 1) south = null;
+			if (east != null && east.Value.X > width - 1) east = null;
+			if (west != null && west.Value.X < 0) west = null;
+
+			if (north != null) {
+				var northNode = map[north.Value.X, north.Value.Y];
+				ret.Add((new PathState(northNode, _north, currentDir == _north ? dirCount + 1 : 1), northNode.HeatLoss));
 			}
 
-			// if we have at least two more, we need two of them, because
-			// if they're in a straight line, we can't keep going in that
-			// direction
-			if (mostRecentNodes.Count >= 4) {
-				var prev2 = mostRecentNodes[2].Coordinates;
-				var prev3 = mostRecentNodes[3].Coordinates;
-				var dir1  = currentNode - prev1;
-				var dir2  = prev1 - prev2;
-				var dir3  = prev2 - prev3;
-
-				if ((dir1 == dir2) && (dir1 == dir3)) {
-					forbidden = currentNode + dir1;
-				}
+			if (south != null) {
+				var southNode = map[south.Value.X, south.Value.Y];
+				ret.Add((new PathState(southNode, _south, currentDir == _south ? dirCount + 1 : 1), southNode.HeatLoss));
 			}
 
-			// now, generate adjacent nodes, but never where we came from (prev1)
-			// and never in the forbidden direction
-
-			// north, maybe?
-			if (north.Y >= 0 && north != forbidden && north != prev1) {
-				var northNode = map[north.X, north.Y];
-				ret.Add((northNode, northNode.HeatLoss));
+			if (east != null) {
+				var eastNode = map[east.Value.X, east.Value.Y];
+				ret.Add((new PathState(eastNode, _east, currentDir == _east ? dirCount + 1 : 1), eastNode.HeatLoss));
 			}
 
-			// south, maybe?
-			if (south.Y <= map.GetLength(1) - 1 && south != forbidden && south != prev1) {
-				var southNode = map[south.X, south.Y];
-				ret.Add((southNode, southNode.HeatLoss));
+			if (west != null) {
+				var westNode = map[west.Value.X, west.Value.Y];
+				ret.Add((new PathState(westNode, _west, currentDir == _west ? dirCount + 1 : 1), westNode.HeatLoss));
 			}
-
-			// east, maybe?
-			if (east.X <= map.GetLength(0) - 1 && east != forbidden && east != prev1) {
-				var eastNode = map[east.X, east.Y];
-				ret.Add((eastNode, eastNode.HeatLoss));
-			}
-
-			// west, maybe?
-			if (west.X >= 0 && west != forbidden && west != prev1) {
-				var westNode = map[west.X, west.Y];
-				ret.Add((westNode, westNode.HeatLoss));
-			}
-
-			// Console.WriteLine($"Nodes adjacent to {currentNode} (came from {prev1}):");
-			// foreach (var (node, _) in ret) {
-			// 	Console.WriteLine($"\t{node.Coordinates}");
-			// }
-			// Console.ReadKey(true);
 
 			return ret;
 		};
 
-		var path = AStar.FindPath(start, goal, findAdjacentNodes, (from, to) => /*Coordinate.ManhattanDistance(from.Coordinates, to.Coordinates)*/0, EqualityComparer<MapNode>.Default);
-		var part1 = path == null ? -1 : path.Sum(n => n.HeatLoss);
+		var comparer   = EqualityComparer<PathState>.Create((state1, state2) => state1.Node == state2.Node, state => state.Node.GetHashCode());
+		var startState = new PathState(start, _east, 0);
+		var goalState  = new PathState(goal, _north, -1);
+
+		var path = AStar.FindPath(startState, goalState, findAdjacentNodes, (from, to) => Coordinate.ManhattanDistance(from.Node.Coordinates, to.Node.Coordinates), comparer);
+		var part1 = path == null ? -1 : path.Skip(1).Sum(n => n.Node.HeatLoss);
 
 		return (part1, 0);
 	}
 
 	private readonly record struct MapNode(Coordinate Coordinates, int HeatLoss);
+
+	private readonly record struct PathState(MapNode Node, Coordinate Direction, int DirectionCount);
 }
