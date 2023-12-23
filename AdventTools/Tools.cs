@@ -148,6 +148,53 @@ public static class Tools
 		}
 	}
 
+	/// <summary>
+	/// Generate combinations (fewer than permutations) using Chase's Twiddle
+	/// https://web.archive.org/web/20221024045742/http://www.netlib.no/netlib/toms/382
+	/// </summary>
+	/// <example>
+	/// void PrintCombination(char[] span, int[] indices, int k)
+	/// {
+	/// 	for (var i = 0; i < k; i++) {
+	/// 		Console.Write(span[indices[i]]);
+	/// 	}
+	/// 	Console.WriteLine();
+	/// }
+	///
+	/// var k = 2;
+	/// Console.WriteLine($"Combinations of {input} (size {k}):");
+	/// GenerateCombinations("abc".ToCharArray, k, PrintCombination);
+	/// </example>
+	public static void GenerateCombinations<T>(T[] array, int k, Action<T[], int[], int> action)
+	{
+		var n = array.Length;
+		var indices = new int[k];
+
+		for (var i = 0; i < k; i++) {
+			indices[i] = i;
+		}
+
+		while (true) {
+			action(array, indices, k);
+
+			var i = k - 1;
+
+			while (i >= 0 && indices[i] == n - k + i) {
+				i--;
+			}
+
+			if (i == -1) {
+				break;
+			}
+
+			indices[i]++;
+
+			for (int j = i + 1; j < k; j++) {
+				indices[j] = indices[j - 1] + 1;
+			}
+		}
+	}
+
 	public static void Deconstruct<T>(this T[] array, out T? item0, out T? item1)
 	{
 		item0 = default;
