@@ -4,7 +4,7 @@ public class Program
 {
 	public static async Task Main(string[] args)
 	{
-		Day19.Problem.Execute(ReadFileLines("Day19\\inputSample.txt"));
+		Day23.Problem.Execute(ReadFileLines("Day23\\inputSample.txt"));
 		await Task.CompletedTask;
 	}
 }
