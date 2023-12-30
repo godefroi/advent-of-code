@@ -64,32 +64,36 @@ public partial class Problem
 		// which sends a pulse to the rx module.
 
 		// we'll have a graph structure like this:
-		// loop 1 ┐
-		// loop 2 ┤
-		//        ├─(conjunction jm)─(rx)
-		// loop 3 ┤
-		// loop 4 ┘
+		// loop 1-(conjunction sg)┐
+		// loop 2-(conjunction lm)┤
+		//                        ├─(conjunction jm)─(rx)
+		// loop 3-(conjunction dh)┤
+		// loop 4-(conjunction db)┘
 
 		// so, for rx to get a "low", the jm conjunction must get a "high" from
 		// all its inputs, so we need to know what they are
 
-		var rxSource  = GetSources(modules, "rx").Single();
-		var jmSources = GetSources(modules, rxSource);
+		var rxSource    = GetSources(modules, "rx").Single();
+		var jmSources   = GetSources(modules, rxSource);
+		var loopCenters = jmSources.Select(s => GetSources(modules, s)).SelectMany(s => s).ToList();
 
 		// the input has been very carefully crafted; there is no general solution,
 		// but because our puzzle master is a benevolent overlord, we get to use
 		// a least common multiple of the four loop periods to calculate the output
 		// period.
-		var loopCounts = jmSources.ToDictionary(n => n, n => new List<int>());
+		var loopCounts = loopCenters.ToDictionary(n => n, n => new List<int>());
 
 		// Console.WriteLine("Conjunctions:");
 		// foreach (var c in conjunctions) {
 		// 	Console.WriteLine($"  {c} ({string.Join(',', ((Conjunction)modules[c]).GetSources())})");
 		// }
 
-		for (var i = 0; i < 1000; i++) {
+		for (var i = 0; i < 15000; i++) {
 			pulses.Enqueue(new Pulse(PulseType.Low, "button", "broadcaster"));
-			lowCount += 1;
+
+			if (i < 1000) {
+				lowCount += 1;
+			}
 
 			while (pulses.Count > 0) {
 				var (type, from, to) = pulses.Dequeue();
@@ -103,37 +107,47 @@ public partial class Problem
 
 				//Console.WriteLine($"{from} -{type.ToString().ToLowerInvariant()}-> {to}");
 
+				if (obType == PulseType.Low && loopCounts.TryGetValue(to, out var theList)) {
+					theList.Add(i);
+				}
+
+				// we can exit early if we have enough data
+				if (loopCounts.All(c => c.Value.Count >= 2) && i > 1000) {
+					break;
+				}
+
 				switch (obType) {
 					case PulseType.None:
 						continue;
 
-					case PulseType.High:
+					case PulseType.High when i < 1000:
 						highCount += destModule.Destinations.Length;
 						break;
 
-					case PulseType.Low:
+					case PulseType.Low when i < 1000:
 						lowCount += destModule.Destinations.Length;
+						break;
+
+					default:
 						break;
 				}
 
 				foreach (var d in destModule.Destinations) {
-					if (obType == PulseType.High && loopCounts.TryGetValue(d, out var theList)) {
-						theList.Add(i);
-					}
-
 					pulses.Enqueue(new Pulse(obType, to, d));
 				}
 			}
 		}
 
-		foreach (var (dest, list) in loopCounts) {
-			Console.WriteLine(dest);
-			foreach (var cnt in list) {
-				Console.WriteLine($"  {cnt}");
-			}
-		}
+		// foreach (var (dest, list) in loopCounts) {
+		// 	Console.WriteLine(dest);
+		// 	var p = 0;
+		// 	foreach (var cnt in list) {
+		// 		Console.WriteLine($"  {cnt} {(p > 0 ? cnt - p : -1)}");
+		// 		p = cnt;
+		// 	}
+		// }
 
-		return (lowCount * highCount, 0);
+		return (lowCount * highCount, LeastCommonMultiple(loopCounts.Select(s => (long)s.Value[1] - s.Value[0]).ToArray()));
 	}
 
 	private static List<string> GetSources(Dictionary<string, Module> modules, string moduleName) => modules
