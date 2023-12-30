@@ -8,24 +8,30 @@ public partial class Problem
 	private static readonly Coordinate _south = new(0, +1);
 	private static readonly Coordinate _east = new(+1, 0);
 	private static readonly Coordinate _west = new(-1, 0);
-
+	private static readonly long        _part2Steps = 26_501_365;
 
 	public static (long, long) Execute(string[] input)
 	{
-		var map    = CreateMap(input, c => c);
-		var width  = map.GetLength(0);
-		var height = map.GetLength(1);
-		var start  = FindStart(map, width, height);
+		var map       = CreateMap(input, c => c);
+		var width     = map.GetLength(0);
+		var height    = map.GetLength(1);
+		var start     = FindStart(map, width, height);
+		var distances = Dijkstra.FindDistances(start, from => FindAdjacentCoordinates(map, width, height, from));
+		var part1     = distances.Values.Count(v => v <= 64 && v % 2 == 0);
 
-		var distances = Dijkstra.FindDistances(start, from => FindAdjacentCoordinates(map, width, height, from), 64);
+		var stepsToEdge  = width / 2; // it takes us this many steps to reach the edge of a tile
+		var tileCount    = (_part2Steps - stepsToEdge) / width; // this is how many tiles we could reach (in a straight line) from our starting point
+		var evenTiles    = tileCount * tileCount; // even/and odd here and below work because our step count is odd
+		var oddTiles     = (tileCount + 1) * (tileCount + 1);
+		var evenCorners  = tileCount;
+		var oddCorners   = tileCount + 1;
+		var evenCornerSz = distances.Count(kvp => kvp.Value > stepsToEdge && kvp.Value % 2 == 0 && Coordinate.ManhattanDistance(kvp.Key, start) > 65);
+		var oddCornerSz  = distances.Count(kvp => kvp.Value > stepsToEdge && kvp.Value % 2 == 1 && Coordinate.ManhattanDistance(kvp.Key, start) > 65);
+		var evenTileSz   = distances.Values.Count(v => v % 2 == 0);
+		var oddTileSz    = distances.Values.Count(v => v % 2 == 1);
+		var part2        = (evenTiles * evenTileSz) + (oddTiles * oddTileSz) - (oddCorners * oddCornerSz) + (evenCorners * evenCornerSz);
 
-		var part1 = distances.Count(kvp => kvp.Value <= 64 && kvp.Value % 2 == 0);
-		// Console.WriteLine(start);
-		// foreach (var d in distances) {
-		// 	Console.WriteLine($"{d.Key} ({d.Value})");
-		// }
-
-		return (part1, 0);
+		return (part1, part2);
 	}
 
 	private static IEnumerable<Coordinate> FindAdjacentCoordinates(char[,] map, int width, int height, Coordinate adjacentTo)
