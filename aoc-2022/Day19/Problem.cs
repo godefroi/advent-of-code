@@ -2,11 +2,11 @@
 
 public partial class Problem
 {
-	public static (int, int) Main(string fileName)
-	{
-		//fileName = "inputSample.txt";
+	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
 
-		var blueprints = ReadFileLines(fileName, Parse);
+	public static (long, long) Main(string[] input)
+	{
+		var blueprints = input.Select(Parse).ToArray();
 		var part1      = blueprints.Select((bp, idx) => TestBlueprint(bp, 24) * (idx + 1)).Sum();
 		var part2      = blueprints.Take(3).Select(bp => TestBlueprint(bp, 32)).Aggregate(1, (i1, i2) => i1 * i2);
 

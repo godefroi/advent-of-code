@@ -4,23 +4,23 @@ namespace aoc_2022.Day21;
 
 public partial class Problem
 {
-	public static (long, long) Main(string fileName)
-	{
-		//fileName = "inputSample.txt";
+	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
 
-		var part1 = Part1(fileName);
-		var part2 = Part2(fileName);
+	public static (long, long) Main(string[] input)
+	{
+		var part1 = Part1(input);
+		var part2 = Part2(input);
 
 		return (part1, part2);
 	}
 
-	private static long Part1(string fileName)
+	private static long Part1(string[] input)
 	{
 		var constants   = new Dictionary<string, ConstantExpression>();
 		var operations  = new Dictionary<string, (string input1, string input2, string operation)>();
 		var expressions = new Dictionary<string, Expression>();
 
-		foreach (var match in ReadFileLines(fileName, s => ParseRegex().Match(s))) {
+		foreach (var match in input.Select(s => ParseRegex().Match(s))) {
 			if (!match.Success) {
 				throw new InvalidDataException("The regular expression failed to match");
 			}
@@ -75,14 +75,14 @@ public partial class Problem
 		return rootFunc();
 	}
 
-	private static long Part2(string fileName)
+	private static long Part2(string[] input)
 	{
 		var constants   = new Dictionary<string, Expression>();
 		var operations  = new Dictionary<string, (string input1, string input2, string operation)>();
 		var expressions = new Dictionary<string, Expression>();
 		var parmExp     = Expression.Parameter(typeof(long), "humanInput");
 
-		foreach (var match in ReadFileLines(fileName, s => ParseRegex().Match(s))) {
+		foreach (var match in input.Select(s => ParseRegex().Match(s))) {
 			if (!match.Success) {
 				throw new InvalidDataException("The regular expression failed to match");
 			}

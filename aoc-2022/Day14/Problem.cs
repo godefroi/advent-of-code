@@ -2,14 +2,16 @@
 
 public class Problem
 {
+	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
+
 	private const char CHAR_SAND    = 'o';
 	private const char CHAR_ROCK    = '#';
 	private const char CHAR_SOURCE  = '+';
 	private const char CHAR_NOTHING = '\0';
 
-	public static (int?, int?) Main(string fileName)
+	public static (long, long) Main(string[] input)
 	{
-		var rocks = ReadFileLines(fileName, Parse).SelectMany(p => p).SelectMany(EnumeratePoints).ToList();
+		var rocks = input.Select(Parse).SelectMany(p => p).SelectMany(EnumeratePoints).ToList();
 		var xmin  = rocks.Min(p => p.x);
 		var xmax  = rocks.Max(p => p.x);
 		var ymin  = rocks.Min(p => p.y);
@@ -23,7 +25,7 @@ public class Problem
 		}
 
 		field[500, 0] = CHAR_SOURCE;
-		
+
 		for (var x = 0; x < field.GetLength(0); x++) {
 			field[x, field.GetLength(1) - 1] = CHAR_ROCK;
 		}
@@ -80,7 +82,7 @@ public class Problem
 			}
 		}
 
-		return (part1, part2);
+		return (part1.Value, part2.Value);
 	}
 
 	private static IEnumerable<((int x, int y) from, (int x, int y) to)> Parse(string line)

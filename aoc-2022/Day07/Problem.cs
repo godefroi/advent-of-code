@@ -2,10 +2,12 @@
 
 public class Problem
 {
+	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
+
 	private const int TOTAL_SPACE  = 70000000;
 	private const int NEEDED_SPACE = 30000000;
-	
-	public static (int, int) Main(string fileName)
+
+	public static (long, long) Main(string[] input)
 	{
 		//fileName = "inputSample.txt";
 
@@ -13,7 +15,7 @@ public class Problem
 		var directories = new List<Directory>() { root };
 		var current     = root;
 
-		foreach (var line in ReadFileLines(fileName)) {
+		foreach (var line in input) {
 			if (line == "$ cd /") {
 				// already made the root directory
 				current = root;

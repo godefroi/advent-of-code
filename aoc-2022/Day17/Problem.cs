@@ -1,10 +1,11 @@
 ﻿using System.Diagnostics;
-using System.Text;
 
 namespace aoc_2022.Day17;
 
 public class Problem
 {
+	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
+
 	private const char TRANSLATE_LEFT    = '<';
 	private const char TRANSLATE_RIGHT   = '>';
 	private const long ROCK_COUNT_MAX_P1 = 2022;
@@ -49,19 +50,17 @@ public class Problem
 		{ RockType.Vertical,   RockType.Block      },
 	};
 
-	public static (long, long) Main(string fileName)
+	public static (long, long) Main(string[] input)
 	{
-		//fileName = "inputSample.txt";
-
-		var part1 = RunSimulation(fileName, ROCK_COUNT_MAX_P1);
-		var part2 = RunSimulation(fileName, ROCK_COUNT_MAX_P2);
+		var part1 = RunSimulation(input, ROCK_COUNT_MAX_P1);
+		var part2 = RunSimulation(input, ROCK_COUNT_MAX_P2);
 
 		return (part1, part2);
 	}
 
-	private static long RunSimulation(string fileName, long rockCount)
+	private static long RunSimulation(string[] input, long rockCount)
 	{
-		var jets          = ReadFileLines(fileName).Single().ToCharArray().Select(c => (Translation)c).ToArray();
+		var jets          = input.Single().ToCharArray().Select(c => (Translation)c).ToArray();
 		var chamber       = new HashSet<Coordinate>();
 		var currentHeight = 0L;
 		var currentJet    = 0;
@@ -249,6 +248,6 @@ public class Problem
 		Vertical,
 		Block
 	}
-	
+
 	private readonly record struct Coordinate(int x, long y);
 }

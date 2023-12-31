@@ -1,12 +1,12 @@
-﻿using System.ComponentModel.Design;
-
-namespace aoc_2022.Day08;
+﻿namespace aoc_2022.Day08;
 
 public class Problem
 {
-	public static (int, int) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
+
+	public static (long, long) Main(string[] input)
 	{
-		var trees  = ReadFileLines(fileName, Parse).SelectMany(t => t);
+		var trees  = input.Select(Parse).SelectMany(t => t).ToArray();
 		var rows   = new Dictionary<int, List<Tree>>();
 		var cols   = new Dictionary<int, List<Tree>>();
 		var width  = trees.Max(t => t.X) + 1;

@@ -2,9 +2,11 @@
 
 public class Problem
 {
-	public static (int, int) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
+
+	public static (long, long) Main(string[] input)
 	{
-		var pairs = ReadFileLines(fileName, AssignmentPair.Parse);
+		var pairs = input.Select(AssignmentPair.Parse).ToArray();
 
 		var part1 = pairs.Count(p => p.Intersection.SequenceEqual(p.Range1) || p.Intersection.SequenceEqual(p.Range2));
 		var part2 = pairs.Count(p => p.Intersection.Any());
@@ -52,7 +54,7 @@ public class Problem
 	[InlineData("input.txt", 556)]
 	public void Part1CalculatesCorrectly(string fileName, int expectedPart1)
 	{
-		Assert.Equal(expectedPart1, Main(fileName).Item1);
+		Assert.Equal(expectedPart1, Main(ReadFileLines(fileName)).Item1);
 	}
 
 	[Theory]
@@ -60,6 +62,6 @@ public class Problem
 	[InlineData("input.txt", 876)]
 	public void Part2CalculatesCorrectly(string fileName, int expectedPart2)
 	{
-		Assert.Equal(expectedPart2, Main(fileName).Item2);
+		Assert.Equal(expectedPart2, Main(ReadFileLines(fileName)).Item2);
 	}
 }

@@ -2,17 +2,19 @@
 
 public class Problem
 {
+	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
+
 	private const int HORIZONTAL_WIDTH = 40;
 	private const int VERTICAL_HEIGHT  = 6;
 
-	public static (int, string) Main(string fileName)
+	public static (string, string) Main(string[] input)
 	{
 		var register  = 1;
 		var cycle     = 1;
 		var strengths = new List<int>();
 		var crt       = new char[VERTICAL_HEIGHT * HORIZONTAL_WIDTH];
 
-		foreach (var (inst, value, length) in ReadFileLines(fileName, Instruction.Parse)) {
+		foreach (var (inst, value, length) in input.Select(Instruction.Parse).ToArray()) {
 			for (var i = 0; i < length; i++) {
 				if ((cycle - 20) % 40 == 0) {
 					//Console.WriteLine($"{cycle} {register}");
@@ -42,7 +44,7 @@ public class Problem
 
 		Console.WriteLine();
 
-		return (strengths.Sum(), "EFUGLPAP");
+		return (strengths.Sum().ToString(), "EFUGLPAP");
 	}
 
 	private readonly record struct Instruction(string Name, int? Value)

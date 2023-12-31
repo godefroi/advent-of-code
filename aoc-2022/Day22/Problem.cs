@@ -2,11 +2,10 @@
 
 public partial class Problem
 {
-	public static (int, int) Main(string fileName)
-	{
-		//fileName = "inputSample.txt";
+	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
 
-		var lines = ReadFileLines(fileName);
+	public static (long, long) Main(string[] lines)
+	{
 		var path  = ParseRegex().Matches(lines.Last()).Select(m => m.Value).ToArray();
 		var map   = ParseMap(lines);
 

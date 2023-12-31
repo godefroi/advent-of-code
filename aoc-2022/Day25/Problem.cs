@@ -2,9 +2,11 @@
 
 public class Problem
 {
-	public static string Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
+
+	public static (string, string) Main(string[] input)
 	{
-		return ConvertNumber(ReadFileLines(fileName, ParseNumber).Sum());
+		return (ConvertNumber(input.Select(ParseNumber).Sum()), string.Empty);
 	}
 
 	private static long ParseNumber(string number)

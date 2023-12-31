@@ -2,9 +2,11 @@
 
 public class Problem
 {
-	public static (long, long) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
+
+	public static (long, long) Main(string[] input)
 	{
-		var monkies = ChunkByEmpty(ReadFileLines(fileName)).Select(Monkey.Parse).ToList();
+		var monkies = ChunkByEmpty(input).Select(Monkey.Parse).ToList();
 
 		for (var i = 0; i < 20; i++) {
 			foreach (var monkey in monkies) {
@@ -14,7 +16,7 @@ public class Problem
 
 		var part1 = monkies.OrderByDescending(m => m.InspectionCount).Take(2).Select(m => m.InspectionCount).Aggregate((m1, m2) => m1 * m2);
 
-		monkies = ChunkByEmpty(ReadFileLines(fileName)).Select(Monkey.Parse).ToList();
+		monkies = ChunkByEmpty(input).Select(Monkey.Parse).ToList();
 
 		// key realization here is that DivisibilityCheck are all prime numbers...
 		var factor = monkies.Aggregate(1, (c, m) => c * m.DivisibilityCheck);

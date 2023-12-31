@@ -2,9 +2,11 @@
 
 public class Problem
 {
-	public static (int, int) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
+
+	public static (long, long) Main(string[] input)
 	{
-		var packet = ReadFileLines(fileName).Single();
+		var packet = input.Single();
 		var part1  = FindMarker(packet.ToCharArray(), 4);
 		var part2  = FindMarker(packet.ToCharArray(), 14);
 

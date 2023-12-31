@@ -4,7 +4,9 @@ using Translation = Dictionary<char, Problem.Move>;
 
 public class Problem
 {
-	public static int Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
+
+	public static (long, long) Main(string[] lines)
 	{
 		var translation = new Translation() {
 			{ 'X', Move.Rock },
@@ -12,16 +14,16 @@ public class Problem
 			{ 'Z', Move.Scissors },
 		};
 
-		var score1 = ScoreGame(fileName, translation, ScoreRound1);
-		var score2 = ScoreGame(fileName, translation, ScoreRound2);
+		var score1 = ScoreGame(lines, translation, ScoreRound1);
+		var score2 = ScoreGame(lines, translation, ScoreRound2);
 
 		Console.WriteLine($"part 1: {score1}");
 		Console.WriteLine($"part 2: {score2}");
 
-		return score1;
+		return (score1, score2);
 	}
 
-	private static int ScoreGame(string fileName, Translation translation, Func<(Move Mine, Move Opponent), int> scorer) => ReadFileLines(fileName).Select(l => Translate(l, translation)).Sum(scorer);
+	private static int ScoreGame(string[] lines, Translation translation, Func<(Move Mine, Move Opponent), int> scorer) => lines.Select(l => Translate(l, translation)).Sum(scorer);
 
 	private static (Move Mine, Move Opponent) Translate(string line, Translation translation) => (
 		translation[line[2]],
@@ -93,7 +95,7 @@ public class Problem
 			{ 'Z', Move.Scissors },
 		};
 
-		Assert.Equal(expected, ScoreGame(fileName, translation, ScoreRound1));
+		Assert.Equal(expected, ScoreGame(ReadFileLines(fileName), translation, ScoreRound1));
 	}
 
 	[Theory]
@@ -107,7 +109,7 @@ public class Problem
 			{ 'Z', Move.Scissors },
 		};
 
-		Assert.Equal(expected, ScoreGame(fileName, translation, ScoreRound2));
+		Assert.Equal(expected, ScoreGame(ReadFileLines(fileName), translation, ScoreRound2));
 	}
 
 	[Fact]

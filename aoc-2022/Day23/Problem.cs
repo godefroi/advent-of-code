@@ -4,11 +4,13 @@ namespace aoc_2022.Day23;
 
 public class Problem
 {
-	public static (int, int) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
+
+	public static (long, long) Main(string[] input)
 	{
 		//fileName = "inputSample.txt";
 
-		var elves = ReadFileLines(fileName, Parse).SelectMany((coords, y) => coords.Select(c => new Coordinate(c.X, y))).ToHashSet();
+		var elves = input.Select(Parse).SelectMany((coords, y) => coords.Select(c => new Coordinate(c.X, y))).ToHashSet();
 		var part1 = 0;
 		var round = 0;
 
@@ -178,7 +180,7 @@ public class Problem
 			new Coordinate(elf.X + 1, elf.Y),
 			new Coordinate(elf.X - 1, elf.Y + 1),
 			new Coordinate(elf.X,     elf.Y + 1),
-			new Coordinate(elf.X + 1, elf.Y + 1)) { } 
+			new Coordinate(elf.X + 1, elf.Y + 1)) { }
 	}
 
 	private enum Direction : int

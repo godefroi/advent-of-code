@@ -2,9 +2,11 @@
 
 public class Problem
 {
-	public static (int, int) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
+
+	public static (long, long) Main(string[] input)
 	{
-		var instructions = ReadFileLines(fileName, Instruction.Parse);
+		var instructions = input.Select(Instruction.Parse).ToArray();
 		var part1        = Part1(instructions);
 		var part2        = Part2(instructions);
 
@@ -82,23 +84,23 @@ public class Problem
 			// do nothing
 			return tail;
 		}
-		
+
 		if (tail.x == head.x && tail.y == head.y - 2) { // tail is two up from head
 			return (tail.x, tail.y + 1); // move up
 		}
-		
+
 		if (tail.x == head.x && tail.y == head.y + 2) { // tail is two down from head
 			return (tail.x, tail.y - 1); // move down
 		}
-		
+
 		if (tail.x == head.x - 2 && tail.y == head.y) { // tail is two left from head
 			return (tail.x + 1, tail.y); // move right
 		}
-		
+
 		if (tail.x == head.x + 2 && tail.y == head.y) { // tail is two right from head
 			return (tail.x - 1, tail.y); // move left
 		}
-		
+
 		if ((tail.x == head.x + 1 && tail.y == head.y - 2) || // head is two up and right
 			(tail.x == head.x + 2 && tail.y == head.y - 1) || // head is two right and up
 			(tail.x == head.x + 2 && tail.y == head.y - 2)) { // head is two right and two up
@@ -116,13 +118,13 @@ public class Problem
 			(tail.x == head.x + 2 && tail.y == head.y + 2)) {
 			return (tail.x - 1, tail.y - 1); // move diag up-left
 		}
-		
+
 		if ((tail.x == head.x - 1 && tail.y == head.y + 2) || // head is two down and left
 			(tail.x == head.x - 2 && tail.y == head.y + 1) || // head is two left and down
 			(tail.x == head.x - 2 && tail.y == head.y + 2)) {
 			return (tail.x + 1, tail.y - 1); // move diag up-right
 		}
-	
+
 		throw new InvalidDataException($"Head is at {head}, tail is at {tail}, do you know where your ships are?");
 	}
 

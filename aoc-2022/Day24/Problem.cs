@@ -2,11 +2,11 @@
 
 public class Problem
 {
-	public static (int, int) Main(string fileName)
-	{
-		//fileName = "inputSample2.txt";
+	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
 
-		var lines = ReadFileLines(fileName, line => line.ToCharArray());
+	public static (long, long) Main(string[] input)
+	{
+		var lines = input.Select(line => line.ToCharArray()).ToArray();
 		var board = new char[lines[0].Length, lines.Length];
 		var width = Math.Max(-1, lines[0].Length);
 

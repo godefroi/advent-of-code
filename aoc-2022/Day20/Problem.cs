@@ -2,13 +2,13 @@
 
 public class Problem
 {
+	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
+
 	private const long DECRYPTION_KEY = 811589153;
 
-	public static (long, long) Main(string fileName)
+	public static (long, long) Main(string[] input)
 	{
-		//fileName = "inputSample.txt";
-
-		var numbers   = ReadFileLines(fileName, long.Parse);
+		var numbers   = input.Select(long.Parse).ToArray();
 		var mixedList = MixList(numbers);
 		var zeroPos   = Array.IndexOf(mixedList, 0);
 		var coord1    = mixedList[(1000 + zeroPos) % mixedList.Length];
@@ -16,7 +16,7 @@ public class Problem
 		var coord3    = mixedList[(3000 + zeroPos) % mixedList.Length];
 		var part1     = coord1 + coord2 + coord3;
 
-		numbers   = ReadFileLines(fileName, long.Parse).Select(n => n * DECRYPTION_KEY).ToArray();
+		numbers   = input.Select(long.Parse).Select(n => n * DECRYPTION_KEY).ToArray();
 		mixedList = MixList(numbers, 10);
 		zeroPos   = Array.IndexOf(mixedList, 0);
 		coord1    = mixedList[(1000 + zeroPos) % mixedList.Length];

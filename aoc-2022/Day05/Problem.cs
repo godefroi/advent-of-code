@@ -2,9 +2,11 @@
 
 public class Problem
 {
-	public static (string, string) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
+
+	public static (string, string) Main(string[] input)
 	{
-		var (stacks, instructionLines) = Parse(fileName);
+		var (stacks, instructionLines) = Parse(input);
 		var instructions = instructionLines.Select(ParseInstruction);
 
 		foreach (var instruction in instructions) {
@@ -15,7 +17,7 @@ public class Problem
 
 		var part1 = new string(stacks.Select(s => s.Peek()).ToArray());
 
-		(stacks, instructionLines) = Parse(fileName);
+		(stacks, instructionLines) = Parse(input);
 		instructions = instructionLines.Select(ParseInstruction);
 
 		foreach (var (from, to, count) in instructions) {
@@ -35,9 +37,8 @@ public class Problem
 		return (part1, part2);
 	}
 
-	private static (Stack<char>[] Stacks, IEnumerable<string> Instructions) Parse(string fileName)
+	private static (Stack<char>[] Stacks, IEnumerable<string> Instructions) Parse(string[] lines)
 	{
-		var lines      = ReadFileLines(fileName);
 		var divider    = Array.IndexOf(lines, string.Empty);
 		var stackCount = lines[divider - 1].Split(' ', StringSplitOptions.RemoveEmptyEntries).Length;
 		var stacks     = new Stack<char>[stackCount];
@@ -71,11 +72,11 @@ public class Problem
 	[Fact]
 	public void SampleParsesCorrectly()
 	{
-		var (stacks, instructions) = Parse("inputSample.txt");
+		var (stacks, instructions) = Parse(ReadFileLines("inputSample.txt"));
 
 		Assert.Equal(3, stacks.Length);
 
-		Assert.Collection(stacks, 
+		Assert.Collection(stacks,
 			s => Assert.Collection(s.AsEnumerable(),
 				c => Assert.Equal('N', c),
 				c => Assert.Equal('Z', c)),
@@ -96,7 +97,7 @@ public class Problem
 	[Fact]
 	public void SampleInstructionsParseCorrectly()
 	{
-		var instructions = Parse("inputSample.txt").Instructions.Select(ParseInstruction);
+		var instructions = Parse(ReadFileLines("inputSample.txt")).Instructions.Select(ParseInstruction);
 
 		Assert.Collection(instructions,
 			i => Assert.Equal((1, 0, 1), i),

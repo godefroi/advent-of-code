@@ -4,13 +4,15 @@ namespace aoc_2022.Day15;
 
 public partial class Problem
 {
-	public static (int, long) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
+
+	public static (long, long) Main(string[] input)
 	{
 		//return BruteForce(fileName);
-		return Solver(fileName);
+		return Solver(input);
 	}
 
-	private static (int, long) Solver(string fileName)
+	private static (int, long) Solver(string[] input)
 	{
 		using var ctx    = new Context();
 		using var solver = ctx.MkSolver();
@@ -23,7 +25,7 @@ public partial class Problem
 		solver.Assert(ctx.MkGt(y, ctx.MkInt(0)));
 		solver.Assert(ctx.MkLt(y, ctx.MkInt(4000000)));
 
-		foreach (var sd in ReadFileLines(fileName, Parse)) {
+		foreach (var sd in input.Select(Parse)) {
 			var d = Math.Abs(sd.sensor.X - sd.beacon.X) + Math.Abs(sd.sensor.Y - sd.beacon.Y);
 
 			var xDiff = sd.sensor.X - x;
@@ -67,7 +69,7 @@ public partial class Problem
 		var beaconDistance = ManhattanDistance(sensor, closestBeacon);
 		var xMin = sensor.X - beaconDistance;
 		var xMax = sensor.X + beaconDistance;
-		var yMin = sensor.Y - beaconDistance; 
+		var yMin = sensor.Y - beaconDistance;
 		var yMax = sensor.Y + beaconDistance;
 
 		// shortcut for sensors outside the range of interest

@@ -4,6 +4,8 @@ namespace aoc_2022.Day18;
 
 public class Problem
 {
+	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
+
 	private static readonly Coordinate3 X_PLUS_ONE  = new( 1,  0,  0);
 	private static readonly Coordinate3 X_MINUS_ONE = new(-1,  0,  0);
 	private static readonly Coordinate3 Y_PLUS_ONE  = new( 0,  1,  0);
@@ -11,9 +13,9 @@ public class Problem
 	private static readonly Coordinate3 Z_PLUS_ONE  = new( 0,  0,  1);
 	private static readonly Coordinate3 Z_MINUS_ONE = new( 0,  0, -1);
 
-	public static (int, int) Main(string fileName)
+	public static (long, long) Main(string[] input)
 	{
-		var cubes   = ReadFileLines(fileName/*"inputSample2.txt"*/, Coordinate3.Parse);
+		var cubes   = input.Select(Coordinate3.Parse).ToArray();
 		var edgeSet = new HashSet<Edge>(new EdgeComparer());
 		var overlap = 0;
 

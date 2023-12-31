@@ -1,12 +1,12 @@
-﻿using System.IO;
-using System.Text;
-using System.Text.Json.Nodes;
+﻿using System.Text.Json.Nodes;
 
 namespace aoc_2022.Day13;
 
 public class Problem
 {
-	public static (int, int) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
+
+	public static (long, long) Main(string[] input)
 	{
 		var idx     = 0;
 		var part1   = 0;
@@ -22,7 +22,7 @@ public class Problem
 			});
 		var packets = new List<ListOrInteger>() { div1, div2 };
 
-		foreach (var (list1, list2) in ReadLists(fileName)) {
+		foreach (var (list1, list2) in ReadLists(input)) {
 			idx++;
 
 			if (list1.CompareTo(list2) < 0) {
@@ -66,9 +66,9 @@ public class Problem
 		return (Parse(items[0]), Parse(items[1]));
 	}
 
-	private static IEnumerable<(ListOrInteger first, ListOrInteger second)> ReadLists(string fileName)
+	private static IEnumerable<(ListOrInteger first, ListOrInteger second)> ReadLists(string[] input)
 	{
-		foreach (var chunk in ChunkByEmpty(ReadFileLines(fileName))) {
+		foreach (var chunk in ChunkByEmpty(input)) {
 			if (chunk == null) {
 				throw new InvalidDataException("Chunk cannot be null");
 			}
@@ -262,7 +262,7 @@ public class Problem
 			false
 		};
 
-		foreach (var ((list1, list2), result) in ReadLists("inputSample.txt").Zip(results)/*.Skip(2).Take(1)*/) {
+		foreach (var ((list1, list2), result) in ReadLists(ReadFileLines("inputSample.txt")).Zip(results)/*.Skip(2).Take(1)*/) {
 			Assert.Equal(result, list1.CompareTo(list2) < 0);
 		}
 	}

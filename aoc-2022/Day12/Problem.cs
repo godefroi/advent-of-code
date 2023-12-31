@@ -4,9 +4,11 @@ namespace aoc_2022.Day12;
 
 public class Problem
 {
-	public static (int, int) Main(string fileName)
+	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
+
+	public static (long, long) Main(string[] input)
 	{
-		var (map, start, goal) = ParseMap(fileName);
+		var (map, start, goal) = ParseMap(input);
 
 		var part1 = (FindPath<Coordinate>(start, goal, c => FindAdjacentNodes(map, c), (f, t) => Coordinate.ManhattanDistance(f, t))?.Count ?? -1) - 1; // -1 because our algo includes the start
 		var part2 = GetStartingPositions(map).Select(candidate => FindPath<Coordinate>(candidate, goal, c => FindAdjacentNodes(map, c), (f, t) => Coordinate.ManhattanDistance(f, t))?.Count).Where(i => i.HasValue).Min() - 1;
@@ -55,9 +57,8 @@ public class Problem
 		}
 	}
 
-	private static (int[,] map, (int x, int y) start, (int x, int y) goal) ParseMap(string fileName)
+	private static (int[,] map, (int x, int y) start, (int x, int y) goal) ParseMap(string[] lines)
 	{
-		var lines  = ReadFileLines(fileName);
 		var width  = lines[0].Length;
 		var height = lines.Length;
 		var map    = new int[width, height];

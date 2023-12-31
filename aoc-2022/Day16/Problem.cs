@@ -6,11 +6,11 @@ namespace aoc_2022.Day16;
 
 public partial class Problem
 {
-	public static (int, int) Main(string fileName)
-	{
-		//fileName = "inputSample.txt";
+	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
 
-		var rooms       = ReadFileLines(fileName, Room.Parse).ToDictionary(r => r.Name);
+	public static (long, long) Main(string[] input)
+	{
+		var rooms       = input.Select(Room.Parse).ToDictionary(r => r.Name);
 		var flowRooms   = rooms.Values.Where(r => r.FlowRate > 0 || r.Name == "AA").Select(r => r.Name).ToHashSet();
 		var connections = ComputeDistances(rooms.SelectMany(r => r.Value.Connections.Select(c => new WeightedEdge<string, int>(r.Key, c, 1))))
 			.Where(kvp => kvp.Key.From != kvp.Key.To && flowRooms.Contains(kvp.Key.From) && flowRooms.Contains(kvp.Key.To))
@@ -38,7 +38,7 @@ public partial class Problem
 
 		return (part1, part2);
 	}
-	
+
 	private static Dictionary<int, int> Search(int minutes, Dictionary<string, Room> rooms, HashSet<string> flowRooms, Dictionary<string, int> masks, Dictionary<Edge<string>, int> connections)
 	{
 		var best   = new Dictionary<int, int>();
