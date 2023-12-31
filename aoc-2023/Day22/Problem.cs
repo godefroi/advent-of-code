@@ -88,11 +88,11 @@ public partial class Problem
 
 	private readonly record struct Brick(Coordinate3 From, Coordinate3 To) : IComparable<Brick>
 	{
-		public int MaxZ => Math.Max(From.Z, To.Z);
+		public long MaxZ => Math.Max(From.Z, To.Z);
 
-		public int MinZ => Math.Min(From.Z, To.Z);
+		public long MinZ => Math.Min(From.Z, To.Z);
 
-		public int SizeZ => MaxZ - MinZ + 1;
+		public long SizeZ => MaxZ - MinZ + 1;
 
 		public int CompareTo(Brick other) => MinZ.CompareTo(other.MinZ);
 

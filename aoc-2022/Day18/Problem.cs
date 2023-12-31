@@ -34,12 +34,12 @@ public class Problem
 		var seenSet      = new HashSet<Coordinate3>();
 		var coordinates  = new Stack<Coordinate3>();
 		var surfaceEdges = new HashSet<Edge>(/*new EdgeComparer()*/);
-		var minX         = int.MaxValue;
-		var minY         = int.MaxValue;
-		var minZ         = int.MaxValue;
-		var maxX         = int.MinValue;
-		var maxY         = int.MinValue;
-		var maxZ         = int.MinValue;
+		var minX         = long.MaxValue;
+		var minY         = long.MaxValue;
+		var minZ         = long.MaxValue;
+		var maxX         = long.MinValue;
+		var maxY         = long.MinValue;
+		var maxZ         = long.MinValue;
 		var adjacencies  = new[] {
 			X_PLUS_ONE,
 			X_MINUS_ONE,
