@@ -2,7 +2,7 @@
 
 public class Problem
 {
-	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
+	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem));
 
 	private const long DECRYPTION_KEY = 811589153;
 

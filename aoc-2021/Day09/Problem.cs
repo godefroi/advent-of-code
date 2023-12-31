@@ -2,7 +2,7 @@ namespace aoc_2021.Day09;
 
 public class Problem
 {
-	public static ProblemMetadata2 Metadata { get; } = new(Main);
+	public static ProblemMetadata Metadata { get; } = new(Main);
 
 	public static (long p1, long p2) Main(string[] input)
 	{
@@ -12,27 +12,27 @@ public class Problem
 		var p1    = lows.Sum(l => l.Height + 1);
 
 		Console.WriteLine($"part 1: {p1}"); // part 1 is 452
-		
+
 		foreach (var low in lows) {
 			var basinLocations = Adjacents(map, low).Where(l => l.Height < 9).ToHashSet();
 			var lastCount      = basinLocations.Count + 1;
-		
+
 			// make sure we get the center in there
 			basinLocations.Add(low);
-		
+
 			// find all the neighbors
 			while (true) {
 				var newLocs = basinLocations.SelectMany(l => Adjacents(map, l).Where(a => a.Height < 9)).ToList();
-		
+
 				if (newLocs.Where(basinLocations.Add).Count() == 0) {
 					break;
 				}
 			}
-		
+
 			// find the size of the basin
 			sizes.Add(basinLocations.Count);
 		}
-		
+
 		var p2 = sizes.OrderByDescending(i => i).Take(3).Aggregate(1, (s1, s2) => s1 * s2);
 
 		Console.WriteLine($"part 2: {p2}"); // part 2 is 1263735

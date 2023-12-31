@@ -4,7 +4,7 @@ namespace aoc_2022.Day17;
 
 public class Problem
 {
-	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
+	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem));
 
 	private const char TRANSLATE_LEFT    = '<';
 	private const char TRANSLATE_RIGHT   = '>';

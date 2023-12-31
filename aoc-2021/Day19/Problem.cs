@@ -97,7 +97,7 @@ public class Problem
 		((int x, int y, int z) inp) => ( inp.y, -inp.z, -inp.x),
 	};
 
-	public static ProblemMetadata2 Metadata { get; } = new(Main);
+	public static ProblemMetadata Metadata { get; } = new(Main);
 
 	public static (long, long) Main(string[] input)
 	{

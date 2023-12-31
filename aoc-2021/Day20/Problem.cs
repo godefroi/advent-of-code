@@ -4,7 +4,7 @@ using Image = Dictionary<(int x, int y), char>;
 
 public class Problem
 {
-	public static ProblemMetadata2 Metadata { get; } = new(Main);
+	public static ProblemMetadata Metadata { get; } = new(Main);
 
 	public static (long, long) Main(string[] input)
 	{
@@ -121,7 +121,7 @@ public class Problem
 		var xmax = image.Keys.Max(k => k.x);
 		var ymin = image.Keys.Min(k => k.y == int.MinValue ? int.MaxValue : k.y);
 		var ymax = image.Keys.Max(k => k.y);
-		var def  = image[(int.MinValue, int.MinValue)]; 
+		var def  = image[(int.MinValue, int.MinValue)];
 
 		Assert.Equal( 34, GetEnhancementIndex(2, 2, xmin, ymin, xmax, ymax, def, image));
 		Assert.Equal( 18, GetEnhancementIndex(0, 0, xmin, ymin, xmax, ymax, def, image));

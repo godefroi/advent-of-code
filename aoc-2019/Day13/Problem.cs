@@ -7,7 +7,7 @@ public class Problem
 	private const long TILE_BALL = 4;
 	private const long TILE_PADDLE = 3;
 
-	public static ProblemMetadata2 Metadata { get; } = new(Main);
+	public static ProblemMetadata Metadata { get; } = new(Main);
 
 	public static (long, long) Main(string[] input)
 	{

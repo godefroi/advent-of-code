@@ -2,7 +2,7 @@
 
 public class Problem
 {
-	public static ProblemMetadata2 Metadata { get; } = new(Main);
+	public static ProblemMetadata Metadata { get; } = new(Main);
 
     internal static (long, long) Main(string[] input)
 	{

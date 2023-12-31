@@ -6,7 +6,7 @@ internal readonly record struct NumberPair(ReadOnlyMemory<char> Number, int Valu
 
 public class Problem
 {
-	public static ProblemMetadata2 Metadata { get; } = new(Execute, typeof(Problem));
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem));
 
 	private static NumberPair[] _wordPairs = [
 		new("1".AsMemory(),     1),
@@ -131,7 +131,7 @@ public class Problem
 			// shorten the span by one
 			searchIn = searchIn[..^1];
 		}
-		
+
 		throw new InvalidOperationException("No numbers were found in the string.");
 	}
 

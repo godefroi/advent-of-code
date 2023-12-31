@@ -2,7 +2,7 @@ namespace aoc_2021.Day14;
 
 public class Problem
 {
-	public static ProblemMetadata2 Metadata { get; } = new(Main);
+	public static ProblemMetadata Metadata { get; } = new(Main);
 
 	public static (long p1, long p2) Main(string[] input)
 	{
@@ -10,7 +10,7 @@ public class Problem
 		var rules   = input.Skip(2).ToDictionary(r => (First: r[0], Second: r[1]), r => r[6]);
 		var ccounts = polymer.GroupBy(c => c).ToDictionary(g => g.Key, g => g.LongCount());
 		var pcounts = polymer.Zip(polymer.Skip(1)).ToDictionary(p => (p.First, p.Second), p => 1L);
-		
+
 		long p1 = 0, p2 = 0;
 
 		foreach (var rule in rules) {
@@ -18,7 +18,7 @@ public class Problem
 				pcounts.Add(rule.Key, 0L);
 			}
 		}
-		
+
 		foreach (var rule in rules) {
 			if (!ccounts.ContainsKey(rule.Key.First)) {
 				ccounts.Add(rule.Key.First, 0L);
@@ -27,10 +27,10 @@ public class Problem
 				ccounts.Add(rule.Key.Second, 0L);
 			}
 		}
-		
+
 		for (var i = 0; i < 40; i++) {
 			var ocounts = pcounts.ToDictionary(p => p.Key, p => p.Value);
-			
+
 			foreach (var r in rules) {
 				var count = ocounts[r.Key];
 				pcounts[r.Key] -= count;
@@ -38,13 +38,13 @@ public class Problem
 				pcounts[(First: r.Value, Second: r.Key.Second)] += count;
 				ccounts[r.Value] += count;
 			}
-		
+
 			if (i == 9) {
 				p1 = ccounts.Max(kvp => kvp.Value) - ccounts.Min(kvp => kvp.Value);
 				Console.WriteLine($"part 1: {p1}"); // part 1 is 2233
 			}
 		}
-		
+
 		p2 = ccounts.Max(kvp => kvp.Value) - ccounts.Min(kvp => kvp.Value);
 		Console.WriteLine($"part 2: {p2}"); // part 2 is 2884513602164
 

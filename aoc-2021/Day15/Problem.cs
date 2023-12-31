@@ -4,14 +4,14 @@ using static Dijkstra;
 
 public class Problem
 {
-	public static ProblemMetadata2 Metadata { get; } = new(Main);
+	public static ProblemMetadata Metadata { get; } = new(Main);
 
 	public static (long p1, long p2) Main(string[] input)
 	{
 		var graph  = input.SelectMany((line, y) => line.Select((c, x) => new Node(x, y, int.Parse(c.ToString())))).ToDictionary(n => (n.X, n.Y));
 		var height = input.Length;
 		var p1     = RunDijkstra(graph);
-		
+
 		graph = graph.Values.SelectMany(n => Scale(n, 5, height)).ToDictionary(n => (n.X, n.Y));
 
 		var p2 = RunDijkstra(graph);

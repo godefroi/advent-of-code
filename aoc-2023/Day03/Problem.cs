@@ -5,7 +5,7 @@ namespace AdventOfCode.Year2023.Day03;
 
 public partial class Problem
 {
-	public static ProblemMetadata2 Metadata { get; } = new(Execute, null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, null);
 
 	public static (long, long) Execute(string[] input)
 	{
@@ -35,7 +35,7 @@ public partial class Problem
 		foreach (var group in gsyms.GroupBy(i => i.Position).Where(g => g.Count() == 2)) {
 			part2 += group.Aggregate(1, (acc, g) => acc * g.Number);
 		}
-		
+
 		return (sum, part2);
 	}
 

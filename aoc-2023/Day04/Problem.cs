@@ -4,7 +4,7 @@ namespace AdventOfCode.Year2023.Day04;
 
 public partial class Problem
 {
-	public static ProblemMetadata2 Metadata { get; } = new(Execute, typeof(Benchmarks));
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Benchmarks));
 
 	public static (long, long) Execute(string[] input)
 	{

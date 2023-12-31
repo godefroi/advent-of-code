@@ -2,7 +2,7 @@
 
 public class Problem
 {
-	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
+	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem));
 
 	private static readonly Dictionary<char, int> _priorities = Enumerable.Range('a', 'z' - 'a' + 1).Concat(Enumerable.Range('A', 'Z' - 'A' + 1)).Select((c, i) => ((char) c, i)).ToDictionary(item => item.Item1, item => item.i + 1);
 

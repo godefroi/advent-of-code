@@ -4,7 +4,7 @@ public class Problem
 {
 	private static string _padding = "";
 
-	public static ProblemMetadata2 Metadata { get; } = new(Main);
+	public static ProblemMetadata Metadata { get; } = new(Main);
 
 	public static (long versionsum, long value) Main(string[] input)
 	{
@@ -232,22 +232,22 @@ public class Problem
 			Version = version;
 			Type    = type;
 			Value   = value;
-		
+
 			if (contents != null) {
 				Contents = new List<Packet>(contents);
 			} else {
 				Contents = new List<Packet>();
 			}
 		}
-		
+
 		public int Length { get; private set; }
-		
+
 		public int Version { get; private set; }
-		
+
 		public int Type { get; private set; }
-		
+
 		public long? Value { get; private set; }
-		
+
 		public List<Packet> Contents { get; private set; }
 	}
 }

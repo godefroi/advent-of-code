@@ -4,7 +4,7 @@ namespace aoc_2019.Day17;
 
 public class Problem
 {
-	public static ProblemMetadata2 Metadata { get; } = new(Main);
+	public static ProblemMetadata Metadata { get; } = new(Main);
 
 	public static (long, long) Main(string[] input)
 	{
@@ -29,7 +29,7 @@ public class Problem
 				Console.WriteLine($"{i} ({subPathStr}) => {string.Join(',', foundPos)} => {subPathStr.Length * foundPos.Count} chars replaced with {foundPos.Count * 2} chars");
 			}
 		}
-		
+
 		Console.WriteLine(string.Join(',', path));
 
 		// So, I did this manually based on the above output. Sue me.

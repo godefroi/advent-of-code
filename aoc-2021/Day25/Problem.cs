@@ -2,7 +2,7 @@
 
 public class Problem
 {
-	public static ProblemMetadata2 Metadata { get; } = new(Main);
+	public static ProblemMetadata Metadata { get; } = new(Main);
 
 	public static (long, long) Main(string[] input)
 	{
@@ -50,7 +50,7 @@ public class Problem
 		for (var y = 0; y < map.Length; y++) {
 			for (var x = 0; x < map[y].Length; x++) {
 				ret[x, y] = map[y][x] == '.' ? '\0' : map[y][x];
-			}			
+			}
 		}
 
 		return ret;

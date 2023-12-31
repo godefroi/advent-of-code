@@ -2,7 +2,7 @@ namespace AdventOfCode.Year2023.Day06;
 
 public partial class Problem
 {
-	public static ProblemMetadata2 Metadata { get; } = new(Execute, null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, null);
 
 	public static (long, long) Execute(string[] input)
 	{
@@ -141,6 +141,6 @@ public partial class Problem
 
 	public class Tests
 	{
-		//public 
+		//public
 	}
 }

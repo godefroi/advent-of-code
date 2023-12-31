@@ -2,27 +2,27 @@ namespace aoc_2021.Day12;
 
 public class Problem
 {
-	public static ProblemMetadata2 Metadata { get; } = new(Main);
+	public static ProblemMetadata Metadata { get; } = new(Main);
 
 	public static (long p1, long p2) Main(string[] input)
 	{
 		var nodes = new Dictionary<string, Node>();
-		
+
 		foreach (var line in input) {
 			var parts = line.Split('-');
-		
+
 			// make sure both these nodes exist
 			foreach (var part in parts) {
 				if (!nodes.ContainsKey(part)) {
 					nodes.Add(part, new Node(part, new List<Node>(), part == part.ToUpperInvariant()));
 				}
 			}
-		
+
 			// add connections for each node
 			nodes[parts[0]].Connections.Add(nodes[parts[1]]);
 			nodes[parts[1]].Connections.Add(nodes[parts[0]]);
 		}
-		
+
 		var p1 = Explore(nodes["start"], new List<string>()).Count();
 		var p2 = nodes.Values.Where(n => !n.Big && n.Name != "start" && n.Name != "end").SelectMany(n => Explore(nodes["start"], new List<string>(), n.Name)).Select(p => string.Join(',', p)).Distinct().Count();
 

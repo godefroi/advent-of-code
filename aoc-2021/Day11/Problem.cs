@@ -2,7 +2,7 @@ namespace aoc_2021.Day11;
 
 public class Problem
 {
-	public static ProblemMetadata2 Metadata { get; } = new(Main);
+	public static ProblemMetadata Metadata { get; } = new(Main);
 
 	public static (long p1, long p2) Main(string[] input)
 	{

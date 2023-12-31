@@ -16,7 +16,7 @@ public class Problem
 
 	private const bool DRAW_MAP = false;
 
-	public static ProblemMetadata2 Metadata { get; } = new(Main);
+	public static ProblemMetadata Metadata { get; } = new(Main);
 
 	private static int PropagateOxygen(Tile[,] map, int oxygenX, int oxygenY)
 	{

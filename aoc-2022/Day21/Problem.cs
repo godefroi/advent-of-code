@@ -4,7 +4,7 @@ namespace aoc_2022.Day21;
 
 public partial class Problem
 {
-	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
+	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem));
 
 	public static (long, long) Main(string[] input)
 	{

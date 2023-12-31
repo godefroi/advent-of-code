@@ -32,7 +32,7 @@ public static class Program
 		return await command.InvokeAsync(args);
 	}
 
-	public static async Task<string[]> LoadInput(ProblemMetadata2 problem, string inputName)
+	public static async Task<string[]> LoadInput(ProblemMetadata problem, string inputName)
 	{
 		var inputFilename = Path.Combine(problem.Path, inputName);
 

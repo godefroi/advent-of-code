@@ -5,12 +5,10 @@ using System.Text.RegularExpressions;
 
 namespace AdventOfCode;
 
-public readonly record struct ProblemMetadata(Type ProblemType, int Day, string Path, Action<string> Main, Type BenchmarkType);
-
-public partial record ProblemMetadata2
+public partial record ProblemMetadata
 {
 	[SetsRequiredMembers]
-	public ProblemMetadata2(Func<string[], (long, long)> main, Type? benchmarkType = null, [CallerFilePath]string filePath = "")
+	public ProblemMetadata(Func<string[], (long, long)> main, Type? benchmarkType = null, [CallerFilePath]string filePath = "")
 	{
 		var match = GetDateRegex().Match(filePath);
 
@@ -26,7 +24,7 @@ public partial record ProblemMetadata2
 	}
 
 	[SetsRequiredMembers]
-	public ProblemMetadata2(Func<string[], (long, string)> main, Type? benchmarkType = null, [CallerFilePath]string filePath = "")
+	public ProblemMetadata(Func<string[], (long, string)> main, Type? benchmarkType = null, [CallerFilePath]string filePath = "")
 	{
 		var match = GetDateRegex().Match(filePath);
 
@@ -42,7 +40,7 @@ public partial record ProblemMetadata2
 	}
 
 	[SetsRequiredMembers]
-	public ProblemMetadata2(Func<string[], (string, long)> main, Type? benchmarkType = null, [CallerFilePath]string filePath = "")
+	public ProblemMetadata(Func<string[], (string, long)> main, Type? benchmarkType = null, [CallerFilePath]string filePath = "")
 	{
 		var match = GetDateRegex().Match(filePath);
 
@@ -58,7 +56,7 @@ public partial record ProblemMetadata2
 	}
 
 	[SetsRequiredMembers]
-	public ProblemMetadata2(Func<string[], (string, string)> main, Type? benchmarkType = null, [CallerFilePath]string filePath = "")
+	public ProblemMetadata(Func<string[], (string, string)> main, Type? benchmarkType = null, [CallerFilePath]string filePath = "")
 	{
 		var match = GetDateRegex().Match(filePath);
 
@@ -76,28 +74,28 @@ public partial record ProblemMetadata2
 	public required int Year { get; init; }
 
 	public required int Day { get; init; }
-	
+
 	public required Func<string[], string> Main { get; init; }
 
 	public required string Path { get; init; }
 
 	public Type? Benchmarks { get; init; }
 
-	public static IEnumerable<ProblemMetadata2> FindMetadata(Assembly assembly)
+	public static IEnumerable<ProblemMetadata> FindMetadata(Assembly assembly)
 	{
 		foreach (var type in assembly.ExportedTypes) {
 			var members = type.GetMembers(BindingFlags.Public | BindingFlags.Static);
 			var metadataField = members.FirstOrDefault(m =>
-				m is PropertyInfo prop && prop.PropertyType == typeof(ProblemMetadata2) && prop.CanRead ||
-				m is FieldInfo field && field.FieldType == typeof(ProblemMetadata2));
+				m is PropertyInfo prop && prop.PropertyType == typeof(ProblemMetadata) && prop.CanRead ||
+				m is FieldInfo field && field.FieldType == typeof(ProblemMetadata));
 
 			if (metadataField == null) {
 				continue;
 			}
 
 			yield return metadataField switch {
-				PropertyInfo prop => prop.GetValue(null) as ProblemMetadata2 ?? throw new InvalidOperationException("Returned something non-metadata"),
-				FieldInfo field => field.GetValue(null) as ProblemMetadata2 ?? throw new InvalidOperationException("Returned something non-metadata"),
+				PropertyInfo prop => prop.GetValue(null) as ProblemMetadata ?? throw new InvalidOperationException("Returned something non-metadata"),
+				FieldInfo field => field.GetValue(null) as ProblemMetadata ?? throw new InvalidOperationException("Returned something non-metadata"),
 				_ => throw new InvalidOperationException("Only properties and fields are supported."),
 			};
 		}

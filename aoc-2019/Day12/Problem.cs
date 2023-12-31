@@ -4,7 +4,7 @@ namespace aoc_2019.Day12;
 
 public partial class Problem
 {
-	public static ProblemMetadata2 Metadata { get; } = new(Main);
+	public static ProblemMetadata Metadata { get; } = new(Main);
 
 	public static (long, long) Main(string[] input)
 	{
@@ -85,7 +85,7 @@ public partial class Problem
 	}
 
 	internal readonly record struct Moon(int Id, Vector3 Position, Vector3 Velocity)
-	{ 
+	{
 		public Moon(int id, Vector3 position) : this(id, position, Vector3.Zero) { }
 
 		public long Energy => Position.Magnitude * Velocity.Magnitude;

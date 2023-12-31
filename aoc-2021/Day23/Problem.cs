@@ -38,7 +38,7 @@ public class Problem
 	private readonly static IReadOnlySet<int> HALL_D     = new HashSet<int>() { HALL_D_POS_1, HALL_D_POS_2, HALL_D_POS_3, HALL_D_POS_4 };
 	private readonly static IReadOnlySet<int> CROSS_HALL = new HashSet<int>() { CROSS_HALL_POS_1, CROSS_HALL_POS_2, CROSS_HALL_POS_3, CROSS_HALL_POS_4, CROSS_HALL_POS_5, CROSS_HALL_POS_6, CROSS_HALL_POS_7 };
 
-	public static ProblemMetadata2 Metadata { get; } = new(Main);
+	public static ProblemMetadata Metadata { get; } = new(Main);
 
 	public static (long, long) Main(string[] input)
 	{

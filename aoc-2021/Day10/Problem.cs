@@ -5,7 +5,7 @@ public class Problem
 	private static readonly List<char> _starts = new() { '(', '[', '{', '<' };
 	private static readonly List<char> _ends   = new() { ')', ']', '}', '>' };
 
-	public static ProblemMetadata2 Metadata { get; } = new(Main);
+	public static ProblemMetadata Metadata { get; } = new(Main);
 
 	public static (long p1, long p2) Main(string[] input)
 	{
@@ -13,7 +13,7 @@ public class Problem
 		var p1     = scores.Where(s => s > 0).Sum();
 
 		Console.WriteLine($"part 1: {p1}"); // part 1 is 296535
-		
+
 		scores = scores.Where(s => s < 0).OrderBy(s => s).ToList();
 
 		var p2 = Math.Abs(scores[scores.Count / 2]);

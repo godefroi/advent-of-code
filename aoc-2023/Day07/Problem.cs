@@ -2,7 +2,7 @@ namespace AdventOfCode.Year2023.Day07;
 
 public partial class Problem
 {
-	public static ProblemMetadata2 Metadata { get; } = new(Execute, null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, null);
 
 	private const int SCORE_FIVE_OF_A_KIND = 7;
 	private const int SCORE_FOUR_OF_A_KIND = 6;
