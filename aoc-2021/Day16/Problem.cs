@@ -156,7 +156,7 @@ public class Problem
 	{
 		var binary = ParseHex("D2FE28");
 
-		Assert.Equal("110100101111111000101000", binary);
+		Assert.Equal<IEnumerable<char>>("110100101111111000101000", binary);
 
 		var packet = ParsePacket(binary);
 
@@ -170,7 +170,7 @@ public class Problem
 	{
 		var binary = ParseHex("38006F45291200");
 
-		Assert.Equal("00111000000000000110111101000101001010010001001000000000", binary);
+		Assert.Equal<IEnumerable<char>>("00111000000000000110111101000101001010010001001000000000", binary);
 
 		var packet = ParsePacket(binary);
 
@@ -188,7 +188,7 @@ public class Problem
 	{
 		var binary = ParseHex("EE00D40C823060");
 
-		Assert.Equal("11101110000000001101010000001100100000100011000001100000", binary);
+		Assert.Equal<IEnumerable<char>>("11101110000000001101010000001100100000100011000001100000", binary);
 
 		var packet = ParsePacket(binary);
 
