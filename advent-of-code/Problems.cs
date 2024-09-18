@@ -3,6 +3,7 @@ namespace AdventOfCode;
 public static class Problems
 {
 	private readonly static Dictionary<int, Lazy<IReadOnlyDictionary<int, ProblemMetadata>>> _problems = new() {
+		{ 2016, new Lazy<IReadOnlyDictionary<int, ProblemMetadata>>(() => Year2016.Problems.All) },
 		{ 2019, new Lazy<IReadOnlyDictionary<int, ProblemMetadata>>(() => Year2019.Problems.All) },
 		{ 2020, new Lazy<IReadOnlyDictionary<int, ProblemMetadata>>(() => Year2020.Problems.All) },
 		{ 2021, new Lazy<IReadOnlyDictionary<int, ProblemMetadata>>(() => Year2021.Problems.All) },

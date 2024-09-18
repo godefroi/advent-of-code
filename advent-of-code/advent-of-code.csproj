@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\aoc-2016\aoc-2016.csproj" />
     <ProjectReference Include="..\aoc-2019\aoc-2019.csproj" />
     <ProjectReference Include="..\aoc-2020\aoc-2020.csproj" />
     <ProjectReference Include="..\aoc-2021\aoc-2021.csproj" />

@@ -57,8 +57,8 @@ public static class Program
 		// }
 
 		Console.WriteLine($"{ANSI_GREEN}Retrieving input file and saving to {fileName}{ANSI_RESET}");
-		Console.WriteLine($"{ANSI_RED}WARNING- YEAR IS HARD-CODED TO 2023; ONLY 2023 INPUT WILL BE DOWNLOADED!{ANSI_RESET}"); // ProblemMetadata should have year in it
-		var yearMatch = (Value: 2023, Dummy: 2023);
+		Console.WriteLine($"{ANSI_RED}WARNING- YEAR IS HARD-CODED TO 2016; ONLY 2016 INPUT WILL BE DOWNLOADED!{ANSI_RESET}"); // ProblemMetadata should have year in it
+		var yearMatch = (Value: 2016, Dummy: 2023);
 
 		var cc = new CookieContainer();
 
