@@ -9,6 +9,9 @@ public class Problem
 		var monkies = ChunkByEmpty(input).Select(Monkey.Parse).ToList();
 
 		for (var i = 0; i < 20; i++) {
+			Console.WriteLine(CalculateState(monkies));
+			Console.WriteLine();
+
 			foreach (var monkey in monkies) {
 				monkey.PlayTurn(monkies, null);
 			}
@@ -30,5 +33,13 @@ public class Problem
 		var part2 = monkies.OrderByDescending(m => m.InspectionCount).Take(2).Select(m => m.InspectionCount).Aggregate((m1, m2) => m1 * m2);
 
 		return (part1, part2);
+	}
+
+	private static string CalculateState(List<Monkey> monkies)
+	{
+		return string.Join(Environment.NewLine, monkies.Select((m, idx) => {
+			// op, degree are the missing ones
+			return $"{m.Id} {"?"} {"?",2} {m.DivisibilityCheck,2} {m.TrueDestination} {m.FalseDestination} {m.InspectionCount,3} {string.Join(',', m.Items)}";
+		}));
 	}
 }
