@@ -1,6 +1,6 @@
 ﻿using Microsoft.Z3;
 
-namespace aoc_2022.Day15;
+namespace AdventOfCode.Year2022.Day15;
 
 public partial class Problem
 {

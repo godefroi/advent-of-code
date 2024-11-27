@@ -1,4 +1,4 @@
-﻿namespace aoc_2022.Day14;
+﻿namespace AdventOfCode.Year2022.Day14;
 
 public class Problem
 {

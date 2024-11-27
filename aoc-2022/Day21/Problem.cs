@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace aoc_2022.Day21;
+namespace AdventOfCode.Year2022.Day21;
 
 public partial class Problem
 {

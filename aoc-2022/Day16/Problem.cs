@@ -2,7 +2,7 @@
 
 using static AdventOfCode.FloydWarshall;
 
-namespace aoc_2022.Day16;
+namespace AdventOfCode.Year2022.Day16;
 
 public partial class Problem
 {

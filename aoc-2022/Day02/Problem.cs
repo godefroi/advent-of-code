@@ -1,4 +1,4 @@
-﻿namespace aoc_2022.Day02;
+﻿namespace AdventOfCode.Year2022.Day02;
 
 using Translation = Dictionary<char, Problem.Move>;
 

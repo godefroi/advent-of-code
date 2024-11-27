@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace aoc_2022.Day23;
+namespace AdventOfCode.Year2022.Day23;
 
 public class Problem
 {

@@ -1,6 +1,6 @@
 ﻿using static AdventOfCode.AStar;
 
-namespace aoc_2022.Day12;
+namespace AdventOfCode.Year2022.Day12;
 
 public class Problem
 {

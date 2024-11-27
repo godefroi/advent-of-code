@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace aoc_2022.Day11;
+namespace AdventOfCode.Year2022.Day11;
 
 internal partial class Monkey
 {

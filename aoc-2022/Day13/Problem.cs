@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Nodes;
 
-namespace aoc_2022.Day13;
+namespace AdventOfCode.Year2022.Day13;
 
 public class Problem
 {

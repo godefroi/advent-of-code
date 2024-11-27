@@ -31,7 +31,7 @@ public static class Benchmarks
 		// var genericMethod = runMethod.MakeGenericMethod(Problems.CurrentProblem.Benchmarks);
 
 		// genericMethod.Invoke(null, [null, null]);
-		//BenchmarkRunner.Run<aoc_2023.Day01.Problem>()
+		//BenchmarkRunner.Run<AdventOfCode.Year2023.Day01.Problem>()
 
 		var job = new Job()
 			.DontEnforcePowerPlan()
@@ -48,9 +48,9 @@ public static class Benchmarks
 		var config = ManualConfig.CreateEmpty();
 
 		//config.AddLogger(new MyLogger());
-		config.AddLogger(BenchmarkDotNet.Loggers.ConsoleLogger.Unicode);
+		config.AddLogger(ConsoleLogger.Unicode);
 		config.AddDiagnoser(new MemoryDiagnoser(new MemoryDiagnoserConfig(false)));
-		
+
 		config.AddColumnProvider(
 			DefaultColumnProviders.Descriptor,
 			DefaultColumnProviders.Job,
@@ -69,7 +69,7 @@ public static class Benchmarks
 			Console.WriteLine(bc.Descriptor.WorkloadMethodDisplayInfo);
 		}
 	}
-	
+
 	private class MyLogger : ILogger
 	{
 		private bool _writeStatistics = false;

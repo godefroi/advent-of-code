@@ -1,4 +1,4 @@
-﻿namespace aoc_2022;
+﻿namespace AdventOfCode.Year2022;
 
 public static class Program
 {
