@@ -1,4 +1,4 @@
-﻿namespace aoc_2021.Day19;
+﻿namespace AdventOfCode.Year2021.Day19;
 
 using Transform = Func<(int x, int y, int z), (int x, int y, int z)>;
 

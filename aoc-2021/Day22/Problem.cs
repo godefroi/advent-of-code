@@ -1,4 +1,4 @@
-﻿namespace aoc_2021.Day22;
+﻿namespace AdventOfCode.Year2021.Day22;
 
 internal partial class Problem
 {

@@ -1,4 +1,4 @@
-namespace aoc_2021.Day15;
+namespace AdventOfCode.Year2021.Day15;
 
 using static Dijkstra;
 

@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace aoc_2021.Day23;
+namespace AdventOfCode.Year2021.Day23;
 
 public class Problem
 {

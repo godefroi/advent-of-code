@@ -1,4 +1,4 @@
-﻿namespace aoc_2021.Day20;
+﻿namespace AdventOfCode.Year2021.Day20;
 
 using Image = Dictionary<(int x, int y), char>;
 
