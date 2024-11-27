@@ -9,6 +9,7 @@ public static class Problems
 		{ 2021, new Lazy<IReadOnlyDictionary<int, ProblemMetadata>>(() => Year2021.Problems.All) },
 		{ 2022, new Lazy<IReadOnlyDictionary<int, ProblemMetadata>>(() => Year2022.Problems.All) },
 		{ 2023, new Lazy<IReadOnlyDictionary<int, ProblemMetadata>>(() => Year2023.Problems.All) },
+		{ 2024, new Lazy<IReadOnlyDictionary<int, ProblemMetadata>>(() => Year2024.Problems.All) },
 	};
 
 	private readonly static Lazy<IReadOnlyDictionary<int, ProblemMetadata>> _currentYearProblems = new(() => _problems[_problems.Keys.Max()].Value);
