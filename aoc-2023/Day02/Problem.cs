@@ -2,7 +2,7 @@ using System.Buffers;
 using System.Text.RegularExpressions;
 using BenchmarkDotNet.Attributes;
 
-namespace AdventOfCode.Year2023;
+namespace AdventOfCode.Year2023.Day02;
 
 public partial class Problem
 {

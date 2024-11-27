@@ -12,9 +12,9 @@ public static class Problems
 		{ 2024, new Lazy<IReadOnlyDictionary<int, ProblemMetadata>>(() => Year2024.Problems.All) },
 	};
 
-	private readonly static Lazy<IReadOnlyDictionary<int, ProblemMetadata>> _currentYearProblems = new(() => _problems[_problems.Keys.Max()].Value);
+	private readonly static Lazy<IReadOnlyDictionary<int, ProblemMetadata>> _currentYearProblems = new(() => _problems.OrderByDescending(p => p.Key).First(p => p.Value.Value.Count > 0).Value.Value);
 
-	private readonly static Lazy<ProblemMetadata> _currentProblem = new(_currentYearProblems.Value[_currentYearProblems.Value.Keys.Max()]);
+	private readonly static Lazy<ProblemMetadata> _currentProblem = new(() => _currentYearProblems.Value[_currentYearProblems.Value.Keys.Max()]);
 
 	public static IReadOnlyDictionary<int, ProblemMetadata> CurrentYear => _currentYearProblems.Value;
 

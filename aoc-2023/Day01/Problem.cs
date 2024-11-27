@@ -1,6 +1,6 @@
 using BenchmarkDotNet.Attributes;
 
-namespace aoc_2023.Day01;
+namespace AdventOfCode.Year2023.Day01;
 
 internal readonly record struct NumberPair(ReadOnlyMemory<char> Number, int Value);
 
