@@ -2,10 +2,10 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net9.0</TargetFramework>
-		<RootNamespace>aoc_2020</RootNamespace>
+		<RootNamespace>AdventOfCode.Year2020</RootNamespace>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<StartupObject>aoc_2020.Program</StartupObject>
+		<StartupObject>AdventOfCode.Year2020.Program</StartupObject>
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
 		<PlatformTarget>x64</PlatformTarget>
 	</PropertyGroup>
@@ -47,6 +47,6 @@
 		<Using Include="AdventOfCode" />
 		<Using Include="AdventOfCode.Tools" Static="true" />
 
-		<Using Include="aoc_2020" />
+		<Using Include="AdventOfCode.Year2020" />
 	</ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
 ﻿using Combinatorics.Collections;
 
-namespace aoc_2020.Day01;
+namespace AdventOfCode.Year2020.Day01;
 
 public class Problem
 {
