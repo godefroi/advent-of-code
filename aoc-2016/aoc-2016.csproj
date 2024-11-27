@@ -10,7 +10,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.HighPerformance" Version="8.3.2" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+		<PackageReference Include="System.IO.Pipelines" Version="8.0.0" />
 		<PackageReference Include="xunit" Version="2.9.0" />
 		<PackageReference Include="xunit.runner.console" Version="2.9.0">
 			<PrivateAssets>all</PrivateAssets>
@@ -32,6 +34,9 @@
 
 		<Using Include="AdventOfCode" />
 		<Using Include="AdventOfCode.Tools" Static="true" />
+
+		<Using Include="System.Text" />
+		<Using Include="System.Text.RegularExpressions" />
 	</ItemGroup>
 
 </Project>

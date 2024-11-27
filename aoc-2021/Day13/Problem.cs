@@ -26,8 +26,8 @@ public class Problem
 			var lit = row.Select(d => d.X).ToList();
 			sb.AppendLine(new string(Enumerable.Range(0, width + 1).Select(x => row.Any(d => d.X == x) ? '#' : ' ').ToArray()));
 		}
-
-		return (p1, OCR.Recognize(sb.ToString()));
+throw new NotImplementedException("This is broken, fix me");
+		//return (p1, OCR.Recognize(sb.ToString()));
 	}
 
 	private static void Fold(HashSet<Dot> dots, (char Dimension, int Value) fold)
