@@ -1,7 +1,7 @@
 using System.Buffers;
 using CommunityToolkit.HighPerformance;
 
-namespace aoc_2016.Day09;
+namespace AdventOfCode.Year2016.Day09;
 
 public class Problem
 {

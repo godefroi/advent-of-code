@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Text;
 
-namespace aoc_2019.Day15;
+namespace AdventOfCode.Year2019.Day15;
 
 public class Problem
 {

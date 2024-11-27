@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace aoc_2019.Intcode;
+namespace AdventOfCode.Year2019.Intcode;
 
 internal partial class IntcodeComputer
 {

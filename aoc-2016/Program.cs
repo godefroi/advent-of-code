@@ -1,4 +1,4 @@
-﻿namespace aoc_2016;
+﻿namespace AdventOfCode.Year2016;
 
 internal class Program
 {

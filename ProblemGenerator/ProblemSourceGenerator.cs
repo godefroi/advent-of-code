@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AdventOfCode;
+﻿namespace AdventOfCode;
 
 [Generator]
 public class ProblemSourceGenerator : ISourceGenerator

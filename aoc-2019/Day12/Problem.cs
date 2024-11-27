@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace aoc_2019.Day12;
+namespace AdventOfCode.Year2019.Day12;
 
 public partial class Problem
 {

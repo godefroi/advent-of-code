@@ -1,6 +1,6 @@
 ﻿using System.Collections.Specialized;
 
-namespace aoc_2019.Day18;
+namespace AdventOfCode.Year2019.Day18;
 
 public class Problem
 {

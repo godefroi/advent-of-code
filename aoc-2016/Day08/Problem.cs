@@ -1,6 +1,6 @@
 using CommunityToolkit.HighPerformance;
 
-namespace aoc_2016.Day08;
+namespace AdventOfCode.Year2016.Day08;
 
 public partial class Problem
 {

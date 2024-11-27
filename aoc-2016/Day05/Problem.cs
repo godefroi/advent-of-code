@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 
-namespace aoc_2016.Day05;
+namespace AdventOfCode.Year2016.Day05;
 
 public class Problem
 {

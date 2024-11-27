@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace aoc_2019.Intcode;
+namespace AdventOfCode.Year2019.Intcode;
 
 // disable the "not used" warning
 #pragma warning disable IDE0051

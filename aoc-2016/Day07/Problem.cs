@@ -1,6 +1,6 @@
 using Microsoft.CodeAnalysis;
 
-namespace aoc_2016.Day07;
+namespace AdventOfCode.Year2016.Day07;
 
 public class Problem
 {

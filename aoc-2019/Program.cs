@@ -1,4 +1,4 @@
-﻿namespace aoc_2019;
+﻿namespace AdventOfCode.Year2019;
 
 public partial class Program
 {

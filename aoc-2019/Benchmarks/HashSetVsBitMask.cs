@@ -2,7 +2,7 @@
 
 using System.Collections.Specialized;
 
-namespace aoc_2019.Benchmarks;
+namespace AdventOfCode.Year2019.Benchmarks;
 
 public class HashSetVsBitMask
 {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace aoc_2019.Day07;
+namespace AdventOfCode.Year2019.Day07;
 
 public class Problem
 {

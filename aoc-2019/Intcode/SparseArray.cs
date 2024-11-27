@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace aoc_2019.Intcode;
+namespace AdventOfCode.Year2019.Intcode;
 
 public class SparseArray<T>
 {

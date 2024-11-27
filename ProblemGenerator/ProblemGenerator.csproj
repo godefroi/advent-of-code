@@ -6,6 +6,7 @@
 		<IsRoslynComponent>true</IsRoslynComponent>
 		<Nullable>enable</Nullable>
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+		<RootNamespace>AdventOfCode</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>

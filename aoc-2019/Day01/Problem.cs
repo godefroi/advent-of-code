@@ -1,4 +1,4 @@
-namespace aoc_2019.Day01;
+namespace AdventOfCode.Year2019.Day01;
 
 public class Problem
 {

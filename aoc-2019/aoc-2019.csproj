@@ -5,8 +5,8 @@
 		<TargetFramework>net9.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<StartupObject>aoc_2019.Program</StartupObject>
-		<RootNamespace>aoc_2019</RootNamespace>
+		<StartupObject>AdventOfCode.Year2019.Program</StartupObject>
+		<RootNamespace>AdventOfCode.Year2019</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -34,8 +34,8 @@
 		<Using Include="AdventOfCode" />
 		<Using Include="AdventOfCode.Tools" Static="true" />
 
-		<Using Include="aoc_2019" />
-		<Using Include="aoc_2019.Intcode" />
+		<Using Include="AdventOfCode.Year2019" />
+		<Using Include="AdventOfCode.Year2019.Intcode" />
 	</ItemGroup>
 
 </Project>
