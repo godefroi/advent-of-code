@@ -78,21 +78,21 @@ public class ProblemSourceGenerator : ISourceGenerator
 			swBenchmarks.WriteLine($"\tpublic class Day{day,00}");
 			swBenchmarks.WriteLine("\t{");
 
-			foreach (var file in Directory.GetFiles(path, "input*.txt").Select(Path.GetFileName)) {
-				var benchmarkName = file switch {
-					"input.txt" => "MainInput",
-					_ => Path.GetFileNameWithoutExtension(file).Substring(5) + "Input",
-				};
+			// foreach (var file in Directory.GetFiles(path, "input*.txt").Select(Path.GetFileName)) {
+			// 	var benchmarkName = file switch {
+			// 		"input.txt" => "MainInput",
+			// 		_ => Path.GetFileNameWithoutExtension(file).Substring(5) + "Input",
+			// 	};
 
-				swBenchmarks.WriteLine($"\t\t[BenchmarkDotNet.Attributes.Benchmark(Description = \"Day {day,00}, {file}\")]");
-				swBenchmarks.WriteLine($"\t\t[BenchmarkDotNet.Attributes.BenchmarkCategory(\"Day {day,00}\", \"{file}\")]");
-				swBenchmarks.WriteLine($"\t\tpublic async Task {benchmarkName}()");
-				swBenchmarks.WriteLine("\t\t{");
-				swBenchmarks.WriteLine($"\t\t\t{(mainMethod.IsAsync ? "await " : "")}{nts.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}.{mainMethod.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}(\"input.txt\");");
-				swBenchmarks.WriteLine("\t\t\tawait System.Threading.Tasks.Task.CompletedTask;");
-				swBenchmarks.WriteLine("\t\t}");
-				swBenchmarks.WriteLine("");
-			}
+			// 	swBenchmarks.WriteLine($"\t\t[BenchmarkDotNet.Attributes.Benchmark(Description = \"Day {day,00}, {file}\")]");
+			// 	swBenchmarks.WriteLine($"\t\t[BenchmarkDotNet.Attributes.BenchmarkCategory(\"Day {day,00}\", \"{file}\")]");
+			// 	swBenchmarks.WriteLine($"\t\tpublic async Task {benchmarkName}()");
+			// 	swBenchmarks.WriteLine("\t\t{");
+			// 	swBenchmarks.WriteLine($"\t\t\t{(mainMethod.IsAsync ? "await " : "")}{nts.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}.{mainMethod.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}(\"input.txt\");");
+			// 	swBenchmarks.WriteLine("\t\t\tawait System.Threading.Tasks.Task.CompletedTask;");
+			// 	swBenchmarks.WriteLine("\t\t}");
+			// 	swBenchmarks.WriteLine("");
+			// }
 
 			swBenchmarks.WriteLine("\t}");
 			swBenchmarks.WriteLine("");
