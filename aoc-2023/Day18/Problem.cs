@@ -7,7 +7,7 @@ namespace AdventOfCode.Year2023.Day18;
 
 public partial class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Execute, null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
 	private readonly static Coordinate _north = new(0, -1);
 	private readonly static Coordinate _south = new(0, 1);

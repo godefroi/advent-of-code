@@ -4,7 +4,7 @@ namespace AdventOfCode.Year2022.Day18;
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem));
+	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
 
 	private static readonly Coordinate3 X_PLUS_ONE  = new( 1,  0,  0);
 	private static readonly Coordinate3 X_MINUS_ONE = new(-1,  0,  0);

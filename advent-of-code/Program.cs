@@ -13,6 +13,7 @@ public static class Program
 			Commands.List.GetCommand(),
 			Commands.Time.GetCommand(),
 			Commands.Benchmarks.GetCommand(),
+			Commands.Test.GetCommand(),
 			Commands.Options.Year,
 			Commands.Options.Day,
 			Commands.Options.InputName,

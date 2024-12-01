@@ -5,7 +5,7 @@ public class Problem
 	private static readonly List<char> _starts = new() { '(', '[', '{', '<' };
 	private static readonly List<char> _ends   = new() { ')', ']', '}', '>' };
 
-	public static ProblemMetadata Metadata { get; } = new(Main);
+	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
 
 	public static (long p1, long p2) Main(string[] input)
 	{

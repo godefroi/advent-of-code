@@ -2,7 +2,7 @@
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main);
+	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
 
 	public static (long inc, long winc) Main(string[] input)
 	{

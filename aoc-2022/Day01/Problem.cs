@@ -2,7 +2,7 @@
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem));
+	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
 
 	internal static (long max, long topThree) Main(string[] lines)
 	{

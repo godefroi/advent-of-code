@@ -8,7 +8,7 @@ namespace AdventOfCode;
 public partial record ProblemMetadata
 {
 	[SetsRequiredMembers]
-	public ProblemMetadata(Func<string[], (long, long)> main, Type? benchmarkType = null, [CallerFilePath]string filePath = "")
+	public ProblemMetadata(Func<string[], (long, long)> main, Type problemType, Type? benchmarkType, [CallerFilePath]string filePath = "")
 	{
 		var match = GetDateRegex().Match(filePath);
 
@@ -20,11 +20,12 @@ public partial record ProblemMetadata
 		Day        = int.Parse(match.Groups["day"].Value);
 		Main       = input => main(input).ToString();
 		Path       = System.IO.Path.GetDirectoryName(filePath) ?? throw new InvalidOperationException("Unable to find directory name.");
+		Problem    = problemType;
 		Benchmarks = benchmarkType;
 	}
 
 	[SetsRequiredMembers]
-	public ProblemMetadata(Func<string[], (long, string)> main, Type? benchmarkType = null, [CallerFilePath]string filePath = "")
+	public ProblemMetadata(Func<string[], (long, string)> main, Type problemType, Type? benchmarkType, [CallerFilePath]string filePath = "")
 	{
 		var match = GetDateRegex().Match(filePath);
 
@@ -36,11 +37,12 @@ public partial record ProblemMetadata
 		Day        = int.Parse(match.Groups["day"].Value);
 		Main       = input => main(input).ToString();
 		Path       = System.IO.Path.GetDirectoryName(filePath) ?? throw new InvalidOperationException("Unable to find directory name.");
+		Problem    = problemType;
 		Benchmarks = benchmarkType;
 	}
 
 	[SetsRequiredMembers]
-	public ProblemMetadata(Func<string[], (string, long)> main, Type? benchmarkType = null, [CallerFilePath]string filePath = "")
+	public ProblemMetadata(Func<string[], (string, long)> main, Type problemType, Type? benchmarkType, [CallerFilePath]string filePath = "")
 	{
 		var match = GetDateRegex().Match(filePath);
 
@@ -52,11 +54,12 @@ public partial record ProblemMetadata
 		Day        = int.Parse(match.Groups["day"].Value);
 		Main       = input => main(input).ToString();
 		Path       = System.IO.Path.GetDirectoryName(filePath) ?? throw new InvalidOperationException("Unable to find directory name.");
+		Problem    = problemType;
 		Benchmarks = benchmarkType;
 	}
 
 	[SetsRequiredMembers]
-	public ProblemMetadata(Func<string[], (string, string)> main, Type? benchmarkType = null, [CallerFilePath]string filePath = "")
+	public ProblemMetadata(Func<string[], (string, string)> main, Type problemType, Type? benchmarkType, [CallerFilePath]string filePath = "")
 	{
 		var match = GetDateRegex().Match(filePath);
 
@@ -68,6 +71,7 @@ public partial record ProblemMetadata
 		Day        = int.Parse(match.Groups["day"].Value);
 		Main       = input => main(input).ToString();
 		Path       = System.IO.Path.GetDirectoryName(filePath) ?? throw new InvalidOperationException("Unable to find directory name.");
+		Problem    = problemType;
 		Benchmarks = benchmarkType;
 	}
 
@@ -78,6 +82,8 @@ public partial record ProblemMetadata
 	public required Func<string[], string> Main { get; init; }
 
 	public required string Path { get; init; }
+
+	public required Type Problem { get; init; }
 
 	public Type? Benchmarks { get; init; }
 

@@ -2,7 +2,7 @@ namespace AdventOfCode.Year2021.Day12;
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main);
+	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
 
 	public static (long p1, long p2) Main(string[] input)
 	{

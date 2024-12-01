@@ -6,7 +6,7 @@ public class Problem
 {
 	private const int WINNING_SCORE = 21;
 
-	public static ProblemMetadata Metadata { get; } = new(Main);
+	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
 
 	public static (long, long) Main(string[] input)
 	{

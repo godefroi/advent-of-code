@@ -4,7 +4,7 @@ namespace AdventOfCode.Year2016.Day05;
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main);
+	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
 
 	public static (string, string) Main(string[] input)
 	{

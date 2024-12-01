@@ -2,7 +2,7 @@
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new((input) => { var (p1, p2) = Main(input); return (p1.ToString(), p2); });
+	public static ProblemMetadata Metadata { get; } = new((input) => { var (p1, p2) = Main(input); return (p1.ToString(), p2); }, typeof(Problem), null);
 
 	public static ((long x, long y, int count), long) Main(string[] input)
 	{

@@ -2,7 +2,7 @@
 
 internal partial class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main);
+	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
 
 	internal static (long, long) Main(string[] input)
 	{

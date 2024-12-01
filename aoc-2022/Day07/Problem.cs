@@ -2,7 +2,7 @@
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem));
+	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
 
 	private const int TOTAL_SPACE  = 70000000;
 	private const int NEEDED_SPACE = 30000000;

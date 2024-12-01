@@ -1,12 +1,11 @@
 using System.Buffers;
-using System.Text.RegularExpressions;
 using BenchmarkDotNet.Attributes;
 
 namespace AdventOfCode.Year2023.Day02;
 
 public partial class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Benchmarks));
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), typeof(Benchmarks));
 
 	public static (long, long) Execute(string[] input)
 	{

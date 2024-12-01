@@ -6,7 +6,7 @@ internal readonly record struct NumberPair(ReadOnlyMemory<char> Number, int Valu
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem));
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
 	private static NumberPair[] _wordPairs = [
 		new("1".AsMemory(),     1),

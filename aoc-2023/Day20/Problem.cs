@@ -6,7 +6,7 @@ namespace AdventOfCode.Year2023.Day20;
 
 public partial class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Execute, null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
 	public static (long, long) Execute(string[] input)
 	{

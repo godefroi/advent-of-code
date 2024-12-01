@@ -4,7 +4,7 @@ namespace AdventOfCode.Year2023.Day24;
 
 public partial class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Execute, null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
 	private readonly static char[] _splitChars = [',', ' ', '@'];
 	private readonly static double _testMin = 200000000000000;

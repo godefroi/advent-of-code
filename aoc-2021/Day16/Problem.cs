@@ -4,7 +4,7 @@ public class Problem
 {
 	private static string _padding = "";
 
-	public static ProblemMetadata Metadata { get; } = new(Main);
+	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
 
 	public static (long versionsum, long value) Main(string[] input)
 	{
