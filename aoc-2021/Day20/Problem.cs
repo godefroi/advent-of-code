@@ -4,9 +4,9 @@ using Image = Dictionary<(int x, int y), char>;
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long, long) Main(string[] input)
+	public static (long, long) Execute(string[] input)
 	{
 		var enhancement = input[0].Select(c => c == '#' ? '1' : '0').ToArray();
 		var image       = new Image();

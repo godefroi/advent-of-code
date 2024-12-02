@@ -5,9 +5,9 @@ namespace AdventOfCode.Year2016.Day09;
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long, long) Main(string[] input)
+	public static (long, long) Execute(string[] input)
 	{
 		var chars = new char[input.Sum(s => s.Length)];
 		var pos   = 0;

@@ -4,9 +4,9 @@ namespace AdventOfCode.Year2022.Day21;
 
 public partial class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long, long) Main(string[] input)
+	public static (long, long) Execute(string[] input)
 	{
 		var part1 = Part1(input);
 		var part2 = Part2(input);

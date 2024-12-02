@@ -2,9 +2,9 @@ namespace AdventOfCode.Year2021.Day13;
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long, string) Main(string[] input)
+	public static (long, string) Execute(string[] input)
 	{
 		var dots  = input.Where(i => i.IndexOf(',') > -1).Select(l => l.Split(',')).Select(p => new Dot(int.Parse(p[0]), int.Parse(p[1]))).ToHashSet();
 		var folds = input.Where(i => i.StartsWith("fold")).Select(i => i.Split(' ', '=')).Select(p => (Dimension: p[2][0], Value: int.Parse(p[3]))).ToList();
@@ -55,7 +55,7 @@ throw new NotImplementedException("This is broken, fix me");
 	[Fact(DisplayName = "Day 13 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main(ReadFileLines("input_sample.txt"));
+		var (p1, p2) = Execute(ReadFileLines("input_sample.txt"));
 
 		Assert.Equal(17, p1);
 	}
@@ -63,7 +63,7 @@ throw new NotImplementedException("This is broken, fix me");
 	[Fact(DisplayName = "Day 13 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main(ReadFileLines("input.txt"));
+		var (p1, p2) = Execute(ReadFileLines("input.txt"));
 
 		Assert.Equal(720, p1);
 		Assert.Equal("AHPRPAUZ", p2);

@@ -2,9 +2,9 @@
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long, long) Main(string[] input)
+	public static (long, long) Execute(string[] input)
 	{
 		var left = input[0].Select(ParseComponent).ToList();
 
@@ -371,7 +371,7 @@ public class Problem
 	[Fact(DisplayName = "Day 18 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main(ReadFileLines("input.txt"));
+		var (p1, p2) = Execute(ReadFileLines("input.txt"));
 
 		Assert.Equal(3981, p1);
 		Assert.Equal(4687, p2);

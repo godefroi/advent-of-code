@@ -2,9 +2,9 @@
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long, long) Main(string[] input)
+	public static (long, long) Execute(string[] input)
 	{
 		var instructions = input.Select(Instruction.Parse).ToArray();
 		var part1        = Part1(instructions);

@@ -4,9 +4,9 @@ using Translation = Dictionary<char, Problem.Move>;
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long, long) Main(string[] lines)
+	public static (long, long) Execute(string[] lines)
 	{
 		var translation = new Translation() {
 			{ 'X', Move.Rock },

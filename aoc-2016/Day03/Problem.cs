@@ -2,9 +2,9 @@ namespace AdventOfCode.Year2016.Day03;
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long, long) Main(string[] input)
+	public static (long, long) Execute(string[] input)
 	{
 		var valid = (IEnumerable<(int s1, int s2, int s3)> triangles) => triangles.Count(t => ((t.s2 + t.s3) > t.s1) && ((t.s1 + t.s3) > t.s2) && ((t.s1 + t.s2) > t.s3));
 		var rows = input

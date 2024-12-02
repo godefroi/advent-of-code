@@ -2,9 +2,9 @@
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-    internal static (long, long) Main(string[] input)
+    internal static (long, long) Execute(string[] input)
 	{
 		Console.WriteLine("DIV  CHECK  OFFSET");
 

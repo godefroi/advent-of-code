@@ -4,9 +4,9 @@ namespace AdventOfCode.Year2016.Day08;
 
 public partial class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long, string) Main(string[] input)
+	public static (long, string) Execute(string[] input)
 	{
 		var screen = new char[50, 6];
 

@@ -2,9 +2,9 @@
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new((input) => { var (p1, p2) = Main(input); return (p1.ToString(), p2); }, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new((input) => { var (p1, p2) = Execute(input); return (p1.ToString(), p2); }, typeof(Problem), null);
 
-	public static ((long x, long y, int count), long) Main(string[] input)
+	public static ((long x, long y, int count), long) Execute(string[] input)
 	{
 		var part1 = Part1(input);
 		var part2 = Part2(input, part1.x, part1.y);

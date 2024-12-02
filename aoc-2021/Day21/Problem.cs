@@ -6,9 +6,9 @@ public class Problem
 {
 	private const int WINNING_SCORE = 21;
 
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long, long) Main(string[] input)
+	public static (long, long) Execute(string[] input)
 	{
 		var positions  = input.Select(l => int.Parse(Regex.Match(l, ": (?<start>\\d+)").Groups["start"].ValueSpan)).ToArray();
 		var rollCounts = new Dictionary<int, int>() {

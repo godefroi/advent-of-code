@@ -4,7 +4,7 @@ namespace AdventOfCode.Year2022.Day17;
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
 	private const char TRANSLATE_LEFT    = '<';
 	private const char TRANSLATE_RIGHT   = '>';
@@ -50,7 +50,7 @@ public class Problem
 		{ RockType.Vertical,   RockType.Block      },
 	};
 
-	public static (long, long) Main(string[] input)
+	public static (long, long) Execute(string[] input)
 	{
 		var part1 = RunSimulation(input, ROCK_COUNT_MAX_P1);
 		var part2 = RunSimulation(input, ROCK_COUNT_MAX_P2);

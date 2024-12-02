@@ -4,7 +4,7 @@ namespace AdventOfCode.Year2022.Day18;
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
 	private static readonly Coordinate3 X_PLUS_ONE  = new( 1,  0,  0);
 	private static readonly Coordinate3 X_MINUS_ONE = new(-1,  0,  0);
@@ -13,7 +13,7 @@ public class Problem
 	private static readonly Coordinate3 Z_PLUS_ONE  = new( 0,  0,  1);
 	private static readonly Coordinate3 Z_MINUS_ONE = new( 0,  0, -1);
 
-	public static (long, long) Main(string[] input)
+	public static (long, long) Execute(string[] input)
 	{
 		var cubes   = input.Select(Coordinate3.Parse).ToArray();
 		var edgeSet = new HashSet<Edge>(new EdgeComparer());

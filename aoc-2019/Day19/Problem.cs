@@ -2,9 +2,9 @@
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long, long) Main(string[] input)
+	public static (long, long) Execute(string[] input)
 	{
 		var program = input.Single().Split(',').Select(long.Parse).ToList();
 		var part1   = Enumerable.Range(0, 50).SelectMany(x => Enumerable.Range(0, 50).Select(y => (x, y))).Count(c => Affected(program, c.x, c.y));

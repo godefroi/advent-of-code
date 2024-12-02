@@ -2,14 +2,14 @@
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
 	private const char CHAR_SAND    = 'o';
 	private const char CHAR_ROCK    = '#';
 	private const char CHAR_SOURCE  = '+';
 	private const char CHAR_NOTHING = '\0';
 
-	public static (long, long) Main(string[] input)
+	public static (long, long) Execute(string[] input)
 	{
 		var rocks = input.Select(Parse).SelectMany(p => p).SelectMany(EnumeratePoints).ToList();
 		var xmin  = rocks.Min(p => p.x);

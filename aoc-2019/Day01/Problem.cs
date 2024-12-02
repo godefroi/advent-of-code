@@ -2,9 +2,9 @@ namespace AdventOfCode.Year2019.Day01;
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long, long) Main(string[] input)
+	public static (long, long) Execute(string[] input)
 	{
 		var moduleMasses = input.Select(long.Parse).ToArray();
 		var part1        = moduleMasses.Select(CalculateFuel).Sum();

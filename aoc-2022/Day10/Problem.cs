@@ -2,12 +2,12 @@
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
 	private const int HORIZONTAL_WIDTH = 40;
 	private const int VERTICAL_HEIGHT  = 6;
 
-	public static (string, string) Main(string[] input)
+	public static (string, string) Execute(string[] input)
 	{
 		var register  = 1;
 		var cycle     = 1;

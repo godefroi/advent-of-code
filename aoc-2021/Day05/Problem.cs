@@ -2,9 +2,9 @@
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long p1, long p2) Main(string[] input)
+	public static (long p1, long p2) Execute(string[] input)
 	{
 		//foreach (var s in ParseSegments(input)) {
 		//	Console.WriteLine($"{s.Start.X},{s.Start.Y} to {s.End.X},{s.End.Y}");
@@ -78,7 +78,7 @@ public class Problem
 	[Fact(DisplayName = "Day 05 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main(ReadFileLines("input_sample.txt"));
+		var (p1, p2) = Execute(ReadFileLines("input_sample.txt"));
 
 		Assert.Equal(5, p1);
 		Assert.Equal(12, p2);
@@ -87,7 +87,7 @@ public class Problem
 	[Fact(DisplayName = "Day 05 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main(ReadFileLines("input.txt"));
+		var (p1, p2) = Execute(ReadFileLines("input.txt"));
 
 		Assert.Equal(7414, p1);
 		Assert.Equal(19676, p2);

@@ -38,9 +38,9 @@ public class Problem
 	private readonly static IReadOnlySet<int> HALL_D     = new HashSet<int>() { HALL_D_POS_1, HALL_D_POS_2, HALL_D_POS_3, HALL_D_POS_4 };
 	private readonly static IReadOnlySet<int> CROSS_HALL = new HashSet<int>() { CROSS_HALL_POS_1, CROSS_HALL_POS_2, CROSS_HALL_POS_3, CROSS_HALL_POS_4, CROSS_HALL_POS_5, CROSS_HALL_POS_6, CROSS_HALL_POS_7 };
 
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long, long) Main(string[] input)
+	public static (long, long) Execute(string[] input)
 	{
 		input = input.Take(3).Concat(new[] { "  #D#C#B#A#", "  #D#B#A#C#" }).Concat(input.TakeLast(2)).ToArray();
 

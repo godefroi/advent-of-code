@@ -2,9 +2,9 @@ namespace AdventOfCode.Year2021.Day14;
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long p1, long p2) Main(string[] input)
+	public static (long p1, long p2) Execute(string[] input)
 	{
 		var polymer = input[0].ToList();
 		var rules   = input.Skip(2).ToDictionary(r => (First: r[0], Second: r[1]), r => r[6]);
@@ -54,7 +54,7 @@ public class Problem
 	[Fact(DisplayName = "Day 14 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main(ReadFileLines("input_sample.txt"));
+		var (p1, p2) = Execute(ReadFileLines("input_sample.txt"));
 
 		Assert.Equal(1588, p1);
 		Assert.Equal(2188189693529, p2);
@@ -63,7 +63,7 @@ public class Problem
 	[Fact(DisplayName = "Day 14 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main(ReadFileLines("input.txt"));
+		var (p1, p2) = Execute(ReadFileLines("input.txt"));
 
 		Assert.Equal(2233, p1);
 		Assert.Equal(2884513602164, p2);

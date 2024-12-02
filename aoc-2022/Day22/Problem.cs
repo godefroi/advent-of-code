@@ -2,9 +2,9 @@
 
 public partial class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long, long) Main(string[] lines)
+	public static (long, long) Execute(string[] lines)
 	{
 		var path  = ParseRegex().Matches(lines.Last()).Select(m => m.Value).ToArray();
 		var map   = ParseMap(lines);

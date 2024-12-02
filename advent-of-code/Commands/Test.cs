@@ -25,31 +25,54 @@ public static class Test
 
 		if (!Problems.GetProblems(year).TryGetValue(day, out var problem)) {
 			Console.Error.WriteLine("The specified problem doesn't seem to exist.");
-			return 0;
+			return 1;
 		}
-Console.WriteLine($"Running tests for {problem.Problem.Assembly.Location}");
-		using var runner = Xunit.Runners.AssemblyRunner.WithoutAppDomain(problem.Problem.Assembly.Location);
-runner.OnDiagnosticMessage += e => {
-	Console.WriteLine($"XUNIT: {e.Message}");
-};
-		//var wh = new WaitHa
-		runner.OnExecutionComplete += e => {
-			Console.WriteLine($"Execution complete: {e.TotalTests}.");
+
+		if (string.IsNullOrWhiteSpace(problem.Problem.FullName)) {
+			Console.Error.WriteLine($"No type name available for specified problem.");
+			return 2;
+		}
+
+		await using var runner = Xunit.Runners.AssemblyRunner.WithoutAppDomain(problem.Problem.Assembly.Location);
+
+		var tcs = new TaskCompletionSource();
+
+		runner.OnDiagnosticMessage += e => {
+			Console.WriteLine($"XUNIT: {e.Message}");
 		};
 
-		runner.OnDiscoveryComplete += e => {
-			Console.WriteLine($"Running {e.TestCasesToRun} of {e.TestCasesDiscovered} tests.");
+		runner.OnTestStarting += e => {
+			Console.WriteLine($"Running {e.TestDisplayName}");
 		};
+
+		runner.OnTestFailed += e => {
+			Console.WriteLine($"Test FAILED: {e.TestDisplayName}");
+		};
+
+		runner.OnTestPassed += e => {
+			Console.WriteLine($"Test passed: {e.TestDisplayName}");
+		};
+
+		runner.OnExecutionComplete += e => {
+			//Console.WriteLine($"Execution complete: {e.TotalTests}.");
+			tcs.SetResult();
+		};
+
+		// runner.OnDiscoveryComplete += e => {
+		// 	Console.WriteLine($"Running {e.TestCasesToRun} of {e.TestCasesDiscovered} tests.");
+		// };
 
 		runner.Start(new Xunit.Runners.AssemblyRunnerStartOptions() {
 			TypesToRun = [problem.Problem.FullName],
 			DiagnosticMessages = true,
 		});
 
+		await tcs.Task;
+
 		while (runner.Status != Xunit.Runners.AssemblyRunnerStatus.Idle) {
-			await Task.Delay(100);
+			await Task.Delay(50);
 		}
 
-		return await Task.FromResult(0);
+		return 0;
 	}
 }

@@ -2,12 +2,12 @@
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
 	private const int TOTAL_SPACE  = 70000000;
 	private const int NEEDED_SPACE = 30000000;
 
-	public static (long, long) Main(string[] input)
+	public static (long, long) Execute(string[] input)
 	{
 		//fileName = "inputSample.txt";
 

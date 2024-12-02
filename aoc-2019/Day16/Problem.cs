@@ -2,9 +2,9 @@
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (string, string) Main(string[] input)
+	public static (string, string) Execute(string[] input)
 	{
 		var line  = input.Single();
 		var part1 = Part1(line);

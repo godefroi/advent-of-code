@@ -2,9 +2,9 @@
 
 public partial class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long, long) Main(string[] input)
+	public static (long, long) Execute(string[] input)
 	{
 		var match = ParseRegex().Match(input.First());
 		var xmin  = int.Parse(match.Groups["xmin"].Value);
@@ -83,7 +83,7 @@ public partial class Problem
 	[Fact(DisplayName = "Day 17 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main(ReadFileLines("input_sample.txt"));
+		var (p1, p2) = Execute(ReadFileLines("input_sample.txt"));
 
 		Assert.Equal(45, p1);
 		Assert.Equal(112, p2);
@@ -92,7 +92,7 @@ public partial class Problem
 	[Fact(DisplayName = "Day 17 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main(ReadFileLines("input.txt"));
+		var (p1, p2) = Execute(ReadFileLines("input.txt"));
 
 		Assert.Equal(5253, p1);
 		Assert.Equal(1770, p2);

@@ -2,9 +2,9 @@ namespace AdventOfCode.Year2021.Day09;
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long p1, long p2) Main(string[] input)
+	public static (long p1, long p2) Execute(string[] input)
 	{
 		var map   = input.SelectMany((line, y) => line.Select((c, x) => new Location(x, y, int.Parse(c.ToString())))).ToList();
 		var lows  = map.Where(l => Adjacents(map, l).All(a => a.Height > l.Height)).ToList();
@@ -47,7 +47,7 @@ public class Problem
 	[Fact(DisplayName = "Day 09 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main(ReadFileLines("input_sample.txt"));
+		var (p1, p2) = Execute(ReadFileLines("input_sample.txt"));
 
 		Assert.Equal(15, p1);
 		Assert.Equal(1134, p2);
@@ -56,7 +56,7 @@ public class Problem
 	[Fact(DisplayName = "Day 09 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main(ReadFileLines("input.txt"));
+		var (p1, p2) = Execute(ReadFileLines("input.txt"));
 
 		Assert.Equal(452, p1);
 		Assert.Equal(1263735, p2);

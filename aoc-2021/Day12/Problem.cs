@@ -2,9 +2,9 @@ namespace AdventOfCode.Year2021.Day12;
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long p1, long p2) Main(string[] input)
+	public static (long p1, long p2) Execute(string[] input)
 	{
 		var nodes = new Dictionary<string, Node>();
 
@@ -62,7 +62,7 @@ public class Problem
 	[Fact(DisplayName = "Day 12 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main(ReadFileLines("input_sample.txt"));
+		var (p1, p2) = Execute(ReadFileLines("input_sample.txt"));
 
 		Assert.Equal(10, p1);
 		Assert.Equal(36, p2);
@@ -71,7 +71,7 @@ public class Problem
 	[Fact(DisplayName = "Day 12 Sample Input (slightly larger)")]
 	public void SampleInput2FunctionCorrectly()
 	{
-		var (p1, p2) = Main(ReadFileLines("input_sample_slightly_larger.txt"));
+		var (p1, p2) = Execute(ReadFileLines("input_sample_slightly_larger.txt"));
 
 		Assert.Equal(19, p1);
 		//Assert.Equal(36, p2); // no official answer given for part 2 on this sample
@@ -80,7 +80,7 @@ public class Problem
 	[Fact(DisplayName = "Day 12 Sample Input (even larger)")]
 	public void SampleInput3FunctionCorrectly()
 	{
-		var (p1, p2) = Main(ReadFileLines("input_sample_even_larger.txt"));
+		var (p1, p2) = Execute(ReadFileLines("input_sample_even_larger.txt"));
 
 		Assert.Equal(226, p1);
 		//Assert.Equal(36, p2); // no official answer given for part 2 on this sample
@@ -89,7 +89,7 @@ public class Problem
 	[Fact(DisplayName = "Day 12 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main(ReadFileLines("input.txt"));
+		var (p1, p2) = Execute(ReadFileLines("input.txt"));
 
 		Assert.Equal(3713, p1);
 		Assert.Equal(91292, p2);

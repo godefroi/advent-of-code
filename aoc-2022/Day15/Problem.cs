@@ -4,9 +4,9 @@ namespace AdventOfCode.Year2022.Day15;
 
 public partial class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long, long) Main(string[] input)
+	public static (long, long) Execute(string[] input)
 	{
 		//return BruteForce(fileName);
 		return Solver(input);

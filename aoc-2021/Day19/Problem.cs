@@ -97,9 +97,9 @@ public class Problem
 		((int x, int y, int z) inp) => ( inp.y, -inp.z, -inp.x),
 	};
 
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long, long) Main(string[] input)
+	public static (long, long) Execute(string[] input)
 	{
 		var inputs  = ParseInput(input);
 		var destset = inputs[0].Beacons.ToHashSet();

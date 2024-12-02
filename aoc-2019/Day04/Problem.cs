@@ -2,9 +2,9 @@
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long, long) Main(string[] input)
+	public static (long, long) Execute(string[] input)
 	{
 		var (low, high) = input.Select(l => { var vals = l.Split('-'); return (low: int.Parse(vals[0]), high: int.Parse(vals[1])); }).Single();
 		var part1       = Part1(low, high);

@@ -2,9 +2,9 @@ namespace AdventOfCode.Year2016.Day01;
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long, long) Main(string[] input)
+	public static (long, long) Execute(string[] input)
 	{
 		// North is +Y
 		// East is +X
@@ -56,7 +56,7 @@ public class Problem
 	[InlineData(new string[] { "R5, L5, R5, R3" }, 12)]
 	public void Part1CalculatesCorrectly(string[] input, long distance)
 	{
-		var (p1, _) = Main(input);
+		var (p1, _) = Execute(input);
 
 		Assert.Equal(distance, p1);
 	}
@@ -65,7 +65,7 @@ public class Problem
 	[InlineData(new string[] { "R8, R4, R4, R8" }, 4)]
 	public void Part2CalculatesCorrectly(string[] input, long distance)
 	{
-		var (_, p2) = Main(input);
+		var (_, p2) = Execute(input);
 
 		Assert.Equal(distance, p2);
 	}

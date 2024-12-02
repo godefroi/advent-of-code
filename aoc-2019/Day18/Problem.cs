@@ -4,9 +4,9 @@ namespace AdventOfCode.Year2019.Day18;
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long, long) Main(string[] input)
+	public static (long, long) Execute(string[] input)
 	{
 		//fileName = "inputSample8.txt";
 
@@ -485,7 +485,7 @@ public class Problem
 	[InlineData("inputSample9.txt", 114, 72)]
 	public void SampleMapsWorkCorrectly(string fileName, int expectedPart1, int expectedPart2)
 	{
-		var (part1, part2) = Main(ReadFileLines(fileName));
+		var (part1, part2) = Execute(ReadFileLines(fileName));
 
 		Assert.Equal(expectedPart1, part1);
 		Assert.Equal(expectedPart2, part2);

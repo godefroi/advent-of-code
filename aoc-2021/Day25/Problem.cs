@@ -2,9 +2,9 @@
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long, long) Main(string[] input)
+	public static (long, long) Execute(string[] input)
 	{
 		var map   = ParseMap(input);
 		var steps = 0;
@@ -223,6 +223,6 @@ v......", RenderMap(map));
 	[Fact]
 	public void SampleInputStepsCorrectly()
 	{
-		Assert.Equal(58, Main(ReadFileLines("input_sample.txt")).Item1);
+		Assert.Equal(58, Execute(ReadFileLines("input_sample.txt")).Item1);
 	}
 }

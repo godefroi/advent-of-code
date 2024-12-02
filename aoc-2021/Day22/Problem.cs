@@ -2,9 +2,9 @@
 
 internal partial class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	internal static (long, long) Main(string[] input)
+	internal static (long, long) Execute(string[] input)
 	{
 		var instructions = input.Select(Parse).ToArray();
 		var part1        = Calculate(instructions.Where(c => c.Cuboid.MinX >= -50 && c.Cuboid.MaxX <= 50 && c.Cuboid.MinY >= -50 && c.Cuboid.MaxY <= 50 && c.Cuboid.MinZ >= -50 && c.Cuboid.MaxZ <= 50));

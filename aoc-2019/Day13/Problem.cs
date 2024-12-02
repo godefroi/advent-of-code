@@ -7,9 +7,9 @@ public class Problem
 	private const long TILE_BALL = 4;
 	private const long TILE_PADDLE = 3;
 
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long, long) Main(string[] input)
+	public static (long, long) Execute(string[] input)
 	{
 		var program = input.Single();
 		var part1   = Part1(program);

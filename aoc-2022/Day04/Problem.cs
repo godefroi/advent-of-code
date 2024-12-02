@@ -2,9 +2,9 @@
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long, long) Main(string[] input)
+	public static (long, long) Execute(string[] input)
 	{
 		var pairs = input.Select(AssignmentPair.Parse).ToArray();
 
@@ -54,7 +54,7 @@ public class Problem
 	[InlineData("input.txt", 556)]
 	public void Part1CalculatesCorrectly(string fileName, int expectedPart1)
 	{
-		Assert.Equal(expectedPart1, Main(ReadFileLines(fileName)).Item1);
+		Assert.Equal(expectedPart1, Execute(ReadFileLines(fileName)).Item1);
 	}
 
 	[Theory]
@@ -62,6 +62,6 @@ public class Problem
 	[InlineData("input.txt", 876)]
 	public void Part2CalculatesCorrectly(string fileName, int expectedPart2)
 	{
-		Assert.Equal(expectedPart2, Main(ReadFileLines(fileName)).Item2);
+		Assert.Equal(expectedPart2, Execute(ReadFileLines(fileName)).Item2);
 	}
 }

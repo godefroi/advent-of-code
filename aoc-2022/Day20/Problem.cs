@@ -2,11 +2,11 @@
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
 	private const long DECRYPTION_KEY = 811589153;
 
-	public static (long, long) Main(string[] input)
+	public static (long, long) Execute(string[] input)
 	{
 		var numbers   = input.Select(long.Parse).ToArray();
 		var mixedList = MixList(numbers);

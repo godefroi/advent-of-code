@@ -2,9 +2,9 @@
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long p1, long p2) Main(string[] input)
+	public static (long p1, long p2) Execute(string[] input)
 	{
 		var numbers  = input.First().Split(',').Select(int.Parse).ToList();
 		var buckets = Enumerable.Range(0, 9).Select(i => numbers.LongCount(n => n == i)).ToArray();
@@ -43,7 +43,7 @@ public class Problem
 	[Fact(DisplayName = "Day 06 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main(ReadFileLines("input_sample.txt"));
+		var (p1, p2) = Execute(ReadFileLines("input_sample.txt"));
 
 		Assert.Equal(5934, p1);
 		Assert.Equal(26984457539, p2);
@@ -52,7 +52,7 @@ public class Problem
 	[Fact(DisplayName = "Day 06 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main(ReadFileLines("input.txt"));
+		var (p1, p2) = Execute(ReadFileLines("input.txt"));
 
 		Assert.Equal(346063, p1);
 		Assert.Equal(1572358335990, p2);

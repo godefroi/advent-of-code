@@ -2,9 +2,9 @@
 
 public class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Main, typeof(Problem), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
-	public static (long part1, long part2) Main(string[] input)
+	public static (long part1, long part2) Execute(string[] input)
 	{
 		var part_1_position = new Position();
 		var part_2_position = new Position();
@@ -40,7 +40,7 @@ public class Problem
 	[Fact(DisplayName = "Day 02 Sample Input")]
 	public void SampleInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main(ReadFileLines("input_sample.txt"));
+		var (p1, p2) = Execute(ReadFileLines("input_sample.txt"));
 
 		Assert.Equal(150, p1);
 		Assert.Equal(900, p2);
@@ -49,7 +49,7 @@ public class Problem
 	[Fact(DisplayName = "Day 02 Main Input")]
 	public void MainInputFunctionCorrectly()
 	{
-		var (p1, p2) = Main(ReadFileLines("input.txt"));
+		var (p1, p2) = Execute(ReadFileLines("input.txt"));
 
 		Assert.Equal(   1660158, p1);
 		Assert.Equal(1604592846, p2);
