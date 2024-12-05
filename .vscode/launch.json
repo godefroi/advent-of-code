@@ -1,0 +1,13 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "C#: Debug Current Problem",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "dotnet: build",
+			"program": "${workspaceFolder}/advent-of-code/bin/Debug/net9.0/advent-of-code.dll",
+			"args": ["--inputFile", "inputSample.txt"]
+		}
+	]
+}
