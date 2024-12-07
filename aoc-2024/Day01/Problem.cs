@@ -6,7 +6,7 @@ public class Problem
 
 	public static (long, long) Execute(string[] input)
 	{
-		var (left, right) = OrderInputs(input.Select(ParsePair));
+		var (left, right) = OrderInputs(input/*.AsParallel()*/.Select(ParsePair));
 		var part1         = left.Zip(right).Sum(z => Math.Abs(z.First - z.Second));
 		var rightCounts   = right.GroupBy(n => n).ToDictionary(g => g.Key, g => g.Count());
 		var part2         = left.Aggregate(0L, (total, cur) => total + cur * rightCounts.GetValueOrDefault(cur));
@@ -24,8 +24,7 @@ public class Problem
 			r.Add(right);
 		}
 
-		l.Sort();
-		r.Sort();
+		Task.WaitAll(Task.Run(l.Sort), Task.Run(r.Sort));
 
 		return (l, r);
 	}
