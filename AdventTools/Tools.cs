@@ -125,7 +125,7 @@ public static class Tools
 		}
 
 		return Permutations(list, length - 1)
-			.SelectMany(t => list.Where(e => !t.Contains(e)), (t1, t2) => t1.Concat(new T[] { t2 }));
+			.SelectMany(t => list.Where(e => !t.Contains(e)), (t1, t2) => t1.Concat([t2]));
 	}
 
 	/// <summary>
@@ -163,7 +163,7 @@ public static class Tools
 	///
 	/// var k = 2;
 	/// Console.WriteLine($"Combinations of {input} (size {k}):");
-	/// GenerateCombinations("abc".ToCharArray, k, PrintCombination);
+	/// GenerateCombinations("abc".ToCharArray(), k, PrintCombination);
 	/// </example>
 	public static void GenerateCombinations<T>(T[] array, int k, Action<T[], int[], int> action)
 	{
@@ -192,6 +192,119 @@ public static class Tools
 			for (int j = i + 1; j < k; j++) {
 				indices[j] = indices[j - 1] + 1;
 			}
+		}
+	}
+
+	public static void GenerateCombinations<T>(ReadOnlySpan<T> array, int k, Action<ReadOnlySpan<T>, ReadOnlySpan<int>, int> action)
+	{
+		Span<int> indices = stackalloc int[k];
+
+		for (var i = 0; i < k; i++) {
+			indices[i] = i;
+		}
+
+		while (true) {
+			action(array, indices, k);
+
+			var i = k - 1;
+
+			while (i >= 0 && indices[i] == array.Length - k + i) {
+				i--;
+			}
+
+			if (i == -1) {
+				break;
+			}
+
+			indices[i]++;
+
+			for (int j = i + 1; j < k; j++) {
+				indices[j] = indices[j - 1] + 1;
+			}
+		}
+	}
+
+	/// <summary>
+	/// Generate all permutations (with repetitions) of a given <paramref name="length"/> using a given set of elements
+	/// </summary>
+	/// <typeparam name="T">The type of elements being used to generate the permutations</typeparam>
+	/// <param name="elements">The elements from which to generate the permutations</param>
+	/// <param name="length">The number of elements to place in each permutations</param>
+	/// <param name="action">The action to perform using the generated permutation</param>
+	/// <remarks>
+	/// This method implements Bratley's permutations algorithm, or at least, ChatGPT's interpretation of it.
+	/// </remarks>
+	public static void GeneratePermutations<T>(ReadOnlySpan<T> elements, int length, Action<ReadOnlySpan<T>> action)
+	{
+		var currentPerm = new T[length];
+		Span<int> counters = stackalloc int[length];
+
+		// generate and produce the first permutation
+		Array.Fill(currentPerm, elements[0]);
+		action(currentPerm);
+
+		while (true) {
+			// find the rightmost position that can be incremented
+			var pos = length - 1;
+
+			while (pos >= 0 && counters[pos] == elements.Length - 1) {
+				pos--;
+			}
+
+			// if all permutations have been generated, leave
+			if (pos < 0) {
+				break;
+			}
+
+			// increment the counter at position pos, and update the corresponding element
+			counters[pos]++;
+			currentPerm[pos] = elements[counters[pos]];
+
+			// reset all counters to the right of pos to the first element
+			for (var i = pos + 1; i < length; i++) {
+				counters[i] = 0;
+				currentPerm[i] = elements[0];
+			}
+
+			// produce this permutation
+			action(currentPerm);
+		}
+	}
+
+	public static IEnumerable<T[]> GeneratePermutations<T>(T[] elements, int length)
+	{
+		var currentPerm = new T[length];
+		var counters = new int[length];
+
+		// generate and produce the first permutation
+		Array.Fill(currentPerm, elements[0]);
+		yield return currentPerm;
+
+		while (true) {
+			// find the rightmost position that can be incremented
+			var pos = length - 1;
+
+			while (pos >= 0 && counters[pos] == elements.Length - 1) {
+				pos--;
+			}
+
+			// if all permutations have been generated, leave
+			if (pos < 0) {
+				break;
+			}
+
+			// increment the counter at position pos, and update the corresponding element
+			counters[pos]++;
+			currentPerm[pos] = elements[counters[pos]];
+
+			// reset all counters to the right of pos to the first element
+			for (var i = pos + 1; i < length; i++) {
+				counters[i] = 0;
+				currentPerm[i] = elements[0];
+			}
+
+			// produce this permutation
+			yield return currentPerm;
 		}
 	}
 
@@ -230,6 +343,4 @@ public static class Tools
 
 		item1 = en.Current;
 	}
-
-	public static void Deconstruct<TKey, TValue>(this KeyValuePair<TKey, TValue> source, out TKey Key, out TValue Value) => (Key, Value) = (source.Key, source.Value);
 }
