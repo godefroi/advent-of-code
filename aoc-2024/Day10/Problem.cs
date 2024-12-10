@@ -6,7 +6,7 @@ public class Problem
 {
 	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), typeof(Benchmarks));
 
-	public static (long, long) Execute(string[] input) => ExecuteDic(input);
+	public static (long, long) Execute(string[] input) => ExecuteArr(input);
 
 	public static (long, long) ExecuteArr(string[] input)
 	{
