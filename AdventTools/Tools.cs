@@ -8,8 +8,6 @@ namespace AdventOfCode;
 // combintations: https://web.archive.org/web/20160120204911/https://msdn.microsoft.com/en-us/library/aa289166(v=vs.71).aspx
 // or maybe gray codes: https://stackoverflow.com/a/127856/90328
 
-
-
 public static class Tools
 {
 	public static string GetFilePath([CallerFilePath]string sourceFilePath = "") => Path.GetDirectoryName(sourceFilePath)!;
@@ -209,6 +207,35 @@ public static class Tools
 			var i = k - 1;
 
 			while (i >= 0 && indices[i] == array.Length - k + i) {
+				i--;
+			}
+
+			if (i == -1) {
+				break;
+			}
+
+			indices[i]++;
+
+			for (int j = i + 1; j < k; j++) {
+				indices[j] = indices[j - 1] + 1;
+			}
+		}
+	}
+
+	public static void GenerateCombinations<T>(T array, int arrayLength, int k, Action<T, ReadOnlySpan<int>, int> action)
+	{
+		Span<int> indices = stackalloc int[k];
+
+		for (var i = 0; i < k; i++) {
+			indices[i] = i;
+		}
+
+		while (true) {
+			action(array, indices, k);
+
+			var i = k - 1;
+
+			while (i >= 0 && indices[i] == arrayLength - k + i) {
 				i--;
 			}
 

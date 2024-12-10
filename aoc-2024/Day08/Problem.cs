@@ -36,6 +36,9 @@ public class Problem
 
 		foreach (var (_, antennas) in allAntennas) {
 			GenerateCombinations(antennas, antennas.Count, 2, (ants, idx, _) => {
+				// TODO: a better way to do this, instead of bresenham and checking slope, would be
+				// to just calculate the dX and dY, reduce the fraction, and then list out
+				// all the points along the line
 				foreach (var node in BresenhamExtended(ants[idx[0]], ants[idx[1]], xMax, yMax)) {
 					nodes.Add(node);
 				}
