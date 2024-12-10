@@ -13,4 +13,6 @@ public static class ArrayExtensions
 			}
 		}
 	}
+
+	public static T ValueAt<T>(this T[,] map, Coordinate location) => map[location.X, location.Y];
 }
