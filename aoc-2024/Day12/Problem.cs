@@ -53,9 +53,9 @@ public class Problem
 
 		var (part1, part2) = regions
 			.Select(r => { var (p, c) = FindPerimeter(r, cDict); return (Perimeter: r.Count * p, Corners: r.Count * c); })
-			.Aggregate((Perimiter: 0, Corners: 1), (tot, cur) => (tot.Perimiter + cur.Perimeter, tot.Corners + cur.Corners));
+			.Aggregate((Perimiter: 0, Corners: 0), (tot, cur) => (tot.Perimiter + cur.Perimeter, tot.Corners + cur.Corners));
 
-		return (part1, part2 - 1);
+		return (part1, part2);
 	}
 
 	private static Region FindRegion(char[,] map, int xMax, int yMax, Coordinate from)
