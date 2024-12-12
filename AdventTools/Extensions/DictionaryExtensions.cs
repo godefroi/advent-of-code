@@ -19,4 +19,18 @@ public static class DictionaryExtensions
 		// replace it in the dictionary
 		dictionary[key] = curVal;
 	}
+
+	public static void Increment<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue incrementBy) where TValue : struct, IAdditionOperators<TValue, TValue, TValue>
+	{
+		// get the current value if it's there, otherwise, it's the default (0)
+		if (!dictionary.TryGetValue(key, out var curVal)) {
+			curVal = default;
+		}
+
+		// increment it
+		curVal += incrementBy;
+
+		// replace it in the dictionary
+		dictionary[key] = curVal;
+	}
 }
