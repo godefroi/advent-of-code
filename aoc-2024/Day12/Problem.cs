@@ -49,8 +49,6 @@ public class Problem
 			}
 		}
 
-		//var part1 = regions.Sum(r => r.Count * FindPerimeter(r, cDict));
-
 		var (part1, part2) = regions
 			.Select(r => { var (p, c) = FindPerimeter(r, cDict); return (Perimeter: r.Count * p, Corners: r.Count * c); })
 			.Aggregate((Perimiter: 0, Corners: 0), (tot, cur) => (tot.Perimiter + cur.Perimeter, tot.Corners + cur.Corners));
@@ -94,7 +92,6 @@ public class Problem
 			}
 		}
 
-//Console.WriteLine($"Filled {map.ValueAt(from)} from {from} area {region.Count}: {string.Join(',', region.Select(c => c.ToString()))}");
 		return region;
 	}
 
