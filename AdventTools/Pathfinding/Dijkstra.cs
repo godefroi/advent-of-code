@@ -50,18 +50,18 @@ public class Dijkstra
 			// ...
 			Func<Coordinate, IEnumerable<Coordinate>> findAdjacentNodes = from => {
 				return from switch {
-					//                              N       S       E       W
-					(1, 1) => new Coordinate[] {         (1, 2), (2, 1)         },
-					(1, 2) => new Coordinate[] { (1, 1), (1, 3), (2, 2)         },
-					(1, 3) => new Coordinate[] { (1, 2),         (2, 3)         },
+					//            N       S       E       W
+					(1, 1) => [         (1, 2), (2, 1)         ],
+					(1, 2) => [ (1, 1), (1, 3), (2, 2)         ],
+					(1, 3) => [ (1, 2),         (2, 3)         ],
 
-					(2, 1) => new Coordinate[] {         (2, 2), (3, 1), (1, 1) },
-					(2, 2) => new Coordinate[] { (2, 1), (2, 3), (3, 2), (1, 2) },
-					(2, 3) => new Coordinate[] { (2, 2),         (3, 3), (1, 3) },
+					(2, 1) => [         (2, 2), (3, 1), (1, 1) ],
+					(2, 2) => [ (2, 1), (2, 3), (3, 2), (1, 2) ],
+					(2, 3) => [ (2, 2),         (3, 3), (1, 3) ],
 
-					(3, 1) => new Coordinate[] {         (3, 2),         (2, 1) },
-					(3, 2) => new Coordinate[] { (3, 1), (3, 3),         (2, 2) },
-					(3, 3) => new Coordinate[] { (3, 2),                 (2, 3) },
+					(3, 1) => [         (3, 2),         (2, 1) ],
+					(3, 2) => [ (3, 1), (3, 3),         (2, 2) ],
+					(3, 3) => [ (3, 2),                 (2, 3) ],
 
 					_ => throw new InvalidOperationException(),
 				};
