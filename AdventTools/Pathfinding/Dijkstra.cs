@@ -42,8 +42,8 @@ public class Dijkstra
 
 	public class Tests
 	{
-		[Fact]
-		public void SimpleDistanceFindingWorks()
+		[Test]
+		public async Task SimpleDistanceFindingWorks()
 		{
 			// ...
 			// ...
@@ -69,17 +69,17 @@ public class Dijkstra
 
 			var distances = FindDistances((2, 2), findAdjacentNodes);
 
-			Assert.Collection(distances.OrderBy(d => d.Key.Y).ThenBy(d => d.Key.X),
-				kvp => { Assert.Equal(new Coordinate(1, 1), kvp.Key); Assert.Equal(2f, kvp.Value); },
-				kvp => { Assert.Equal(new Coordinate(2, 1), kvp.Key); Assert.Equal(1f, kvp.Value); },
-				kvp => { Assert.Equal(new Coordinate(3, 1), kvp.Key); Assert.Equal(2f, kvp.Value); },
-				kvp => { Assert.Equal(new Coordinate(1, 2), kvp.Key); Assert.Equal(1f, kvp.Value); },
-				kvp => { Assert.Equal(new Coordinate(2, 2), kvp.Key); Assert.Equal(0f, kvp.Value); },
-				kvp => { Assert.Equal(new Coordinate(3, 2), kvp.Key); Assert.Equal(1f, kvp.Value); },
-				kvp => { Assert.Equal(new Coordinate(1, 3), kvp.Key); Assert.Equal(2f, kvp.Value); },
-				kvp => { Assert.Equal(new Coordinate(2, 3), kvp.Key); Assert.Equal(1f, kvp.Value); },
-				kvp => { Assert.Equal(new Coordinate(3, 3), kvp.Key); Assert.Equal(2f, kvp.Value); }
-			);
+			await Assert.That(distances.OrderBy(d => d.Key.Y).ThenBy(d => d.Key.X)).IsEquivalentTo([
+				KeyValuePair.Create(new Coordinate(1, 1), 2f),
+				KeyValuePair.Create(new Coordinate(2, 1), 1f),
+				KeyValuePair.Create(new Coordinate(3, 1), 2f),
+				KeyValuePair.Create(new Coordinate(1, 2), 1f),
+				KeyValuePair.Create(new Coordinate(2, 2), 0f),
+				KeyValuePair.Create(new Coordinate(3, 2), 1f),
+				KeyValuePair.Create(new Coordinate(1, 3), 2f),
+				KeyValuePair.Create(new Coordinate(2, 3), 1f),
+				KeyValuePair.Create(new Coordinate(3, 3), 2f),
+			]);
 		}
 	}
 }

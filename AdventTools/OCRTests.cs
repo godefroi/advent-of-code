@@ -1,9 +1,9 @@
 namespace AdventOfCode;
 
-public static partial class OCR
+public class OCRTests
 {
-	[Fact]
-	public static void CharacterEnumerationWorksOnStrings()
+	[Test]
+	public async Task CharacterEnumerationWorksOnStrings()
 	{
 		var inputStr = new string[] {
 			" ##  #  # ###  ###  ###   ##  #  # ####",
@@ -13,20 +13,20 @@ public static partial class OCR
 			"#  # #  # #    # #  #    #  # #  # #   ",
 			"#  # #  # #    #  # #    #  #  ##  ####"};
 
-		Assert.Collection(FindCharacters(inputStr, 6, 0, GetPixel),
-			t => { Assert.Equal(00, t.Offset); Assert.Equal(4, t.Length); },
-			t => { Assert.Equal(05, t.Offset); Assert.Equal(4, t.Length); },
-			t => { Assert.Equal(10, t.Offset); Assert.Equal(4, t.Length); },
-			t => { Assert.Equal(15, t.Offset); Assert.Equal(4, t.Length); },
-			t => { Assert.Equal(20, t.Offset); Assert.Equal(4, t.Length); },
-			t => { Assert.Equal(25, t.Offset); Assert.Equal(4, t.Length); },
-			t => { Assert.Equal(30, t.Offset); Assert.Equal(4, t.Length); },
-			t => { Assert.Equal(35, t.Offset); Assert.Equal(4, t.Length); }
-		);
+		await Assert.That(OCR.FindCharacters(inputStr, 6, 0, OCR.GetPixel)).IsEquivalentTo([
+			(00, 4),
+			(05, 4),
+			(10, 4),
+			(15, 4),
+			(20, 4),
+			(25, 4),
+			(30, 4),
+			(35, 4),
+		]);
 	}
 
-	[Fact]
-	public static void CharacterEnumerationWorksOnArrays()
+	[Test]
+	public async Task CharacterEnumerationWorksOnArrays()
 	{
 		var inputStr = new string[] {
 			" ##  #  # ###  ###  ###   ##  #  # ####",
@@ -44,20 +44,20 @@ public static partial class OCR
 			}
 		}
 
-		Assert.Collection(FindCharacters(inputArr, 6, inputArr.GetLength(0), GetPixel),
-			t => { Assert.Equal(00, t.Offset); Assert.Equal(4, t.Length); },
-			t => { Assert.Equal(05, t.Offset); Assert.Equal(4, t.Length); },
-			t => { Assert.Equal(10, t.Offset); Assert.Equal(4, t.Length); },
-			t => { Assert.Equal(15, t.Offset); Assert.Equal(4, t.Length); },
-			t => { Assert.Equal(20, t.Offset); Assert.Equal(4, t.Length); },
-			t => { Assert.Equal(25, t.Offset); Assert.Equal(4, t.Length); },
-			t => { Assert.Equal(30, t.Offset); Assert.Equal(4, t.Length); },
-			t => { Assert.Equal(35, t.Offset); Assert.Equal(4, t.Length); }
-		);
+		await Assert.That(OCR.FindCharacters(inputArr, 6, inputArr.GetLength(0), OCR.GetPixel)).IsEquivalentTo([
+			(00, 4),
+			(05, 4),
+			(10, 4),
+			(15, 4),
+			(20, 4),
+			(25, 4),
+			(30, 4),
+			(35, 4),
+		]);
 	}
 
-	[Fact]
-	public static void HashingWorksCorrectlyWithoutTrailingSpaces()
+	[Test]
+	public async Task HashingWorksCorrectlyWithoutTrailingSpaces()
 	{
 		var z1 = new[] {
 			"####",
@@ -74,11 +74,11 @@ public static partial class OCR
 			"#   ",
 			"####"};
 
-		Assert.Equal(Hash(z1, 6, (0, 4), 0, GetPixel), Hash(z2, 6, (0, 4), 0, GetPixel));
+		await Assert.That(OCR.Hash(z2, 6, (0, 4), 0, OCR.GetPixel)).IsEqualTo(OCR.Hash(z1, 6, (0, 4), 0, OCR.GetPixel));
 	}
 
-	[Fact]
-	public static void HashingStringsAndArraysProducesSameResults()
+	[Test]
+	public async Task HashingStringsAndArraysProducesSameResults()
 	{
 		var inputStr = new string[] {
 			" ##  #  # ###  ###  ###   ##  #  # ####",
@@ -96,11 +96,11 @@ public static partial class OCR
 			}
 		}
 
-		Assert.Equal(Hash(inputStr, 6, (0, 4), 0, GetPixel), Hash(inputArr, 6, (0, 4), inputArr.GetLength(0), GetPixel));
+		await Assert.That(OCR.Hash(inputArr, 6, (0, 4), inputArr.GetLength(0), OCR.GetPixel)).IsEqualTo(OCR.Hash(inputStr, 6, (0, 4), 0, OCR.GetPixel));
 	}
 
-	[Fact]
-	public static void RecognizingStringsWorksCorrectly()
+	[Test]
+	public async Task RecognizingStringsWorksCorrectly()
 	{
 		var inputStr = new string[] {
 			" ##  #  # ###  ###  ###   ##  #  # ####",
@@ -110,11 +110,11 @@ public static partial class OCR
 			"#  # #  # #    # #  #    #  # #  # #   ",
 			"#  # #  # #    #  # #    #  #  ##  ####"};
 
-		Assert.Equal("AHPRPAUZ", Recognize(inputStr));
+		await Assert.That(OCR.Recognize(inputStr)).IsEqualTo("AHPRPAUZ");
 	}
 
-	[Fact]
-	public static void RecognizingArraysWorksCorrectly()
+	[Test]
+	public async Task RecognizingArraysWorksCorrectly()
 	{
 		var inputStr = new string[] {
 			" ##  #  # ###  ###  ###   ##  #  # ####",
@@ -132,6 +132,6 @@ public static partial class OCR
 			}
 		}
 
-		Assert.Equal("AHPRPAUZ", Recognize(inputChar));
+		await Assert.That(OCR.Recognize(inputChar)).IsEqualTo("AHPRPAUZ");
 	}
 }

@@ -23,7 +23,7 @@ public static partial class OCR
 		 ##  #     ##   ##  #    #### ###   ##  #### ####
 		""";
 
-	private delegate char GetPixelDelegate<TText>(TText text, int state, int row, int column);
+	internal delegate char GetPixelDelegate<TText>(TText text, int state, int row, int column);
 
 	private static readonly Lazy<Dictionary<ulong, char>> _alphabet = new(GenerateAlphabet);
 
@@ -70,7 +70,7 @@ public static partial class OCR
 		return ret;
 	}
 
-	private static IEnumerable<(int Offset, int Length)> FindCharacters<TText>(TText text, int charHeight, int state, GetPixelDelegate<TText> getPixel)
+	internal static IEnumerable<(int Offset, int Length)> FindCharacters<TText>(TText text, int charHeight, int state, GetPixelDelegate<TText> getPixel)
 	{
 		var curCol    = 0;
 		var charStart = 0;
@@ -119,7 +119,7 @@ public static partial class OCR
 		}
 	}
 
-	private static ulong Hash<TText>(TText text, int charHeight, (int Offset, int Length) position, int state, GetPixelDelegate<TText> getPixel)
+	internal static ulong Hash<TText>(TText text, int charHeight, (int Offset, int Length) position, int state, GetPixelDelegate<TText> getPixel)
 	{
 		var ret = 0ul;
 		var idx = 0;
@@ -146,11 +146,10 @@ Console.WriteLine();
 		return ret + marker;
 	}
 
-	private static char GetPixel(string[] text, int state, int row, int column) => text[row].Length > column ? text[row][column] : char.MinValue;
+	internal static char GetPixel(string[] text, int state, int row, int column) => text[row].Length > column ? text[row][column] : char.MinValue;
 
-	private static char GetPixel(char[,] text, int state, int row, int column) => column < state ? text[column, row] : char.MinValue;
+	internal static char GetPixel(char[,] text, int state, int row, int column) => column < state ? text[column, row] : char.MinValue;
 }
-
 /*
 	The 6-high font (from https://github.com/nbanman/advent-ocr/blob/master/res/font6.txt):
 
