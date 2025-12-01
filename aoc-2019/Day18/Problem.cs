@@ -446,48 +446,48 @@ public class Problem
 			{ DoorY, KeyY }, { DoorZ, KeyZ } };
 	}
 
-	[Fact]
-	public void KeySetWorksCorrectly()
+	[Test]
+	public async Task KeySetWorksCorrectly()
 	{
 		for (var c = 'a'; c <= 'z'; c++) {
 			var ks = new KeySet();
 
 			ks[c] = true;
 
-			AssertAllExcept(ks, c, false);
+			await AssertAllExcept(ks, c, false);
 		}
 
-		void AssertAllExcept(KeySet set, char except, bool values)
+		static async Task AssertAllExcept(KeySet set, char except, bool values)
 		{
 			for (var lc = 'a'; lc <= 'z'; lc++) {
 				if (lc == except) {
-					Assert.Equal(!values, set[lc]);
+					await Assert.That(set[lc]).IsEqualTo(!values);
 				} else {
-					Assert.Equal(values, set[lc]);
+					await Assert.That(set[lc]).IsEqualTo(values);
 				}
 			}
 		}
 	}
 
-	[Fact]
-	public void KeySetSatisfiesCorrectly()
+	[Test]
+	public async Task KeySetSatisfiesCorrectly()
 	{
 		var haveKeys = new KeySet("abcdefgh");
 		var needKeys = new KeySet("aceg");
 
-		Assert.True(haveKeys.Satisfies(needKeys));
+		await Assert.That(haveKeys.Satisfies(needKeys)).IsTrue();
 	}
 
-	[Theory]
-	[InlineData("inputSample6.txt", 26, 8)]
-	[InlineData("inputSample7.txt", 50, 24)]
-	[InlineData("inputSample8.txt", 127, 32)]
-	[InlineData("inputSample9.txt", 114, 72)]
-	public void SampleMapsWorkCorrectly(string fileName, int expectedPart1, int expectedPart2)
+	[Test]
+	[Arguments("inputSample6.txt", 26, 8)]
+	[Arguments("inputSample7.txt", 50, 24)]
+	[Arguments("inputSample8.txt", 127, 32)]
+	[Arguments("inputSample9.txt", 114, 72)]
+	public async Task SampleMapsWorkCorrectly(string fileName, int expectedPart1, int expectedPart2)
 	{
 		var (part1, part2) = Execute(ReadFileLines(fileName));
 
-		Assert.Equal(expectedPart1, part1);
-		Assert.Equal(expectedPart2, part2);
+		await Assert.That(part1).IsEqualTo(expectedPart1);
+		await Assert.That(part2).IsEqualTo(expectedPart2);
 	}
 }

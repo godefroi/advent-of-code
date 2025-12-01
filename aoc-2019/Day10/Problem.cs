@@ -150,18 +150,18 @@ public class Problem
 		return asteroids;
 	}
 
-	[Theory]
-	[InlineData("inputSample1.txt", 3, 4, 8)]
-	[InlineData("inputSample2.txt", 5, 8, 33)]
-	[InlineData("inputSample3.txt", 1, 2, 35)]
-	[InlineData("inputSample4.txt", 6, 3, 41)]
-	[InlineData("inputSample5.txt", 11, 13, 210)]
-	public void Part1CalculatesCorrectly(string fileName, long expectedX, long expectedY, int expectedCount)
+	[Test]
+	[Arguments("inputSample1.txt", 3, 4, 8)]
+	[Arguments("inputSample2.txt", 5, 8, 33)]
+	[Arguments("inputSample3.txt", 1, 2, 35)]
+	[Arguments("inputSample4.txt", 6, 3, 41)]
+	[Arguments("inputSample5.txt", 11, 13, 210)]
+	public async Task Part1CalculatesCorrectly(string fileName, long expectedX, long expectedY, int expectedCount)
 	{
 		var (x, y, count) = Part1(ReadFileLines(fileName));
 
-		Assert.Equal(expectedX, x);
-		Assert.Equal(expectedY, y);
-		Assert.Equal(expectedCount, count);
+		await Assert.That(x).IsEqualTo(expectedX);
+		await Assert.That(y).IsEqualTo(expectedY);
+		await Assert.That(count).IsEqualTo(expectedCount);
 	}
 }

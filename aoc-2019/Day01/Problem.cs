@@ -32,13 +32,13 @@ public class Problem
 		return total;
 	}
 
-	[Theory]
-	[InlineData(2, 12)]
-	[InlineData(2, 14)]
-	[InlineData(654, 1969)]
-	[InlineData(33583, 100756)]
-	public void FuelCalculatesCorrectly(long expected, long mass)
+	[Test]
+	[Arguments(2, 12)]
+	[Arguments(2, 14)]
+	[Arguments(654, 1969)]
+	[Arguments(33583, 100756)]
+	public async Task FuelCalculatesCorrectly(long expected, long mass)
 	{
-		Assert.Equal(expected, CalculateFuel(mass));
+		await Assert.That(CalculateFuel(mass)).IsEqualTo(expected);
 	}
 }

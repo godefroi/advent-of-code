@@ -358,8 +358,8 @@ public class Problem
 #pragma warning restore CS0162
 	}
 
-	[Fact]
-	public void OxygenPropagatesCorrectly()
+	[Test]
+	public async Task OxygenPropagatesCorrectly()
 	{
 		var map = new Tile[6, 5];
 
@@ -369,7 +369,7 @@ public class Problem
 		map[0, 3] = Tile.Wall;    map[1, 3] = Tile.Floor; map[2, 3] = Tile.OxygenSystem; map[3, 3] = Tile.Floor;   map[4, 3] = Tile.Wall;    map[5, 3] = Tile.Unknown;
 		map[0, 4] = Tile.Unknown; map[1, 4] = Tile.Wall;  map[2, 4] = Tile.Wall;         map[3, 4] = Tile.Wall;    map[4, 4] = Tile.Unknown; map[5, 4] = Tile.Unknown;
 
-		Assert.Equal(4, PropagateOxygen(map, 2, 3));
+		await Assert.That(PropagateOxygen(map, 2, 3)).IsEqualTo(4);
 	}
 
 	private enum Tile : long

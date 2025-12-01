@@ -24,22 +24,27 @@ public class Problem
 		return (part1, part2);
 	}
 
-	[Fact]
-	public void ProgramCopiesItself()
+	[Test]
+	public async Task ProgramCopiesItself()
 	{
 		var program  = "109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99".Split(',').Select(long.Parse).ToList();
 		var computer = new IntcodeComputer(program);
 		var ptr      = 0;
 
-		computer.Output += (s, e) => Assert.Equal(program[ptr++], e.OutputValue);
+		computer.Output += (s, e) => {
+			var expected = program[ptr++];
+			if (e.OutputValue != expected) {
+				throw new Exception($"Expected {expected}, but got {e.OutputValue}");
+			}
+		};
 
 		computer.Resume();
 
-		Assert.Equal(ptr, program.Count);
+		await Assert.That(program.Count).IsEqualTo(ptr);
 	}
 
-	[Fact]
-	public void ProgramProduces16DigitNumber()
+	[Test]
+	public async Task ProgramProduces16DigitNumber()
 	{
 		var computer = new IntcodeComputer("1102,34915192,34915192,7,4,7,99,0");
 		var output   = default(string);
@@ -48,13 +53,13 @@ public class Problem
 
 		computer.Resume();
 
-		Assert.NotNull(output);
-		Assert.Equal(16, output.Length);
+		await Assert.That(output).IsNotNull();
+		await Assert.That(output.Length).IsEqualTo(16);
 	}
 
 
-	[Fact]
-	public void ProgramOutputsCorrectNumber()
+	[Test]
+	public async Task ProgramOutputsCorrectNumber()
 	{
 		var program  = "104,1125899906842624,99".Split(',').Select(long.Parse).ToList();
 		var computer = new IntcodeComputer(program);
@@ -64,7 +69,7 @@ public class Problem
 
 		computer.Resume();
 
-		Assert.NotNull(output);
-		Assert.Equal(program[1], output);
+		await Assert.That(output).IsNotNull();
+		await Assert.That(output).IsEqualTo(program[1]);
 	}
 }
