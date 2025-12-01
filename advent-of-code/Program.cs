@@ -19,8 +19,11 @@ public static class Program
 			Commands.Options.InputName,
 		};
 
-		command.SetHandler(async (int year, int day, string inputName) => {
-			var problem = Problems.GetProblems(year)[day];
+		command.SetAction(async parseResult => {
+			var year      = parseResult.GetValue(Commands.Options.Year);
+			var day       = parseResult.GetValue(Commands.Options.Day);
+			var inputName = parseResult.GetValue(Commands.Options.InputName) ?? throw new InvalidOperationException("No input name received from option.");
+			var problem   = Problems.GetProblems(year)[day];
 
 			Console.WriteLine($"{ANSI_GREEN}Running year {problem.Year} day {problem.Day:d2}{ANSI_RESET}");
 
@@ -28,9 +31,9 @@ public static class Program
 
 			Console.WriteLine(problem.Main(input));
 			Console.WriteLine();
-		}, Commands.Options.Year, Commands.Options.Day, Commands.Options.InputName);
+		});
 
-		return await command.InvokeAsync(args);
+		return await command.Parse(args).InvokeAsync();
 	}
 
 	public static async Task<string[]> LoadInput(ProblemMetadata problem, string inputName)

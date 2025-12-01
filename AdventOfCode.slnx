@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Common/">
+    <Project Path="AdventTools/AdventTools.csproj" />
+  </Folder>
+  <Project Path="advent-of-code/advent-of-code.csproj" />
+  <Project Path="aoc-2016/aoc-2016.csproj" />
+  <Project Path="aoc-2019/aoc-2019.csproj" />
+  <Project Path="aoc-2020/aoc-2020.csproj" />
+  <Project Path="aoc-2021/aoc-2021.csproj" />
+  <Project Path="aoc-2022/aoc-2022.csproj" />
+  <Project Path="aoc-2023/aoc-2023.csproj" />
+  <Project Path="aoc-2024/aoc-2024.csproj" />
+</Solution>

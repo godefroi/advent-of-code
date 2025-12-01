@@ -12,13 +12,15 @@ public static class List
 			Options.All,
 		};
 
-		command.SetHandler(Execute, Options.ProblemMetadata.Value);
+		command.SetAction(Execute);
 
 		return command;
 	}
 
-	private static void Execute(ProblemMetadata[] problems)
+	private static void Execute(ParseResult parseResult)
 	{
+		var problems = Problems.GetProblems(parseResult);
+
 		foreach (var yearProblems in problems.GroupBy(p => p.Year).OrderBy(p => p.Key)) {
 			Console.WriteLine(yearProblems.Key);
 

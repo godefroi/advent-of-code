@@ -15,17 +15,22 @@ public static class Time
 			Options.Executions,
 		};
 
-		command.SetHandler(Execute, Options.All, Options.Year, Options.Day, Options.Warmups, Options.Executions);
+		command.SetAction(Execute);
 
 		return command;
 	}
 
-	private static async Task Execute(bool all, int year, int day, int warmups, int executions)
+	private static async Task Execute(ParseResult parseResult)
 	{
-		var problem = Problems.GetProblems(year)[day];
-		var console = Console.Out;
-		var sw      = new Stopwatch();
-		var output  = default(string);
+		var all        = parseResult.GetValue(Options.All);
+		var year       = parseResult.GetValue(Options.Year);
+		var day        = parseResult.GetValue(Options.Day);
+		var warmups    = parseResult.GetValue(Options.Warmups);
+		var executions = parseResult.GetValue(Options.Executions);
+		var problem    = Problems.GetProblems(year)[day];
+		var console    = Console.Out;
+		var sw         = new Stopwatch();
+		var output     = default(string);
 
 		// load the input
 		var input = await Program.LoadInput(problem, "input.txt");

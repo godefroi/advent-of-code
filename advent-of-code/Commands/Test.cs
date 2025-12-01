@@ -12,13 +12,17 @@ public static class Test
 			Options.Day,
 		};
 
-		command.SetHandler(Execute, Options.All, Options.Year, Options.Day);
+		command.SetAction(Execute);
 
 		return command;
 	}
 
-	private static async Task<int> Execute(bool all, int year, int day)
+	private static async Task<int> Execute(ParseResult parseResult)
 	{
+		var all  = parseResult.GetValue(Options.All);
+		var year = parseResult.GetValue(Options.Year);
+		var day  = parseResult.GetValue(Options.Day);
+
 		if (all) {
 			throw new NotImplementedException("Running tests for all is not yet implemented.");
 		}

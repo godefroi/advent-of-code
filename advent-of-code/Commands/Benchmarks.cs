@@ -15,12 +15,12 @@ public static class Benchmarks
 		var command = new Command("benchmarks", "Execute benchmarks associated with a problem") {
 		};
 
-		command.SetHandler(Execute);
+		command.SetAction(Execute);
 
 		return command;
 	}
 
-	private static void Execute()
+	private static void Execute(ParseResult parseResult)
 	{
 		if (Problems.CurrentProblem.Benchmarks == null) {
 			Console.Error.WriteLine($"No benchmarks defined for problem {Problems.CurrentProblem.Year}/{Problems.CurrentProblem.Day:00}");
