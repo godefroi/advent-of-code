@@ -1,3 +1,7 @@
+using TUnit.Assertions;
+using TUnit.Assertions.Extensions;
+using TUnit.Core;
+
 namespace AdventOfCode.Year2016.Day01;
 
 public class Problem
@@ -50,23 +54,23 @@ public class Problem
 		return (Coordinate.ManhattanDistance((0, 0), pos), bunnyHQ == Coordinate.Empty ? long.MinValue : Coordinate.ManhattanDistance((0, 0), bunnyHQ));
 	}
 
-	[Theory]
-	[InlineData(new string[] { "R2, L3" }, 5)]
-	[InlineData(new string[] { "R2, R2, R2" }, 2)]
-	[InlineData(new string[] { "R5, L5, R5, R3" }, 12)]
-	public void Part1CalculatesCorrectly(string[] input, long distance)
+	[Test]
+	[Arguments(new string[] { "R2, L3" }, 5)]
+	[Arguments(new string[] { "R2, R2, R2" }, 2)]
+	[Arguments(new string[] { "R5, L5, R5, R3" }, 12)]
+	public async Task Part1CalculatesCorrectly(string[] input, long distance)
 	{
 		var (p1, _) = Execute(input);
 
-		Assert.Equal(distance, p1);
+		await TUnit.Assertions.Assert.That(p1).IsEqualTo(distance);
 	}
 
-	[Theory]
-	[InlineData(new string[] { "R8, R4, R4, R8" }, 4)]
-	public void Part2CalculatesCorrectly(string[] input, long distance)
+	[Test]
+	[Arguments(new string[] { "R8, R4, R4, R8" }, 4)]
+	public async Task Part2CalculatesCorrectly(string[] input, long distance)
 	{
 		var (_, p2) = Execute(input);
 
-		Assert.Equal(distance, p2);
+		await TUnit.Assertions.Assert.That(p2).IsEqualTo(distance);
 	}
 }

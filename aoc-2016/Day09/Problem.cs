@@ -61,18 +61,18 @@ public class Problem
 		return total;
 	}
 
-	[Theory]
-	[InlineData("ADVENT", 6)]
-	[InlineData("A(1x5)BC", 7)]
-	[InlineData("(3x3)XYZ", 9)]
-	[InlineData("A(2x2)BCD(2x2)EFG", 11)]
-	[InlineData("(6x1)(1x3)A", 6)]
-	[InlineData("X(8x2)(3x3)ABCY", 18)]
-	public void CountV1FunctionsCorrectly(string input, long expected) => Assert.Equal(expected, CountV1(input));
+	[Test]
+	[Arguments("ADVENT", 6)]
+	[Arguments("A(1x5)BC", 7)]
+	[Arguments("(3x3)XYZ", 9)]
+	[Arguments("A(2x2)BCD(2x2)EFG", 11)]
+	[Arguments("(6x1)(1x3)A", 6)]
+	[Arguments("X(8x2)(3x3)ABCY", 18)]
+	public async Task CountV1FunctionsCorrectly(string input, long expected) => await Assert.That(CountV1(input)).IsEqualTo(expected);
 
-	[Theory]
-	[InlineData("X(8x2)(3x3)ABCY", 20)]
-	public void CountV2FunctionsCorrectly(string input, long expected) => Assert.Equal(expected, Count(input, true));
+	[Test]
+	[Arguments("X(8x2)(3x3)ABCY", 20)]
+	public async Task CountV2FunctionsCorrectly(string input, long expected) => await Assert.That(Count(input, true)).IsEqualTo(expected);
 
 }
 

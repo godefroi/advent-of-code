@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 
 namespace AdventOfCode.Year2016.Day07;
@@ -97,27 +98,27 @@ public class Problem
 
 	private readonly record struct AbaSequence(char Outside, char Inside);
 
-	[Theory]
-	[InlineData("abba", true)]
-	[InlineData("mnop", false)]
-	[InlineData("qrst", false)]
-	[InlineData("aaaa", false)]
-	[InlineData("xyyx", true)]
-	[InlineData("ioxxoj", true)]
-	[InlineData("ioj", false)]
-	public void AbbaSequenceDetectedCorrectly(string input, bool expected) => Assert.Equal(expected, HasAbbaSequence(input));
+	[Test]
+	[Arguments("abba", true)]
+	[Arguments("mnop", false)]
+	[Arguments("qrst", false)]
+	[Arguments("aaaa", false)]
+	[Arguments("xyyx", true)]
+	[Arguments("ioxxoj", true)]
+	[Arguments("ioj", false)]
+	public async Task AbbaSequenceDetectedCorrectly(string input, bool expected) => await Assert.That(HasAbbaSequence(input)).IsEqualTo(expected);
 
-	[Theory]
-	[InlineData("abba[mnop]qrst", true)]
-	[InlineData("abcd[bddb]xyyx", false)]
-	[InlineData("aaaa[qwer]tyui", false)]
-	[InlineData("ioxxoj[asdfgh]zxcvbn", true)]
-	public void TlsSupportDetectedCorrectly(string input, bool expected) => Assert.Equal(expected, SupportsTls(input));
+	[Test]
+	[Arguments("abba[mnop]qrst", true)]
+	[Arguments("abcd[bddb]xyyx", false)]
+	[Arguments("aaaa[qwer]tyui", false)]
+	[Arguments("ioxxoj[asdfgh]zxcvbn", true)]
+	public async Task TlsSupportDetectedCorrectly(string input, bool expected) => await Assert.That(SupportsTls(input)).IsEqualTo(expected);
 
-	[Theory]
-	[InlineData("aba[bab]xyz", true)]
-	[InlineData("xyx[xyx]xyx", false)]
-	[InlineData("aaa[kek]eke", true)]
-	[InlineData("zazbz[bzb]cdb", true)]
-	public void SslSupportDetectedCorrectly(string input, bool expected) => Assert.Equal(expected, SupportsSsl(input));
+	[Test]
+	[Arguments("aba[bab]xyz", true)]
+	[Arguments("xyx[xyx]xyx", false)]
+	[Arguments("aaa[kek]eke", true)]
+	[Arguments("zazbz[bzb]cdb", true)]
+	public async Task SslSupportDetectedCorrectly(string input, bool expected) => await Assert.That(SupportsSsl(input)).IsEqualTo(expected);
 }

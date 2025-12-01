@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CommunityToolkit.HighPerformance;
 
 namespace AdventOfCode.Year2016.Day08;
@@ -117,10 +118,10 @@ public partial class Problem
 
 	public record struct Instruction(InstructionType Type, int X, int Y, int Amount);
 
-	[Theory]
-	[InlineData("rect 4x1", InstructionType.Rect, 4, 1, -1)]
-	[InlineData("rotate row y=0 by 6", InstructionType.Rotate, -1, 0, 6)]
-	[InlineData("rotate column x=0 by 1", InstructionType.Rotate, 0, -1, 1)]
-	public void InstructionsParseCorrectly(string input, InstructionType type, int x, int y, int amount) =>
-		Assert.Equal(new Instruction(type, x, y, amount), Parse(input));
+	[Test]
+	[Arguments("rect 4x1", InstructionType.Rect, 4, 1, -1)]
+	[Arguments("rotate row y=0 by 6", InstructionType.Rotate, -1, 0, 6)]
+	[Arguments("rotate column x=0 by 1", InstructionType.Rotate, 0, -1, 1)]
+	public async Task InstructionsParseCorrectly(string input, InstructionType type, int x, int y, int amount) =>
+		await Assert.That(Parse(input)).IsEquivalentTo(new Instruction(type, x, y, amount));
 }

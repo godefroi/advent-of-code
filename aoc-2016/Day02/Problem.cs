@@ -54,12 +54,12 @@ public class Problem
 		return new string(code);
 	}
 
-	[Theory]
-	[InlineData(new string[] { "ULL", "RRDDD", "LURDL", "UUUUD" }, "1985")]
-	public void Part1CalculatesCorrectly(string[] input, string code)
+	[Test]
+	[Arguments(new string[] { "ULL", "RRDDD", "LURDL", "UUUUD" }, "1985")]
+	public async Task Part1CalculatesCorrectly(string[] input, string code)
 	{
 		var (p1, _) = Execute(input);
 
-		Assert.Equal(code, p1);
+		await Assert.That(p1).IsEqualTo(code);
 	}
 }
