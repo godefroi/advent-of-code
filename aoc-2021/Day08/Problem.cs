@@ -102,21 +102,23 @@ public class Problem
 		// otherwise, it's segment g
 	}
 
-	[Fact(DisplayName = "Day 08 Sample Input")]
-	public void SampleInputFunctionCorrectly()
+	[Test]
+	[DisplayName("Day 08 Sample Input")]
+	public async Task SampleInputFunctionCorrectly()
 	{
 		var (p1, p2) = Execute(ReadFileLines("input_sample.txt"));
 
-		Assert.Equal(26, p1);
-		Assert.Equal(61229, p2);
+		await Assert.That(p1).IsEqualTo(26);
+		await Assert.That(p2).IsEqualTo(61229);
 	}
 
-	[Fact(DisplayName = "Day 08 Main Input")]
-	public void MainInputFunctionCorrectly()
+	[Test]
+	[DisplayName("Day 08 Main Input")]
+	public async Task MainInputFunctionCorrectly()
 	{
 		var (p1, p2) = Execute(ReadFileLines("input.txt"));
 
-		Assert.Equal(344, p1);
-		Assert.Equal(1048410, p2);
+		await Assert.That(p1).IsEqualTo(344);
+		await Assert.That(p2).IsEqualTo(1048410);
 	}
 }

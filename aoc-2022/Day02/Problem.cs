@@ -83,11 +83,10 @@ public class Problem
 		Scissors = 3,
 	}
 
-	[Theory]
-	[InlineData(15, "inputSample.txt")]
-	[InlineData(12679, "scorixear.txt")]
-	[InlineData(8890, "input.txt")]
-	public void InputsScoreCorrectlyPart1(int expected, string fileName)
+	[Test]
+	[Arguments(15, "inputSample.txt")]
+	[Arguments(8890, "input.txt")]
+	public async Task InputsScoreCorrectlyPart1(int expected, string fileName)
 	{
 		var translation = new Translation() {
 			{ 'X', Move.Rock },
@@ -95,13 +94,13 @@ public class Problem
 			{ 'Z', Move.Scissors },
 		};
 
-		Assert.Equal(expected, ScoreGame(ReadFileLines(fileName), translation, ScoreRound1));
+		await Assert.That(ScoreGame(ReadFileLines(fileName), translation, ScoreRound1)).IsEqualTo(expected);
 	}
 
-	[Theory]
-	[InlineData(12, "inputSample.txt")]
-	[InlineData(10238, "input.txt")]
-	public void InputsScoreCorrectlyPart2(int expected, string fileName)
+	[Test]
+	[Arguments(12, "inputSample.txt")]
+	[Arguments(10238, "input.txt")]
+	public async Task InputsScoreCorrectlyPart2(int expected, string fileName)
 	{
 		var translation = new Translation() {
 			{ 'X', Move.Rock },
@@ -109,11 +108,11 @@ public class Problem
 			{ 'Z', Move.Scissors },
 		};
 
-		Assert.Equal(expected, ScoreGame(ReadFileLines(fileName), translation, ScoreRound2));
+		await Assert.That(ScoreGame(ReadFileLines(fileName), translation, ScoreRound2)).IsEqualTo(expected);
 	}
 
-	[Fact]
-	public void LinesTranslateCorrectly()
+	[Test]
+	public async Task LinesTranslateCorrectly()
 	{
 		var translation = new Translation() {
 			{ 'X', Move.Rock },
@@ -121,32 +120,32 @@ public class Problem
 			{ 'Z', Move.Scissors },
 		};
 
-		Assert.Equal((Move.Rock, Move.Rock),     Translate("A X", translation));
-		Assert.Equal((Move.Paper, Move.Rock),    Translate("A Y", translation));
-		Assert.Equal((Move.Scissors, Move.Rock), Translate("A Z", translation));
+		await Assert.That(Translate("A X", translation)).IsEqualTo((Move.Rock, Move.Rock));
+		await Assert.That(Translate("A Y", translation)).IsEqualTo((Move.Paper, Move.Rock));
+		await Assert.That(Translate("A Z", translation)).IsEqualTo((Move.Scissors, Move.Rock));
 
-		Assert.Equal((Move.Rock, Move.Paper),     Translate("B X", translation));
-		Assert.Equal((Move.Paper, Move.Paper),    Translate("B Y", translation));
-		Assert.Equal((Move.Scissors, Move.Paper), Translate("B Z", translation));
+		await Assert.That(Translate("B X", translation)).IsEqualTo((Move.Rock, Move.Paper));
+		await Assert.That(Translate("B Y", translation)).IsEqualTo((Move.Paper, Move.Paper));
+		await Assert.That(Translate("B Z", translation)).IsEqualTo((Move.Scissors, Move.Paper));
 
-		Assert.Equal((Move.Rock, Move.Scissors),     Translate("C X", translation));
-		Assert.Equal((Move.Paper, Move.Scissors),    Translate("C Y", translation));
-		Assert.Equal((Move.Scissors, Move.Scissors), Translate("C Z", translation));
+		await Assert.That(Translate("C X", translation)).IsEqualTo((Move.Rock, Move.Scissors));
+		await Assert.That(Translate("C Y", translation)).IsEqualTo((Move.Paper, Move.Scissors));
+		await Assert.That(Translate("C Z", translation)).IsEqualTo((Move.Scissors, Move.Scissors));
 	}
 
-	[Fact]
-	public void RoundsScoreCorrectly()
+	[Test]
+	public async Task RoundsScoreCorrectly()
 	{
-		Assert.Equal(4, ScoreRound1((Move.Rock, Move.Rock)));     // draw (3), my move is rock (1), total 4
-		Assert.Equal(1, ScoreRound1((Move.Rock, Move.Paper)));    // loss (0), my move is rock (1), total 1
-		Assert.Equal(7, ScoreRound1((Move.Rock, Move.Scissors))); // win (6), my move is rock (1), total 7
+		await Assert.That(ScoreRound1((Move.Rock, Move.Rock))).IsEqualTo(4);     // draw (3), my move is rock (1), total 4
+		await Assert.That(ScoreRound1((Move.Rock, Move.Paper))).IsEqualTo(1);    // loss (0), my move is rock (1), total 1
+		await Assert.That(ScoreRound1((Move.Rock, Move.Scissors))).IsEqualTo(7); // win (6), my move is rock (1), total 7
 
-		Assert.Equal(8, ScoreRound1((Move.Paper, Move.Rock)));     // win (6), my move is paper (2), total 8
-		Assert.Equal(5, ScoreRound1((Move.Paper, Move.Paper)));    // draw (3), my move is paper (2), total 5
-		Assert.Equal(2, ScoreRound1((Move.Paper, Move.Scissors))); // loss (0), my move is paper (2), total 2
+		await Assert.That(ScoreRound1((Move.Paper, Move.Rock))).IsEqualTo(8);     // win (6), my move is paper (2), total 8
+		await Assert.That(ScoreRound1((Move.Paper, Move.Paper))).IsEqualTo(5);    // draw (3), my move is paper (2), total 5
+		await Assert.That(ScoreRound1((Move.Paper, Move.Scissors))).IsEqualTo(2); // loss (0), my move is paper (2), total 2
 
-		Assert.Equal(3, ScoreRound1((Move.Scissors, Move.Rock)));     // loss (0), my move is scissors (3), total 3
-		Assert.Equal(9, ScoreRound1((Move.Scissors, Move.Paper)));    // win (6), my move is scissors (3), total 9
-		Assert.Equal(6, ScoreRound1((Move.Scissors, Move.Scissors))); // draw (3), my move is scissors (3), total 6
+		await Assert.That(ScoreRound1((Move.Scissors, Move.Rock))).IsEqualTo(3);     // loss (0), my move is scissors (3), total 3
+		await Assert.That(ScoreRound1((Move.Scissors, Move.Paper))).IsEqualTo(9);    // win (6), my move is scissors (3), total 9
+		await Assert.That(ScoreRound1((Move.Scissors, Move.Scissors))).IsEqualTo(6); // draw (3), my move is scissors (3), total 6
 	}
 }

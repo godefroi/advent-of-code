@@ -62,14 +62,14 @@ public class Problem
 
 	private static int CountDigits(long number) => number == 0L ? 1 : (number > 0L ? 1 : 2) + (int)Math.Log10(Math.Abs((double)number));
 
-	[Theory]
-	[InlineData([0, 1])]
-	[InlineData([1, 1])]
-	[InlineData([9, 1])]
-	[InlineData([10, 2])]
-	[InlineData([11, 2])]
-	[InlineData([99, 2])]
-	[InlineData([100, 3])]
-	[InlineData([101, 3])]
-	public void CountDigitsWorksCorrectly(long number, int digits) => Assert.Equal(digits, CountDigits(number));
+	[Test]
+	[Arguments([0, 1])]
+	[Arguments([1, 1])]
+	[Arguments([9, 1])]
+	[Arguments([10, 2])]
+	[Arguments([11, 2])]
+	[Arguments([99, 2])]
+	[Arguments([100, 3])]
+	[Arguments([101, 3])]
+	public async Task CountDigitsWorksCorrectly(long number, int digits) => await Assert.That(CountDigits(number)).IsEqualTo(digits);
 }

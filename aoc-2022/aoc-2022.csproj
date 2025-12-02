@@ -11,15 +11,6 @@
 	<ItemGroup>
 		<PackageReference Include="BenchmarkDotNet" Version="0.15.8" />
 		<PackageReference Include="Microsoft.Z3" Version="4.12.2" />
-		<PackageReference Include="xunit.v3" Version="3.2.1" />
-		<PackageReference Include="xunit.v3.runner.console" Version="3.2.1">
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
-		<PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -31,8 +22,6 @@
 		<Using Include="System.Reflection" />
 		<Using Include="System.Text" />
 		<Using Include="System.Text.RegularExpressions" />
-
-		<Using Include="Xunit" />
 
 		<Using Include="AdventOfCode" />
 		<Using Include="AdventOfCode.Tools" Static="true" />

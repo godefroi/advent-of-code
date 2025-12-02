@@ -59,39 +59,43 @@ public class Problem
 
 	internal readonly record struct Node(string Name, List<Node> Connections, bool Big);
 
-	[Fact(DisplayName = "Day 12 Sample Input")]
-	public void SampleInputFunctionCorrectly()
+	[Test]
+	[DisplayName("Day 12 Sample Input")]
+	public async Task SampleInputFunctionCorrectly()
 	{
 		var (p1, p2) = Execute(ReadFileLines("input_sample.txt"));
 
-		Assert.Equal(10, p1);
-		Assert.Equal(36, p2);
+		await Assert.That(p1).IsEqualTo(10);
+		await Assert.That(p2).IsEqualTo(36);
 	}
 
-	[Fact(DisplayName = "Day 12 Sample Input (slightly larger)")]
-	public void SampleInput2FunctionCorrectly()
+	[Test]
+	[DisplayName("Day 12 Sample Input (slightly larger)")]
+	public async Task SampleInput2FunctionCorrectly()
 	{
 		var (p1, p2) = Execute(ReadFileLines("input_sample_slightly_larger.txt"));
 
-		Assert.Equal(19, p1);
-		//Assert.Equal(36, p2); // no official answer given for part 2 on this sample
+		await Assert.That(p1).IsEqualTo(19);
+		//await Assert.That(p2).IsEqualTo(36); // no official answer given for part 2 on this sample
 	}
 
-	[Fact(DisplayName = "Day 12 Sample Input (even larger)")]
-	public void SampleInput3FunctionCorrectly()
+	[Test]
+	[DisplayName("Day 12 Sample Input (even larger)")]
+	public async Task SampleInput3FunctionCorrectly()
 	{
 		var (p1, p2) = Execute(ReadFileLines("input_sample_even_larger.txt"));
 
-		Assert.Equal(226, p1);
-		//Assert.Equal(36, p2); // no official answer given for part 2 on this sample
+		await Assert.That(p1).IsEqualTo(226);
+		//await Assert.That(p2).IsEqualTo(36); // no official answer given for part 2 on this sample
 	}
 
-	[Fact(DisplayName = "Day 12 Main Input")]
-	public void MainInputFunctionCorrectly()
+	[Test]
+	[DisplayName("Day 12 Main Input")]
+	public async Task MainInputFunctionCorrectly()
 	{
 		var (p1, p2) = Execute(ReadFileLines("input.txt"));
 
-		Assert.Equal(3713, p1);
-		Assert.Equal(91292, p2);
+		await Assert.That(p1).IsEqualTo(3713);
+		await Assert.That(p2).IsEqualTo(91292);
 	}
 }

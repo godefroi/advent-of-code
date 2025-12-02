@@ -55,21 +55,23 @@ public class Problem
 		return -score;
 	}
 
-	[Fact(DisplayName = "Day 10 Sample Input")]
-	public void SampleInputFunctionCorrectly()
+	[Test]
+	[DisplayName("Day 10 Sample Input")]
+	public async Task SampleInputFunctionCorrectly()
 	{
 		var (p1, p2) = Execute(ReadFileLines("input_sample.txt"));
 
-		Assert.Equal(26397, p1);
-		Assert.Equal(288957, p2);
+		await Assert.That(p1).IsEqualTo(26397);
+		await Assert.That(p2).IsEqualTo(288957);
 	}
 
-	[Fact(DisplayName = "Day 10 Main Input")]
-	public void MainInputFunctionCorrectly()
+	[Test]
+	[DisplayName("Day 10 Main Input")]
+	public async Task MainInputFunctionCorrectly()
 	{
 		var (p1, p2) = Execute(ReadFileLines("input.txt"));
 
-		Assert.Equal(296535, p1);
-		Assert.Equal(4245130838, p2);
+		await Assert.That(p1).IsEqualTo(296535);
+		await Assert.That(p2).IsEqualTo(4245130838);
 	}
 }

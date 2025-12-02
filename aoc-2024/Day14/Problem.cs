@@ -185,17 +185,17 @@ public class Problem
 		return ret;
 	}
 
-	[Theory]
-	[InlineData(2, 4, 2, -3, 1, 11, 7, 4, 1)]
-	[InlineData(2, 4, 2, -3, 2, 11, 7, 6, 5)]
-	[InlineData(2, 4, 2, -3, 3, 11, 7, 8, 2)]
-	[InlineData(2, 4, 2, -3, 4, 11, 7, 10, 6)]
-	[InlineData(2, 4, 2, -3, 5, 11, 7, 1, 3)]
-	public void MoveWorksCorrectly(int startX, int startY, int velX, int velY, int secs, int width, int height, int endX, int endY)
+	[Test]
+	[Arguments(2, 4, 2, -3, 1, 11, 7, 4, 1)]
+	[Arguments(2, 4, 2, -3, 2, 11, 7, 6, 5)]
+	[Arguments(2, 4, 2, -3, 3, 11, 7, 8, 2)]
+	[Arguments(2, 4, 2, -3, 4, 11, 7, 10, 6)]
+	[Arguments(2, 4, 2, -3, 5, 11, 7, 1, 3)]
+	public async Task MoveWorksCorrectly(int startX, int startY, int velX, int velY, int secs, int width, int height, int endX, int endY)
 	{
 		var end = Move((startX, startY), (velX, velY), secs, width, height);
 
-		Assert.Equal(endX, end.X);
-		Assert.Equal(endY, end.Y);
+		await Assert.That(end.X).IsEqualTo(endX);
+		await Assert.That(end.Y).IsEqualTo(endY);
 	}
 }

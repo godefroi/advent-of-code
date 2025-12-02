@@ -191,14 +191,14 @@ public partial class Problem
 
 	public class Tests
 	{
-		[Fact]
-		public void TiltWorksCorrectly()
+		[Test]
+		public async Task TiltWorksCorrectly()
 		{
 			var map = CreateMap(ReadFileLines("inputSample.txt"), c => c);
 
 			TiltMap(map, Direction.North);
 
-			Assert.Equal('O', map[0, 3]);
+			await Assert.That(map[0, 3]).IsEqualTo('O');
 		}
 	}
 }

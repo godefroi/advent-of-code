@@ -52,21 +52,23 @@ public class Problem
 		return FindRating(candidates.Where(c => predicate(common, c, position)).ToList(), predicate, position + 1);
 	}
 
-	[Fact(DisplayName = "Day 03 Sample Input")]
-	public void SampleInputFunctionCorrectly()
+	[Test]
+	[DisplayName("Day 03 Sample Input")]
+	public async Task SampleInputFunctionCorrectly()
 	{
 		var (p1, p2) = Execute(ReadFileLines("input_sample.txt"));
 
-		Assert.Equal(198, p1);
-		Assert.Equal(230, p2);
+		await Assert.That(p1).IsEqualTo(198);
+		await Assert.That(p2).IsEqualTo(230);
 	}
 
-	[Fact(DisplayName = "Day 03 Main Input")]
-	public void MainInputFunctionCorrectly()
+	[Test]
+	[DisplayName("Day 03 Main Input")]
+	public async Task MainInputFunctionCorrectly()
 	{
 		var (p1, p2) = Execute(ReadFileLines("input.txt"));
 
-		Assert.Equal(1082324, p1);
-		Assert.Equal(1353024, p2);
+		await Assert.That(p1).IsEqualTo(1082324);
+		await Assert.That(p2).IsEqualTo(1353024);
 	}
 }

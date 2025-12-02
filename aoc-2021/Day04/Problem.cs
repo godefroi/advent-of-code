@@ -42,21 +42,23 @@ public class Problem
 		throw new InvalidOperationException("Should have terminated.");
 	}
 
-	[Fact(DisplayName = "Day 04 Sample Input")]
-	public void SampleInputFunctionCorrectly()
+	[Test]
+	[DisplayName("Day 04 Sample Input")]
+	public async Task SampleInputFunctionCorrectly()
 	{
 		var (p1, p2) = Execute(ReadFileLines("input_sample.txt"));
 
-		Assert.Equal(4512, p1);
-		Assert.Equal(1924, p2);
+		await Assert.That(p1).IsEqualTo(4512);
+		await Assert.That(p2).IsEqualTo(1924);
 	}
 
-	[Fact(DisplayName = "Day 04 Main Input")]
-	public void MainInputFunctionCorrectly()
+	[Test]
+	[DisplayName("Day 04 Main Input")]
+	public async Task MainInputFunctionCorrectly()
 	{
 		var (p1, p2) = Execute(ReadFileLines("input.txt"));
 
-		Assert.Equal(54275, p1);
-		Assert.Equal(13158, p2);
+		await Assert.That(p1).IsEqualTo(54275);
+		await Assert.That(p2).IsEqualTo(13158);
 	}
 }

@@ -133,8 +133,8 @@ public partial class Problem
 
 	public class Tests
 	{
-		[Fact]
-		public void ShoelaceWorks()
+		[Test]
+		public async Task ShoelaceWorks()
 		{
 			var sl = new Shoelace();
 
@@ -144,7 +144,7 @@ public partial class Problem
 			sl.AddCoordinate((11, 7));
 			sl.AddCoordinate((7, 10));
 
-			Assert.Equal(32, sl.Calculate());
+			await Assert.That(sl.Calculate()).IsEqualTo(32);
 		}
 	}
 

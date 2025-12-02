@@ -188,34 +188,34 @@ public partial class Problem
 
 	public class Tests
 	{
-		[Theory]
-		[InlineData(new[] { "a", "b", "b", "a", "a", "e", "d", "c", "b", "a" }, 0, false)]
-		[InlineData(new[] { "a", "b", "b", "a", "a", "e", "d", "c", "b", "a" }, 1, true)]
-		[InlineData(new[] { "a", "b", "b", "a", "a", "e", "d", "c", "b", "a" }, 2, false)]
-		[InlineData(new[] { "a", "b", "b", "a", "a", "e", "d", "c", "b", "a" }, 3, false)]
-		[InlineData(new[] { "a", "b", "c", "d", "e", "e", "d", "c", "b", "a" }, 0, false)]
-		[InlineData(new[] { "a", "b", "c", "d", "e", "e", "d", "c", "b", "a" }, 1, false)]
-		[InlineData(new[] { "a", "b", "c", "d", "e", "e", "d", "c", "b", "a" }, 2, false)]
-		[InlineData(new[] { "a", "b", "c", "d", "e", "e", "d", "c", "b", "a" }, 3, false)]
-		[InlineData(new[] { "a", "b", "c", "d", "e", "e", "d", "c", "b", "a" }, 4, true)]
-		[InlineData(new[] { "a", "b", "c", "d", "e", "e", "d", "c", "b", "a" }, 5, false)]
-		[InlineData(new[] { "a", "b", "c", "d", "e", "e", "d", "c", "b", "a" }, 6, false)]
-		[InlineData(new[] { "a", "b", "c", "d", "e", "e", "d", "c", "b", "a" }, 7, false)]
-		[InlineData(new[] { "a", "b", "c", "d", "e", "e", "d", "c", "b", "a" }, 8, false)]
-		[InlineData(new[] { "a", "b", "c", "d", "e", "e", "d", "c", "b", "a" }, 9, false)]
-		public void ReflectionsAreDetected(string[] strings, int index, bool isReflection) =>
-			Assert.Equal(isReflection, IsReflection(strings.Select(s => s.ToCharArray()).ToArray(), index));
+		[Test]
+		[Arguments(new[] { "a", "b", "b", "a", "a", "e", "d", "c", "b", "a" }, 0, false)]
+		[Arguments(new[] { "a", "b", "b", "a", "a", "e", "d", "c", "b", "a" }, 1, true)]
+		[Arguments(new[] { "a", "b", "b", "a", "a", "e", "d", "c", "b", "a" }, 2, false)]
+		[Arguments(new[] { "a", "b", "b", "a", "a", "e", "d", "c", "b", "a" }, 3, false)]
+		[Arguments(new[] { "a", "b", "c", "d", "e", "e", "d", "c", "b", "a" }, 0, false)]
+		[Arguments(new[] { "a", "b", "c", "d", "e", "e", "d", "c", "b", "a" }, 1, false)]
+		[Arguments(new[] { "a", "b", "c", "d", "e", "e", "d", "c", "b", "a" }, 2, false)]
+		[Arguments(new[] { "a", "b", "c", "d", "e", "e", "d", "c", "b", "a" }, 3, false)]
+		[Arguments(new[] { "a", "b", "c", "d", "e", "e", "d", "c", "b", "a" }, 4, true)]
+		[Arguments(new[] { "a", "b", "c", "d", "e", "e", "d", "c", "b", "a" }, 5, false)]
+		[Arguments(new[] { "a", "b", "c", "d", "e", "e", "d", "c", "b", "a" }, 6, false)]
+		[Arguments(new[] { "a", "b", "c", "d", "e", "e", "d", "c", "b", "a" }, 7, false)]
+		[Arguments(new[] { "a", "b", "c", "d", "e", "e", "d", "c", "b", "a" }, 8, false)]
+		[Arguments(new[] { "a", "b", "c", "d", "e", "e", "d", "c", "b", "a" }, 9, false)]
+		public async Task ReflectionsAreDetected(string[] strings, int index, bool isReflection) =>
+			await Assert.That(IsReflection(strings.Select(s => s.ToCharArray()).ToArray(), index)).IsEqualTo(isReflection);
 
-		[Fact]
-		public void FirstSampleMapFindsReflection()
+		[Test]
+		public async Task FirstSampleMapFindsReflection()
 		{
 			var map1 = new Map(ChunkByEmpty(ReadFileLines("inputSample.txt")).First());
 
-			Assert.Equal(5, FindReflection(map1));
+			await Assert.That(FindReflection(map1)).IsEqualTo(5);
 		}
 
-		[Fact]
-		public void AllRealMapsFindReflection()
+		[Test]
+		public async Task AllRealMapsFindReflection()
 		{
 			var skipped = 0;
 
@@ -223,7 +223,7 @@ public partial class Problem
 				var theMap     = new Map(chunk);
 				var reflection = FindReflection(theMap);
 
-				Assert.NotEqual(0, reflection);
+				await Assert.That(reflection).IsNotEqualTo(0);
 				skipped++;
 			}
 		}

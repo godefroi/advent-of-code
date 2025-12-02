@@ -142,32 +142,33 @@ public class Problem
 
 	private static IEnumerable<Coordinate> Parse(string line) => Enumerable.Range(0, line.Length).Where(x => line[x] == '#').Select(x => new Coordinate(x, 0));
 
-	[Fact]
-	public void ElvesParseCorrectly()
+	[Test]
+	public async Task ElvesParseCorrectly()
 	{
-		Assert.Collection(ReadFileLines("inputSample.txt", Parse).SelectMany((coords, y) => coords.Select(c => new Coordinate(c.X, y))),
-			e => Assert.Equal(new Coordinate(4, 0), e),
-			e => Assert.Equal(new Coordinate(2, 1), e),
-			e => Assert.Equal(new Coordinate(3, 1), e),
-			e => Assert.Equal(new Coordinate(4, 1), e),
-			e => Assert.Equal(new Coordinate(6, 1), e),
-			e => Assert.Equal(new Coordinate(0, 2), e),
-			e => Assert.Equal(new Coordinate(4, 2), e),
-			e => Assert.Equal(new Coordinate(6, 2), e),
-			e => Assert.Equal(new Coordinate(1, 3), e),
-			e => Assert.Equal(new Coordinate(5, 3), e),
-			e => Assert.Equal(new Coordinate(6, 3), e),
-			e => Assert.Equal(new Coordinate(0, 4), e),
-			e => Assert.Equal(new Coordinate(2, 4), e),
-			e => Assert.Equal(new Coordinate(3, 4), e),
-			e => Assert.Equal(new Coordinate(4, 4), e),
-			e => Assert.Equal(new Coordinate(0, 5), e),
-			e => Assert.Equal(new Coordinate(1, 5), e),
-			e => Assert.Equal(new Coordinate(3, 5), e),
-			e => Assert.Equal(new Coordinate(5, 5), e),
-			e => Assert.Equal(new Coordinate(6, 5), e),
-			e => Assert.Equal(new Coordinate(1, 6), e),
-			e => Assert.Equal(new Coordinate(4, 6), e));
+		await Assert.That(ReadFileLines("inputSample.txt", Parse).SelectMany((coords, y) => coords.Select(c => new Coordinate(c.X, y)))).IsEquivalentTo([
+				new Coordinate(4, 0),
+				new Coordinate(2, 1),
+				new Coordinate(3, 1),
+				new Coordinate(4, 1),
+				new Coordinate(6, 1),
+				new Coordinate(0, 2),
+				new Coordinate(4, 2),
+				new Coordinate(6, 2),
+				new Coordinate(1, 3),
+				new Coordinate(5, 3),
+				new Coordinate(6, 3),
+				new Coordinate(0, 4),
+				new Coordinate(2, 4),
+				new Coordinate(3, 4),
+				new Coordinate(4, 4),
+				new Coordinate(0, 5),
+				new Coordinate(1, 5),
+				new Coordinate(3, 5),
+				new Coordinate(5, 5),
+				new Coordinate(6, 5),
+				new Coordinate(1, 6),
+				new Coordinate(4, 6)
+			]);
 	}
 
 	private readonly record struct Adjacencies(Coordinate NW, Coordinate N, Coordinate NE, Coordinate W, Coordinate E, Coordinate SW, Coordinate S, Coordinate SE)

@@ -44,22 +44,24 @@ public class Problem
 		(l.X == center.X && (l.Y == center.Y + 1 || l.Y == center.Y - 1))
 		|| (l.Y == center.Y && (l.X == center.X + 1 || l.X == center.X - 1)));
 
-	[Fact(DisplayName = "Day 09 Sample Input")]
-	public void SampleInputFunctionCorrectly()
+	[Test]
+	[DisplayName("Day 09 Sample Input")]
+	public async Task SampleInputFunctionCorrectly()
 	{
 		var (p1, p2) = Execute(ReadFileLines("input_sample.txt"));
 
-		Assert.Equal(15, p1);
-		Assert.Equal(1134, p2);
+		await Assert.That(p1).IsEqualTo(15);
+		await Assert.That(p2).IsEqualTo(1134);
 	}
 
-	[Fact(DisplayName = "Day 09 Main Input")]
-	public void MainInputFunctionCorrectly()
+	[Test]
+	[DisplayName("Day 09 Main Input")]
+	public async Task MainInputFunctionCorrectly()
 	{
 		var (p1, p2) = Execute(ReadFileLines("input.txt"));
 
-		Assert.Equal(452, p1);
-		Assert.Equal(1263735, p2);
+		await Assert.That(p1).IsEqualTo(452);
+		await Assert.That(p2).IsEqualTo(1263735);
 	}
 
 	record struct Location(int X, int Y, int Height);

@@ -128,8 +128,8 @@ public class Problem
 		Join,
 	}
 
-	[Fact]
-	private void AllPermutationMethodsProduceSimilarResults()
+	[Test]
+	public async Task AllPermutationMethodsProduceSimilarResults()
 	{
 		var permLength = 3;
 		var operations = Enum.GetValues<Op>();
@@ -149,8 +149,8 @@ public class Problem
 			.Order()
 			.ToList();
 
-		Assert.Equal(combinatorics, toolsAction);
-		Assert.Equal(toolsAction, toolsEnumerable);
+		await Assert.That(combinatorics).IsEquivalentTo(toolsAction);
+		await Assert.That(toolsAction).IsEquivalentTo(toolsEnumerable);
 	}
 
 	public class Benchmarks

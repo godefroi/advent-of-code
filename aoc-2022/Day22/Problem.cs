@@ -252,139 +252,123 @@ public partial class Problem
 	[GeneratedRegex(@"(\d+|R|L)")]
 	private static partial Regex ParseRegex();
 
-	[Fact]
-	public void PathParsesCorrectly()
+	[Test]
+	public async Task PathParsesCorrectly()
 	{
-		Assert.Collection(ParseRegex().Matches("10R5L5R10L4R5L5").Select(m => m.Value),
-			s => Assert.Equal("10", s),
-			s => Assert.Equal("R", s),
-			s => Assert.Equal("5", s),
-			s => Assert.Equal("L", s),
-			s => Assert.Equal("5", s),
-			s => Assert.Equal("R", s),
-			s => Assert.Equal("10", s),
-			s => Assert.Equal("L", s),
-			s => Assert.Equal("4", s),
-			s => Assert.Equal("R", s),
-			s => Assert.Equal("5", s),
-			s => Assert.Equal("L", s),
-			s => Assert.Equal("5", s));
+		await Assert.That(ParseRegex().Matches("10R5L5R10L4R5L5").Select(m => m.Value)).IsEquivalentTo([
+				"10",
+				"R",
+				"5",
+				"L",
+				"5",
+				"R",
+				"10",
+				"L",
+				"4",
+				"R",
+				"5",
+				"L",
+				"5"
+			]);
 	}
 
-	[Theory]
-	[InlineData(11,  6, Direction.Right,  0,  6)]
-	[InlineData( 0,  6, Direction.Left,  11,  6)]
-	[InlineData( 5,  4, Direction.Up,     5,  7)]
-	[InlineData( 5,  7, Direction.Down,   5,  4)]
-	[InlineData(11,  0, Direction.Up,    11, 11)]
-	[InlineData(11, 11, Direction.Down,  11,  0)]
-	public void WrappingHappensCorrectly(int x, int y, Direction direction, int expectedX, int expectedY)
+	[Test]
+	[Arguments(11,  6, Direction.Right,  0,  6)]
+	[Arguments( 0,  6, Direction.Left,  11,  6)]
+	[Arguments( 5,  4, Direction.Up,     5,  7)]
+	[Arguments( 5,  7, Direction.Down,   5,  4)]
+	[Arguments(11,  0, Direction.Up,    11, 11)]
+	[Arguments(11, 11, Direction.Down,  11,  0)]
+	public async Task WrappingHappensCorrectly(int x, int y, Direction direction, int expectedX, int expectedY)
 	{
 		var lines = ReadFileLines("inputSample.txt");
 		var map   = ParseMap(lines);
 		var loc   = Wrap(x, y, direction, map);
 
-		Assert.Equal(expectedX, loc.x);
-		Assert.Equal(expectedY, loc.y);
+		await Assert.That(loc.x).IsEqualTo(expectedX);
+		await Assert.That(loc.y).IsEqualTo(expectedY);
 	}
 
-	public static IEnumerable<object[]> CubeWrapTestData { get; } = new[] {
-		// left from 2,0 (ends up down on 1,1)
-		new object[] { 8, 0, Direction.Left, 4, 4, Direction.Down },
-		new object[] { 8, 1, Direction.Left, 5, 4, Direction.Down },
-		new object[] { 8, 2, Direction.Left, 6, 4, Direction.Down },
-		new object[] { 8, 3, Direction.Left, 7, 4, Direction.Down },
-
-		// up from 2,0 (ends up down on 0,1)
-		new object[] {  8, 0, Direction.Up, 3, 4, Direction.Down },
-		new object[] {  9, 0, Direction.Up, 2, 4, Direction.Down },
-		new object[] { 10, 0, Direction.Up, 1, 4, Direction.Down },
-		new object[] { 11, 0, Direction.Up, 0, 4, Direction.Down },
-
-		// right from 2,0 (ends up left on 3,2)
-		new object[] { 11, 0, Direction.Right, 15, 11, Direction.Left },
-		new object[] { 11, 1, Direction.Right, 15, 10, Direction.Left },
-		new object[] { 11, 2, Direction.Right, 15,  9, Direction.Left },
-		new object[] { 11, 3, Direction.Right, 15,  8, Direction.Left },
-
-		// up from 0,1 (ends up down on 2,0)
-		new object[] { 0, 4, Direction.Up, 11, 0, Direction.Down },
-		new object[] { 1, 4, Direction.Up, 10, 0, Direction.Down },
-		new object[] { 2, 4, Direction.Up,  9, 0, Direction.Down },
-		new object[] { 3, 4, Direction.Up,  8, 0, Direction.Down },
-
-		// left from 0,1 (ends up up on 3,2)
-		new object[] { 0, 4, Direction.Left, 15, 11, Direction.Up },
-		new object[] { 0, 5, Direction.Left, 14, 11, Direction.Up },
-		new object[] { 0, 6, Direction.Left, 13, 11, Direction.Up },
-		new object[] { 0, 7, Direction.Left, 12, 11, Direction.Up },
-
-		// down from 0,1 (ends up up on 2,2)
-		new object[] { 0, 7, Direction.Down, 11, 11, Direction.Up },
-		new object[] { 1, 7, Direction.Down, 10, 11, Direction.Up },
-		new object[] { 2, 7, Direction.Down,  9, 11, Direction.Up },
-		new object[] { 3, 7, Direction.Down,  8, 11, Direction.Up },
-
-		// up from 1,1 (ends up right on 2,0)
-		new object[] { 4, 4, Direction.Up, 8, 0, Direction.Right },
-		new object[] { 5, 4, Direction.Up, 8, 1, Direction.Right },
-		new object[] { 6, 4, Direction.Up, 8, 2, Direction.Right },
-		new object[] { 7, 4, Direction.Up, 8, 3, Direction.Right },
-
-		// down from 1,1 (ends up right on 2,2)
-		new object[] { 4, 7, Direction.Down, 8, 11, Direction.Right },
-		new object[] { 5, 7, Direction.Down, 8, 10, Direction.Right },
-		new object[] { 6, 7, Direction.Down, 8,  9, Direction.Right },
-		new object[] { 7, 7, Direction.Down, 8,  8, Direction.Right },
-
-		// right from 2,1 (ends up down on 3,2)
-		new object[] { 11, 4, Direction.Right, 15, 8, Direction.Down },
-		new object[] { 11, 5, Direction.Right, 14, 8, Direction.Down },
-		new object[] { 11, 6, Direction.Right, 13, 8, Direction.Down },
-		new object[] { 11, 7, Direction.Right, 12, 8, Direction.Down },
-
-		// left from 2,2 (ends up up on 1,1)
-		new object[] { 8,  8, Direction.Left, 7, 7, Direction.Up },
-		new object[] { 8,  9, Direction.Left, 6, 7, Direction.Up },
-		new object[] { 8, 10, Direction.Left, 5, 7, Direction.Up },
-		new object[] { 8, 11, Direction.Left, 4, 7, Direction.Up },
-
-		// down from 2,2 (ends up up on 0,1)
-		new object[] {  8, 11, Direction.Down, 3, 7, Direction.Up },
-		new object[] {  9, 11, Direction.Down, 2, 7, Direction.Up },
-		new object[] { 10, 11, Direction.Down, 1, 7, Direction.Up },
-		new object[] { 11, 11, Direction.Down, 0, 7, Direction.Up },
-
-		// up from 3,2 (ends up left on 2,1)
-		new object[] { 12, 8, Direction.Up, 11, 7, Direction.Left },
-		new object[] { 13, 8, Direction.Up, 11, 6, Direction.Left },
-		new object[] { 14, 8, Direction.Up, 11, 5, Direction.Left },
-		new object[] { 15, 8, Direction.Up, 11, 4, Direction.Left },
-
-		// right from 3,2 (ends up left on 2,0)
-		new object[] { 15,  8, Direction.Right, 11, 3, Direction.Left },
-		new object[] { 15,  9, Direction.Right, 11, 2, Direction.Left },
-		new object[] { 15, 10, Direction.Right, 11, 1, Direction.Left },
-		new object[] { 15, 11, Direction.Right, 11, 0, Direction.Left },
-
-		// down from 3,2 (ends up right on 0,1)
-		new object[] { 12, 11, Direction.Down, 0, 7, Direction.Right },
-		new object[] { 13, 11, Direction.Down, 0, 6, Direction.Right },
-		new object[] { 14, 11, Direction.Down, 0, 5, Direction.Right },
-		new object[] { 15, 11, Direction.Down, 0, 4, Direction.Right },
-	};
-
-	[Theory]
-	[MemberData(nameof(CubeWrapTestData))]
-	public void CubeWrappingHappensCorrectly(int x, int y, Direction direction, int expectedX, int expectedY, Direction expectedDirection)
+	[Test]
+	// left from 2,0 (ends up down on 1,1)
+	[Arguments(8, 0, Direction.Left, 4, 4, Direction.Down)]
+	[Arguments(8, 1, Direction.Left, 5, 4, Direction.Down)]
+	[Arguments(8, 2, Direction.Left, 6, 4, Direction.Down)]
+	[Arguments(8, 3, Direction.Left, 7, 4, Direction.Down)]
+	// up from 2,0 (ends up down on 0,1)
+	[Arguments(8, 0, Direction.Up, 3, 4, Direction.Down)]
+	[Arguments(9, 0, Direction.Up, 2, 4, Direction.Down)]
+	[Arguments(10, 0, Direction.Up, 1, 4, Direction.Down)]
+	[Arguments(11, 0, Direction.Up, 0, 4, Direction.Down)]
+	// right from 2,0 (ends up left on 3,2)
+	[Arguments(11, 0, Direction.Right, 15, 11, Direction.Left)]
+	[Arguments(11, 1, Direction.Right, 15, 10, Direction.Left)]
+	[Arguments(11, 2, Direction.Right, 15, 9, Direction.Left)]
+	[Arguments(11, 3, Direction.Right, 15, 8, Direction.Left)]
+	// up from 0,1 (ends up down on 2,0)
+	[Arguments(0, 4, Direction.Up, 11, 0, Direction.Down)]
+	[Arguments(1, 4, Direction.Up, 10, 0, Direction.Down)]
+	[Arguments(2, 4, Direction.Up, 9, 0, Direction.Down)]
+	[Arguments(3, 4, Direction.Up, 8, 0, Direction.Down)]
+	// left from 0,1 (ends up up on 3,2)
+	[Arguments(0, 4, Direction.Left, 15, 11, Direction.Up)]
+	[Arguments(0, 5, Direction.Left, 14, 11, Direction.Up)]
+	[Arguments(0, 6, Direction.Left, 13, 11, Direction.Up)]
+	[Arguments(0, 7, Direction.Left, 12, 11, Direction.Up)]
+	// down from 0,1 (ends up up on 2,2)
+	[Arguments(0, 7, Direction.Down, 11, 11, Direction.Up)]
+	[Arguments(1, 7, Direction.Down, 10, 11, Direction.Up)]
+	[Arguments(2, 7, Direction.Down, 9, 11, Direction.Up)]
+	[Arguments(3, 7, Direction.Down, 8, 11, Direction.Up)]
+	// up from 1,1 (ends up right on 2,0)
+	[Arguments(4, 4, Direction.Up, 8, 0, Direction.Right)]
+	[Arguments(5, 4, Direction.Up, 8, 1, Direction.Right)]
+	[Arguments(6, 4, Direction.Up, 8, 2, Direction.Right)]
+	[Arguments(7, 4, Direction.Up, 8, 3, Direction.Right)]
+	// down from 1,1 (ends up right on 2,2)
+	[Arguments(4, 7, Direction.Down, 8, 11, Direction.Right)]
+	[Arguments(5, 7, Direction.Down, 8, 10, Direction.Right)]
+	[Arguments(6, 7, Direction.Down, 8, 9, Direction.Right)]
+	[Arguments(7, 7, Direction.Down, 8, 8, Direction.Right)]
+	// right from 2,1 (ends up down on 3,2)
+	[Arguments(11, 4, Direction.Right, 15, 8, Direction.Down)]
+	[Arguments(11, 5, Direction.Right, 14, 8, Direction.Down)]
+	[Arguments(11, 6, Direction.Right, 13, 8, Direction.Down)]
+	[Arguments(11, 7, Direction.Right, 12, 8, Direction.Down)]
+	// left from 2,2 (ends up up on 1,1)
+	[Arguments(8, 8, Direction.Left, 7, 7, Direction.Up)]
+	[Arguments(8, 9, Direction.Left, 6, 7, Direction.Up)]
+	[Arguments(8, 10, Direction.Left, 5, 7, Direction.Up)]
+	[Arguments(8, 11, Direction.Left, 4, 7, Direction.Up)]
+	// down from 2,2 (ends up up on 0,1)
+	[Arguments(8, 11, Direction.Down, 3, 7, Direction.Up)]
+	[Arguments(9, 11, Direction.Down, 2, 7, Direction.Up)]
+	[Arguments(10, 11, Direction.Down, 1, 7, Direction.Up)]
+	[Arguments(11, 11, Direction.Down, 0, 7, Direction.Up)]
+	// up from 3,2 (ends up left on 2,1)
+	[Arguments(12, 8, Direction.Up, 11, 7, Direction.Left)]
+	[Arguments(13, 8, Direction.Up, 11, 6, Direction.Left)]
+	[Arguments(14, 8, Direction.Up, 11, 5, Direction.Left)]
+	[Arguments(15, 8, Direction.Up, 11, 4, Direction.Left)]
+	// right from 3,2 (ends up left on 2,0)
+	[Arguments(15, 8, Direction.Right, 11, 3, Direction.Left)]
+	[Arguments(15, 9, Direction.Right, 11, 2, Direction.Left)]
+	[Arguments(15, 10, Direction.Right, 11, 1, Direction.Left)]
+	[Arguments(15, 11, Direction.Right, 11, 0, Direction.Left)]
+	// down from 3,2 (ends up right on 0,1)
+	[Arguments(12, 11, Direction.Down, 0, 7, Direction.Right)]
+	[Arguments(13, 11, Direction.Down, 0, 6, Direction.Right)]
+	[Arguments(14, 11, Direction.Down, 0, 5, Direction.Right)]
+	[Arguments(15, 11, Direction.Down, 0, 4, Direction.Right)]
+	public async Task CubeWrappingHappensCorrectly(int x, int y, Direction direction, int expectedX, int expectedY, Direction expectedDirection)
 	{
 		var lines = ReadFileLines("inputSample.txt");
 		var map   = ParseMap(lines);
 
 		var (newX, newY, newDir) = WrapCube(x, y, direction, map);
 
-		Assert.Equal(expectedX,         newX);
-		Assert.Equal(expectedY,         newY);
-		Assert.Equal(expectedDirection, newDir);
+		await Assert.That(newX).IsEqualTo(expectedX);
+		await Assert.That(newY).IsEqualTo(expectedY);
+		await Assert.That(newDir).IsEqualTo(expectedDirection);
 	}
 }

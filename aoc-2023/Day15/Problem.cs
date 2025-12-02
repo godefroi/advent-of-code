@@ -143,12 +143,12 @@ public partial class Problem
 
 	public class Tests
 	{
-		[Theory]
-		[InlineData("HASH", 52)]
-		[InlineData("rn=1", 30)]
-		[InlineData("cm-", 253)]
-		[InlineData("rn", 0)]
-		public void HashComputedCorrectly(string str, int hashValue) =>
-			Assert.Equal(hashValue, ComputeHASH(str));
+		[Test]
+		[Arguments("HASH", 52)]
+		[Arguments("rn=1", 30)]
+		[Arguments("cm-", 253)]
+		[Arguments("rn", 0)]
+		public async Task HashComputedCorrectly(string str, int hashValue) =>
+			await Assert.That(ComputeHASH(str)).IsEqualTo(hashValue);
 	}
 }

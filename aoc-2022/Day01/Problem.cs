@@ -13,21 +13,21 @@ public class Problem
 		return ret;
 	}
 
-	[Fact]
-	public void SampleInputReturnsCorrectValues()
+	[Test]
+	public async Task SampleInputReturnsCorrectValues()
 	{
 		var (max, topThree) = Execute(ReadFileLines("inputSample.txt"));
 
-		Assert.Equal(24000, max);
-		Assert.Equal(45000, topThree);
+		await Assert.That(max).IsEqualTo(24000);
+		await Assert.That(topThree).IsEqualTo(45000);
 	}
 
-	[Fact]
-	public void InputReturnsCorrectValues()
+	[Test]
+	public async Task InputReturnsCorrectValues()
 	{
 		var (max, topThree) = Execute(ReadFileLines("input.txt"));
 
-		Assert.Equal(66616, max);
-		Assert.Equal(199172, topThree);
+		await Assert.That(max).IsEqualTo(66616);
+		await Assert.That(topThree).IsEqualTo(199172);
 	}
 }

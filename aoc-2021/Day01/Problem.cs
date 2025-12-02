@@ -38,21 +38,23 @@ public class Problem
 		return (inc, winc);
 	}
 
-	[Fact(DisplayName = "Day 01 Sample Input")]
-	public void SampleInputFunctionCorrectly()
+	[Test]
+	[DisplayName("Day 01 Sample Input")]
+	public async Task SampleInputFunctionCorrectly()
 	{
 		var (inc, winc) = Execute(ReadFileLines("input_sample.txt"));
 
-		Assert.Equal(7, inc);
-		Assert.Equal(5, winc);
+		await Assert.That(inc).IsEqualTo(7);
+		await Assert.That(winc).IsEqualTo(5);
 	}
 
-	[Fact(DisplayName = "Day 01 Main Input")]
-	public void MainInputFunctionCorrectly()
+	[Test]
+	[DisplayName("Day 01 Main Input")]
+	public async Task MainInputFunctionCorrectly()
 	{
 		var (inc, winc) = Execute(ReadFileLines("input.txt"));
 
-		Assert.Equal(1462, inc);
-		Assert.Equal(1497, winc);
+		await Assert.That(inc).IsEqualTo(1462);
+		await Assert.That(winc).IsEqualTo(1497);
 	}
 }

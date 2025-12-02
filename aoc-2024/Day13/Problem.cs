@@ -17,7 +17,7 @@ public class Problem
 
 	private static long Part1(Machine machine)
 	{
-		using var ctx   = new Context();
+		using var ctx   = new Microsoft.Z3.Context();
 		using var opt   = ctx.MkOptimize();
 		using var aCnt  = ctx.MkIntConst("aCnt");
 		using var bCnt  = ctx.MkIntConst("bCnt");
@@ -51,7 +51,7 @@ public class Problem
 
 	private static long Part2(Machine machine)
 	{
-		using var ctx   = new Context();
+		using var ctx   = new Microsoft.Z3.Context();
 		using var opt   = ctx.MkOptimize();
 		using var aCnt  = ctx.MkIntConst("aCnt");
 		using var bCnt  = ctx.MkIntConst("bCnt");

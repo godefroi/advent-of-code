@@ -20,6 +20,7 @@ public static class Time
 		return command;
 	}
 
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "TUnit0055:Do not overwrite the Console writer", Justification = "We're not running tests here.")]
 	private static async Task Execute(ParseResult parseResult)
 	{
 		var all        = parseResult.GetValue(Options.All);

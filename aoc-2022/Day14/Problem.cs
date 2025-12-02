@@ -127,40 +127,42 @@ public class Problem
 		}
 	}
 
-	[Fact]
-	public void SamplePointsParseCorrectly()
+	[Test]
+	public async Task SamplePointsParseCorrectly()
 	{
-		Assert.Collection(ReadFileLines("inputSample.txt", Parse).SelectMany(p => p),
-			p => Assert.Equal(((498, 4), (498, 6)), p),
-			p => Assert.Equal(((498, 6), (496, 6)), p),
-			p => Assert.Equal(((503, 4), (502, 4)), p),
-			p => Assert.Equal(((502, 4), (502, 9)), p),
-			p => Assert.Equal(((502, 9), (494, 9)), p));
+		await Assert.That(ReadFileLines("inputSample.txt", Parse).SelectMany(p => p)).IsEquivalentTo([
+			((498, 4), (498, 6)),
+			((498, 6), (496, 6)),
+			((503, 4), (502, 4)),
+			((502, 4), (502, 9)),
+			((502, 9), (494, 9))
+		]);
 	}
 
-	[Fact]
-	public void SamplePointsEnumerateCorrectly()
+	[Test]
+	public async Task SamplePointsEnumerateCorrectly()
 	{
-		Assert.Collection(ReadFileLines("inputSample.txt", Parse).SelectMany(p => p).SelectMany(EnumeratePoints).Distinct().Order(),
-			p => Assert.Equal((494, 9), p),
-			p => Assert.Equal((495, 9), p),
-			p => Assert.Equal((496, 6), p),
-			p => Assert.Equal((496, 9), p),
-			p => Assert.Equal((497, 6), p),
-			p => Assert.Equal((497, 9), p),
-			p => Assert.Equal((498, 4), p),
-			p => Assert.Equal((498, 5), p),
-			p => Assert.Equal((498, 6), p),
-			p => Assert.Equal((498, 9), p),
-			p => Assert.Equal((499, 9), p),
-			p => Assert.Equal((500, 9), p),
-			p => Assert.Equal((501, 9), p),
-			p => Assert.Equal((502, 4), p),
-			p => Assert.Equal((502, 5), p),
-			p => Assert.Equal((502, 6), p),
-			p => Assert.Equal((502, 7), p),
-			p => Assert.Equal((502, 8), p),
-			p => Assert.Equal((502, 9), p),
-			p => Assert.Equal((503, 4), p));
+		await Assert.That(ReadFileLines("inputSample.txt", Parse).SelectMany(p => p).SelectMany(EnumeratePoints).Distinct().Order()).IsEquivalentTo([
+			(494, 9),
+			(495, 9),
+			(496, 6),
+			(496, 9),
+			(497, 6),
+			(497, 9),
+			(498, 4),
+			(498, 5),
+			(498, 6),
+			(498, 9),
+			(499, 9),
+			(500, 9),
+			(501, 9),
+			(502, 4),
+			(502, 5),
+			(502, 6),
+			(502, 7),
+			(502, 8),
+			(502, 9),
+			(503, 4)
+		]);
 	}
 }

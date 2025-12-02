@@ -1,56 +1,92 @@
-﻿using System.Runtime.CompilerServices;
-using System.Text;
+using System.Collections.ObjectModel;
 
 namespace AdventOfCode;
 
-public static partial class OCR
+public class OCR
 {
-	private const string AHPRPAUZ = """
-		 ##  #  # ###  ###  ###   ##  #  # ####
-		#  # #  # #  # #  # #  # #  # #  #    #
-		#  # #### #  # #  # #  # #  # #  #   #
-		#### #  # ###  ###  ###  #### #  #  #
-		#  # #  # #    # #  #    #  # #  # #
-		#  # #  # #    #  # #    #  #  ##  ####
-		""";
+	private delegate char GetPixelDelegate<TText>(TText text, int row, int column);
 
-	private const string UPOJFLBCEZ = """
-		#  # ###   ##    ## #### #    ###   ##  #### ####
-		#  # #  # #  #    # #    #    #  # #  # #       #
-		#  # #  # #  #    # ###  #    ###  #    ###    #
-		#  # ###  #  #    # #    #    #  # #    #     #
-		#  # #    #  # #  # #    #    #  # #  # #    #
-		 ##  #     ##   ##  #    #### ###   ##  #### ####
-		""";
+	private static ReadOnlyDictionary<int, char> _characters = new(ComputeAlphabetHashes());
 
-	internal delegate char GetPixelDelegate<TText>(TText text, int state, int row, int column);
-
-	private static readonly Lazy<Dictionary<ulong, char>> _alphabet = new(GenerateAlphabet);
-
-	public static string Recognize(string[] text) => string.Concat(
-		FindCharacters(text, text.Length, 0, GetPixel)
-		.Select(p => Hash(text, text.Length, p, 0, GetPixel))
-		.Select(h => _alphabet.Value.TryGetValue(h, out var theChar) ? theChar : '■'));
-
-	public static string Recognize(char[,] text) => string.Concat(
-		FindCharacters(text, text.GetLength(1), text.GetLength(0), GetPixel)
-		.Select(p => Hash(text, text.GetLength(1), p, text.GetLength(0), GetPixel))
-		.Select(h => _alphabet.Value.TryGetValue(h, out var theChar) ? theChar : '■'));
-
-	private static Dictionary<ulong, char> GenerateAlphabet()
+	public static string Recognize(string[] text)
 	{
-		var examples6 = new[] {
+		var charHeight = text.Length;
+		var maxLength  = text.Max(t => t.Length);
+		var curChar    = 0;
+
+		// 32 should be enough for anyone
+		Span<char> chars = stackalloc char[32];
+
+		// for each character, compute a hash code
+		foreach (var (offset, length) in FindCharacters(text, charHeight, maxLength, GetPixel)) {
+			// add the character to the result
+			chars[curChar++] = _characters[ComputeCharacterHash(text, length, charHeight, offset, GetPixel)];
+		}
+
+		return chars[..curChar].ToString();
+	}
+
+	public static string Recognize(char[,] text)
+	{
+		var width   = text.GetLength(1);
+		var height  = text.GetLength(0);
+		var curChar = 0;
+
+		// 32 should be enough for anyone
+		Span<char> chars = stackalloc char[32];
+
+		foreach (var (offset, length) in FindCharacters(text, height, width, GetPixel)) {
+			chars[curChar++] = _characters[ComputeCharacterHash(text, length, height, offset, GetPixel)];
+		}
+
+		return chars[..curChar].ToString();
+	}
+
+	private static int ComputeCharacterHash<T>(T text, int charWidth, int charHeight, int charStartCol, GetPixelDelegate<T> getPixel)
+	{
+		var hashCode = new HashCode();
+		#if OCRDEBUG
+		var charStr = new char[charHeight][];
+		for (var i = 0; i < charHeight; i++) {
+			charStr[i] = new char[charWidth];
+		}
+		#endif
+
+		// for each "lit" pixel, add the (character-relative) X and Y to the hash
+		for (var x = 0; x < charWidth; x++) {
+			for (var y = 0; y < charHeight; y++) {
+				if (getPixel(text, y, charStartCol + x) == '#') {
+					hashCode.Add(x);
+					hashCode.Add(y);
+				}
+
+				#if OCRDEBUG
+				charStr[y][x] = getPixel(text, y, x);
+				#endif
+			}
+		}
+
+		#if OCRDEBUG
+		Console.WriteLine($"{string.Join(Environment.NewLine, charStr.Select(charArr => new string(charArr)))}");
+		#endif
+
+		return hashCode.ToHashCode();
+	}
+
+	private static Dictionary<int, char> ComputeAlphabetHashes()
+	{
+		var ret = new Dictionary<int, char>();
+
+		ComputeHashes([
 			".##..###...##..####.####..##..#..#.###...##.#..#.#.....##..###..###...###.#..#.#...#.####",
 			"#..#.#..#.#..#.#....#....#..#.#..#..#.....#.#.#..#....#..#.#..#.#..#.#....#..#.#...#....#",
 			"#..#.###..#....###..###..#....####..#.....#.##...#....#..#.#..#.#..#.#....#..#..#.#....#.",
 			"####.#..#.#....#....#....#.##.#..#..#.....#.#.#..#....#..#.###..###...##..#..#...#....#..",
 			"#..#.#..#.#..#.#....#....#..#.#..#..#..#..#.#.#..#....#..#.#....#.#.....#.#..#...#...#...",
-			"#..#.###...##..####.#.....###.#..#.###..##..#..#.####..##..#....#..#.###...##....#...####"};
-		var hashes6 = FindCharacters(examples6, 6, 0, GetPixel)
-			.Zip("ABCEFGHIJKLOPRSUYZ")
-			.Select(t => (Hash: Hash(examples6, 6, t.First, 0, GetPixel), Character: t.Second));
+			"#..#.###...##..####.#.....###.#..#.###..##..#..#.####..##..#....#..#.###...##....#...####"],
+			"ABCEFGHIJKLOPRSUYZ", ret);
 
-		var examples10 = new[] {
+		ComputeHashes([
 			"..##...#####...####..######.######..####..#....#....###.#....#.#......#....#.#####..#####..#....#.######",
 			".#..#..#....#.#....#.#......#......#....#.#....#.....#..#...#..#......##...#.#....#.#....#.#....#......#",
 			"#....#.#....#.#......#......#......#......#....#.....#..#..#...#......##...#.#....#.#....#..#..#.......#",
@@ -60,17 +96,35 @@ public static partial class OCR
 			"#....#.#....#.#......#......#......#....#.#....#.....#..#.#....#......#..#.#.#......#...#...#..#...#....",
 			"#....#.#....#.#......#......#......#....#.#....#.#...#..#..#...#......#...##.#......#...#...#..#..#.....",
 			"#....#.#....#.#....#.#......#......#...##.#....#.#...#..#...#..#......#...##.#......#....#.#....#.#.....",
-			"#....#.#####...####..######.#.......###.#.#....#..###...#....#.######.#....#.#......#....#.#....#.######",};
-		var hashes10 = FindCharacters(examples10, 10, 0, GetPixel)
-			.Zip("ABCEFGHJKLNPRXZ")
-			.Select(t => (Hash: Hash(examples10, 10, t.First, 0, GetPixel), Character: t.Second));
+			"#....#.#####...####..######.#.......###.#.#....#..###...#....#.######.#....#.#......#....#.#....#.######"],
+			"ABCEFGHJKLNPRXZ", ret);
 
-		var ret = hashes6.Concat(hashes10).ToDictionary(t => t.Hash, t => t.Character);
-		Console.WriteLine("---");
+		ComputeHashes([
+			"#####",
+			"#...#",
+			"#...#",
+			"#...#",
+			"#####"],
+			"O", ret);
+
 		return ret;
+
+		static void ComputeHashes(string[] characters, string alphabet, Dictionary<int, char> ret)
+		{
+			var charHeight = characters.Length;
+
+			var charsToHash = FindCharacters(characters, characters.Length, characters[0].Length, GetPixel)
+				.Zip(alphabet)
+				.Select(t => (t.First.Offset, t.First.Length, Char: t.Second));
+
+			foreach (var (offset, length, character) in charsToHash) {
+				var hash = ComputeCharacterHash(characters, length, charHeight, offset, GetPixel);
+				ret.Add(hash, character);
+			}
+		}
 	}
 
-	internal static IEnumerable<(int Offset, int Length)> FindCharacters<TText>(TText text, int charHeight, int state, GetPixelDelegate<TText> getPixel)
+	private static IEnumerable<(int Offset, int Length)> FindCharacters<TText>(TText text, int charHeight, int colCount, GetPixelDelegate<TText> getPixel)
 	{
 		var curCol    = 0;
 		var charStart = 0;
@@ -82,7 +136,7 @@ public static partial class OCR
 			var havePixel = false;
 
 			for (var i = 0; i < charHeight; i++) {
-				var pixel = getPixel(text, state, i, curCol);
+				var pixel = getPixel(text, i, curCol);
 
 				// track whether there was a pixel anywhere in this column
 				haveChar |= pixel != char.MinValue;
@@ -119,66 +173,143 @@ public static partial class OCR
 		}
 	}
 
-	internal static ulong Hash<TText>(TText text, int charHeight, (int Offset, int Length) position, int state, GetPixelDelegate<TText> getPixel)
+	internal static char GetPixel(string[] text, int row, int column) => row < text.Length && column < text[row].Length ? text[row][column] : char.MinValue;
+
+	internal static char GetPixel(char[,] text, int row, int column) => column < text.GetLength(0) && row < text.GetLength(1) ? text[column, row] : char.MinValue;
+
+	public class OCRTests
 	{
-		var ret = 0ul;
-		var idx = 0;
+		[Test]
+		public async Task CharacterEnumerationWorksOnArrays()
+		{
+			var inputStr = new string[] {
+				" ##  #  # ###  ###  ###   ##  #  # ####",
+				"#  # #  # #  # #  # #  # #  # #  #    #",
+				"#  # #### #  # #  # #  # #  # #  #   # ",
+				"#### #  # ###  ###  ###  #### #  #  #  ",
+				"#  # #  # #    # #  #    #  # #  # #   ",
+				"#  # #  # #    #  # #    #  #  ##  ####"};
 
-		var marker = charHeight switch {
-			6  => 1ul << 63,
-			10 => (1ul << 63) + (1ul << 62),
-			_  => throw new NotSupportedException("Only 6-high and 10-high fonts are currently supported."),
-		};
+			var inputArr = new char[39, 6];
 
-		for (var row = 0; row < charHeight; row++) {
-			for (var col = position.Offset; col < position.Offset + position.Length; col++) {
-Console.Write(getPixel(text, state, row, col));
-				if (getPixel(text, state, row, col) == '#') {
-					ret += 1ul << idx;
+			for (var i = 0; i < inputStr.Length; i++) {
+				for (var j = 0; j < inputStr[i].Length; j++) {
+					inputArr[j, i] = inputStr[i][j];
 				}
-
-				idx++;
 			}
-Console.WriteLine();
+
+			await Assert.That(FindCharacters(inputArr, 6, inputArr.GetLength(0), GetPixel)).IsEquivalentTo([
+				(00, 4),
+				(05, 4),
+				(10, 4),
+				(15, 4),
+				(20, 4),
+				(25, 4),
+				(30, 4),
+				(35, 4),
+			]);
 		}
-Console.WriteLine();
 
-		return ret + marker;
+		[Test]
+		public async Task CharacterEnumerationWorksOnStrings()
+		{
+			var inputStr = new string[] {
+				" ##  #  # ###  ###  ###   ##  #  # ####",
+				"#  # #  # #  # #  # #  # #  # #  #    #",
+				"#  # #### #  # #  # #  # #  # #  #   # ",
+				"#### #  # ###  ###  ###  #### #  #  #  ",
+				"#  # #  # #    # #  #    #  # #  # #   ",
+				"#  # #  # #    #  # #    #  #  ##  ####"};
+
+			await Assert.That(FindCharacters(inputStr, 6, inputStr[0].Length, GetPixel)).IsEquivalentTo([
+				(00, 4),
+				(05, 4),
+				(10, 4),
+				(15, 4),
+				(20, 4),
+				(25, 4),
+				(30, 4),
+				(35, 4),
+			]);
+		}
+
+		[Test]
+		public async Task HashingWorksCorrectlyWithoutTrailingSpaces()
+		{
+			var z1 = new[] {
+				"####",
+				"   #",
+				"  #",
+				" #",
+				"#",
+				"####"};
+			var z2 = new[] {
+				"####",
+				"   #",
+				"  # ",
+				" #  ",
+				"#   ",
+				"####"};
+
+			await Assert.That(ComputeCharacterHash(z2, 4, 6, 0, GetPixel)).IsEqualTo(ComputeCharacterHash(z1, 4, 6, 0, GetPixel));
+		}
+
+		[Test]
+		public async Task HashingStringsAndArraysProducesSameResults()
+		{
+			var inputStr = new string[] {
+				" ##  #  # ###  ###  ###   ##  #  # ####",
+				"#  # #  # #  # #  # #  # #  # #  #    #",
+				"#  # #### #  # #  # #  # #  # #  #   # ",
+				"#### #  # ###  ###  ###  #### #  #  #  ",
+				"#  # #  # #    # #  #    #  # #  # #   ",
+				"#  # #  # #    #  # #    #  #  ##  ####"};
+
+			var inputArr = new char[39, 6];
+
+			for (var i = 0; i < inputStr.Length; i++) {
+				for (var j = 0; j < inputStr[i].Length; j++) {
+					inputArr[j, i] = inputStr[i][j];
+				}
+			}
+
+			await Assert.That(ComputeCharacterHash(inputArr, 4, 6, 0, GetPixel)).IsEqualTo(ComputeCharacterHash(inputStr, 4, 6, 00, GetPixel));
+		}
+
+		[Test]
+		public async Task RecognizingStringsWorksCorrectly()
+		{
+			var inputStr = new string[] {
+				" ##  #  # ###  ###  ###   ##  #  # ####",
+				"#  # #  # #  # #  # #  # #  # #  #    #",
+				"#  # #### #  # #  # #  # #  # #  #   # ",
+				"#### #  # ###  ###  ###  #### #  #  #  ",
+				"#  # #  # #    # #  #    #  # #  # #   ",
+				"#  # #  # #    #  # #    #  #  ##  ####"};
+
+			await Assert.That(Recognize(inputStr)).IsEqualTo("AHPRPAUZ");
+		}
+
+		[Test]
+		public async Task RecognizingArraysWorksCorrectly()
+		{
+			var inputStr = new string[] {
+				" ##  #  # ###  ###  ###   ##  #  # ####",
+				"#  # #  # #  # #  # #  # #  # #  #    #",
+				"#  # #### #  # #  # #  # #  # #  #   # ",
+				"#### #  # ###  ###  ###  #### #  #  #  ",
+				"#  # #  # #    # #  #    #  # #  # #   ",
+				"#  # #  # #    #  # #    #  #  ##  ####"};
+
+			var inputChar = new char[39, 6];
+
+			for (var i = 0; i < inputStr.Length; i++) {
+				for (var j = 0; j < inputStr[i].Length; j++) {
+					inputChar[j, i] = inputStr[i][j];
+				}
+			}
+
+			await Assert.That(Recognize(inputChar)).IsEqualTo("AHPRPAUZ");
+		}
 	}
-
-	internal static char GetPixel(string[] text, int state, int row, int column) => text[row].Length > column ? text[row][column] : char.MinValue;
-
-	internal static char GetPixel(char[,] text, int state, int row, int column) => column < state ? text[column, row] : char.MinValue;
 }
-/*
-	The 6-high font (from https://github.com/nbanman/advent-ocr/blob/master/res/font6.txt):
-
-	ABCEFGHIJKLOPRSUYZ
-
-	.##..###...##..####.####..##..#..#.###...##.#..#.#.....##..###..###...###.#..#.#...#.####
-	#..#.#..#.#..#.#....#....#..#.#..#..#.....#.#.#..#....#..#.#..#.#..#.#....#..#.#...#....#
-	#..#.###..#....###..###..#....####..#.....#.##...#....#..#.#..#.#..#.#....#..#..#.#....#.
-	####.#..#.#....#....#....#.##.#..#..#.....#.#.#..#....#..#.###..###...##..#..#...#....#..
-	#..#.#..#.#..#.#....#....#..#.#..#..#..#..#.#.#..#....#..#.#....#.#.....#.#..#...#...#...
-	#..#.###...##..####.#.....###.#..#.###..##..#..#.####..##..#....#..#.###...##....#...####
-
-	Each letter consists of 24 "pixels"
-
-
-	The 10-high font (from https://github.com/nbanman/advent-ocr/blob/master/res/font10.txt):
-
-	ABCEFGHJKLNPRXZ
-
-	..##...#####...####..######.######..####..#....#....###.#....#.#......#....#.#####..#####..#....#.######
-	.#..#..#....#.#....#.#......#......#....#.#....#.....#..#...#..#......##...#.#....#.#....#.#....#......#
-	#....#.#....#.#......#......#......#......#....#.....#..#..#...#......##...#.#....#.#....#..#..#.......#
-	#....#.#....#.#......#......#......#......#....#.....#..#.#....#......#.#..#.#....#.#....#..#..#......#.
-	#....#.#####..#......#####..#####..#......######.....#..##.....#......#.#..#.#####..#####....##......#..
-	######.#....#.#......#......#......#..###.#....#.....#..##.....#......#..#.#.#......#..#.....##.....#...
-	#....#.#....#.#......#......#......#....#.#....#.....#..#.#....#......#..#.#.#......#...#...#..#...#....
-	#....#.#....#.#......#......#......#....#.#....#.#...#..#..#...#......#...##.#......#...#...#..#..#.....
-	#....#.#....#.#....#.#......#......#...##.#....#.#...#..#...#..#......#...##.#......#....#.#....#.#.....
-	#....#.#####...####..######.#.......###.#.#....#..###...#....#.######.#....#.#......#....#.#....#.######
-
-	Each letter consists of 60 "pixels"
-*/

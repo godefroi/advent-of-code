@@ -51,21 +51,23 @@ public class Problem
 		return (p1, p2);
 	}
 
-	[Fact(DisplayName = "Day 14 Sample Input")]
-	public void SampleInputFunctionCorrectly()
+	[Test]
+	[DisplayName("Day 14 Sample Input")]
+	public async Task SampleInputFunctionCorrectly()
 	{
 		var (p1, p2) = Execute(ReadFileLines("input_sample.txt"));
 
-		Assert.Equal(1588, p1);
-		Assert.Equal(2188189693529, p2);
+		await Assert.That(p1).IsEqualTo(1588);
+		await Assert.That(p2).IsEqualTo(2188189693529);
 	}
 
-	[Fact(DisplayName = "Day 14 Main Input")]
-	public void MainInputFunctionCorrectly()
+	[Test]
+	[DisplayName("Day 14 Main Input")]
+	public async Task MainInputFunctionCorrectly()
 	{
 		var (p1, p2) = Execute(ReadFileLines("input.txt"));
 
-		Assert.Equal(2233, p1);
-		Assert.Equal(2884513602164, p2);
+		await Assert.That(p1).IsEqualTo(2233);
+		await Assert.That(p2).IsEqualTo(2884513602164);
 	}
 }

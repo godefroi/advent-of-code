@@ -138,38 +138,38 @@ public class RangeSet()
 
 	public class Tests
 	{
-		[Fact]
-		public void MappedRangeMapsCorrectly()
+		[Test]
+		public async Task MappedRangeMapsCorrectly()
 		{
 			var mappedRange = new MappedRange(50, 98, 2);
 
-			Assert.Equal( 97, mappedRange.Map( 97));
-			Assert.Equal( 50, mappedRange.Map( 98));
-			Assert.Equal( 51, mappedRange.Map( 99));
-			Assert.Equal(100, mappedRange.Map(100));
+			await Assert.That(mappedRange.Map( 97)).IsEqualTo( 97);
+			await Assert.That(mappedRange.Map( 98)).IsEqualTo( 50);
+			await Assert.That(mappedRange.Map( 99)).IsEqualTo( 51);
+			await Assert.That(mappedRange.Map(100)).IsEqualTo(100);
 		}
 
-		[Fact]
-		public void RangeSetMapsCorrectly()
+		[Test]
+		public async Task RangeSetMapsCorrectly()
 		{
 			var rangeSet = new RangeSet();
 
 			rangeSet.Add(50, 98, 2);
 			rangeSet.Add(52, 50, 48);
 
-			Assert.Equal(  0, rangeSet.Map(  0));
-			Assert.Equal(  1, rangeSet.Map(  1));
+			await Assert.That(rangeSet.Map(  0)).IsEqualTo(  0);
+			await Assert.That(rangeSet.Map(  1)).IsEqualTo(  1);
 			// ...
-			Assert.Equal( 48, rangeSet.Map( 48));
-			Assert.Equal( 49, rangeSet.Map( 49));
-			Assert.Equal( 52, rangeSet.Map( 50));
-			Assert.Equal( 53, rangeSet.Map( 51));
+			await Assert.That(rangeSet.Map( 48)).IsEqualTo( 48);
+			await Assert.That(rangeSet.Map( 49)).IsEqualTo( 49);
+			await Assert.That(rangeSet.Map( 50)).IsEqualTo( 52);
+			await Assert.That(rangeSet.Map( 51)).IsEqualTo( 53);
 			// ...
-			Assert.Equal( 98, rangeSet.Map( 96));
-			Assert.Equal( 99, rangeSet.Map( 97));
-			Assert.Equal( 50, rangeSet.Map( 98));
-			Assert.Equal( 51, rangeSet.Map( 99));
-			Assert.Equal(100, rangeSet.Map(100));
+			await Assert.That(rangeSet.Map( 96)).IsEqualTo( 98);
+			await Assert.That(rangeSet.Map( 97)).IsEqualTo( 99);
+			await Assert.That(rangeSet.Map( 98)).IsEqualTo( 50);
+			await Assert.That(rangeSet.Map( 99)).IsEqualTo( 51);
+			await Assert.That(rangeSet.Map(100)).IsEqualTo(100);
 		}
 	}
 }
@@ -293,8 +293,8 @@ public class Map()
 
 public class MapTests
 {
-	[Fact]
-	public void MapWorksCorrectlyWithSingleInterval()
+	[Test]
+	public async Task MapWorksCorrectlyWithSingleInterval()
 	{
 		var map = new Map();
 
@@ -306,14 +306,15 @@ public class MapTests
 
 		var mapped = map.Intersect(seeds).OrderBy(i => i.First).ToArray();
 
-		Assert.Collection(mapped,
-			i => { Assert.Equal(50, i.First); Assert.Equal(2, i.Length); },
-			i => { Assert.Equal(96, i.First); Assert.Equal(2, i.Length); },
-			i => { Assert.Equal(100, i.First); Assert.Equal(2, i.Length); });
+		await Assert.That(mapped).IsEquivalentTo([
+			new Interval(50, 2),
+			new Interval(96, 2),
+			new Interval(100, 2)
+		]);
 	}
 
-	[Fact]
-	public void MapWorksCorrectlyWithMultipleIntervals()
+	[Test]
+	public async Task MapWorksCorrectlyWithMultipleIntervals()
 	{
 		var map = new Map();
 
@@ -326,14 +327,17 @@ public class MapTests
 
 		var mapped = map.Intersect(seeds).OrderBy(i => i.First).ToArray();
 
-		Assert.Collection(mapped,
-			i => { Assert.Equal( 0, i.First); Assert.Equal(49, i.Last); },
-			i => { Assert.Equal(50, i.First); Assert.Equal(51, i.Last); },
-			i => { Assert.Equal(52, i.First); Assert.Equal(99, i.Last); });
+		await Assert.That(mapped).Count().IsEqualTo(3);
+		await Assert.That(mapped[0].First).IsEqualTo(0);
+		await Assert.That(mapped[0].Last).IsEqualTo(49);
+		await Assert.That(mapped[1].First).IsEqualTo(50);
+		await Assert.That(mapped[1].Last).IsEqualTo(51);
+		await Assert.That(mapped[2].First).IsEqualTo(52);
+		await Assert.That(mapped[2].Last).IsEqualTo(99);
 	}
 
-	[Fact]
-	public void SampleSeedToSoilMapWorksCorrectly()
+	[Test]
+	public async Task SampleSeedToSoilMapWorksCorrectly()
 	{
 		var map = new Map();
 
@@ -354,40 +358,39 @@ public class MapTests
 		// 92 -> 94
 
 		// the 79,14 interval should be mapped into first=81 length=14
-		Assert.Collection(mapped,
-			i => { Assert.Equal(81, i.First); Assert.Equal(14, i.Length); });
+		await Assert.That(mapped).IsEquivalentTo([new Interval(81, 14)]);
 	}
 }
 
 public class IntervalTests
 {
-	[Fact]
-	public void IntervalConstructsCorrectly()
+	[Test]
+	public async Task IntervalConstructsCorrectly()
 	{
 		var i1 = new Interval(10, 5); // seed goes 10-14
 
-		Assert.Equal(10, i1.First);
-		Assert.Equal( 5, i1.Length);
-		Assert.Equal(14, i1.Last);
+		await Assert.That(i1.First).IsEqualTo(10);
+		await Assert.That(i1.Length).IsEqualTo( 5);
+		await Assert.That(i1.Last).IsEqualTo(14);
 	}
 
-	[Theory]
-	[InlineData(10, 5, 16, 2, 10,  5, -1, -1, -1, -1)] // seed goes 10-14, map range is 16-17    seed range is fully left of map range
-	[InlineData(18, 5, 16, 2, -1, -1, -1, -1, 18,  5)] // seed goes 18-22, map range is 16-17    seed range is fully right of map range
-	[InlineData(30, 5, 32, 8, 30,  2, 32,  3, -1, -1)] // seed goes 30-34, map range is 32-39    seed range overlaps the left edge of map range
-	[InlineData(40, 5, 35, 8, -1, -1, 40,  3, 43,  2)] // seed goes 40-44, map range is 35-42    seed range overlaps the right edge of map range
-	[InlineData(12, 2, 12, 2, -1, -1, 12,  2, -1, -1)] // seed goes 12-13, map range is 12-13    seed range fully matches the map range
-	[InlineData(10, 8, 12, 3, 10,  2, 12,  3, 15,  3)] // seed goes 10-17, map range is 12-14    seed range fully contains the map range
-	[InlineData(22, 2, 18, 9, -1, -1, 22,  2, -1, -1)] // seed goes 22-24, map range is 18-26    seed range is fully contained in the map range
-	public void IntersectOperatesCorrectly(int seedFirst, int seedLength, int mapFirst, int mapLength, int leftFirst, int leftLength, int intersectionFirst, int intersectionLength, int rightFirst, int rightLength)
+	[Test]
+	[Arguments(10, 5, 16, 2, 10,  5, -1, -1, -1, -1)] // seed goes 10-14, map range is 16-17    seed range is fully left of map range
+	[Arguments(18, 5, 16, 2, -1, -1, -1, -1, 18,  5)] // seed goes 18-22, map range is 16-17    seed range is fully right of map range
+	[Arguments(30, 5, 32, 8, 30,  2, 32,  3, -1, -1)] // seed goes 30-34, map range is 32-39    seed range overlaps the left edge of map range
+	[Arguments(40, 5, 35, 8, -1, -1, 40,  3, 43,  2)] // seed goes 40-44, map range is 35-42    seed range overlaps the right edge of map range
+	[Arguments(12, 2, 12, 2, -1, -1, 12,  2, -1, -1)] // seed goes 12-13, map range is 12-13    seed range fully matches the map range
+	[Arguments(10, 8, 12, 3, 10,  2, 12,  3, 15,  3)] // seed goes 10-17, map range is 12-14    seed range fully contains the map range
+	[Arguments(22, 2, 18, 9, -1, -1, 22,  2, -1, -1)] // seed goes 22-24, map range is 18-26    seed range is fully contained in the map range
+	public async Task IntersectOperatesCorrectly(int seedFirst, int seedLength, int mapFirst, int mapLength, int leftFirst, int leftLength, int intersectionFirst, int intersectionLength, int rightFirst, int rightLength)
 	{
 		var (ri, rl, rr) = new Interval(mapFirst, mapLength).Intersect(new Interval(seedFirst, seedLength));
 
-		Assert.Equal(leftFirst,          rl.First);
-		Assert.Equal(leftLength,         rl.Length);
-		Assert.Equal(intersectionFirst,  ri.First);
-		Assert.Equal(intersectionLength, ri.Length);
-		Assert.Equal(rightFirst,         rr.First);
-		Assert.Equal(rightLength,        rr.Length);
+		await Assert.That(rl.First).IsEqualTo(leftFirst);
+		await Assert.That(rl.Length).IsEqualTo(leftLength);
+		await Assert.That(ri.First).IsEqualTo(intersectionFirst);
+		await Assert.That(ri.Length).IsEqualTo(intersectionLength);
+		await Assert.That(rr.First).IsEqualTo(rightFirst);
+		await Assert.That(rr.Length).IsEqualTo(rightLength);
 	}
 }

@@ -259,15 +259,15 @@ public partial class Problem
 		public State(Coordinate currentNode, IEnumerable<Coordinate> visitedNodes, int stepCount)
 		{
 			CurrentNode  = currentNode;
-			VisitedNodes = new HashSet<Coordinate>(visitedNodes);
+			VisitedNodes = [.. visitedNodes];
 			StepCount    = stepCount;
 		}
 	}
 
 	public class Tests
 	{
-		[Fact]
-		public void ExplorePathWorks()
+		[Test]
+		public async Task ExplorePathWorks()
 		{
 			var map  = CreateMap(ReadFileLines("inputSample.txt"), c => c);
 			var nodes = FindNodes(map).Select(n => n.Node).ToHashSet();
@@ -275,9 +275,9 @@ public partial class Problem
 			// explore from the starting position
 			var (start, end, steps) = ExplorePath(map, (1, 0), (1, 0), nodes);
 
-			Assert.Equal(new Coordinate(1, 0), start);
-			Assert.Equal(new Coordinate(3, 5), end);
-			Assert.Equal(16, steps);
+			await Assert.That(start).IsEqualTo(new Coordinate(1, 0));
+			await Assert.That(end).IsEqualTo(new Coordinate(3, 5));
+			await Assert.That(steps).IsEqualTo(16);
 		}
 	}
 }

@@ -184,8 +184,8 @@ public class Problem
 		}
 	}
 
-	[Fact]
-	public void ListsCompareCorrectly1()
+	[Test]
+	public async Task ListsCompareCorrectly1()
 	{
 		var list1 = new ListOrInteger(new[] {
 			new ListOrInteger(1),
@@ -203,11 +203,11 @@ public class Problem
 			new ListOrInteger(1),
 		});
 
-		Assert.True(list1.CompareTo(list2) < 0);
+		await Assert.That(list1.CompareTo(list2)).IsLessThan(0);
 	}
 
-	[Fact]
-	public void ListsCompareCorrectly2()
+	[Test]
+	public async Task ListsCompareCorrectly2()
 	{
 		var list1 = new ListOrInteger(new[] {
 			new ListOrInteger(new[] {
@@ -227,11 +227,11 @@ public class Problem
 			new ListOrInteger(4),
 		});
 
-		Assert.True(list1.CompareTo(list2) < 0);
+		await Assert.That(list1.CompareTo(list2)).IsLessThan(0);
 	}
 
-	[Fact]
-	public void ListsCompareCorrectly3()
+	[Test]
+	public async Task ListsCompareCorrectly3()
 	{
 		var list1 = new ListOrInteger(new[] {
 			new ListOrInteger(9),
@@ -245,11 +245,11 @@ public class Problem
 			}),
 		});
 
-		Assert.True(list1.CompareTo(list2) > 0);
+		await Assert.That(list1.CompareTo(list2)).IsGreaterThan(0);
 	}
 
-	[Fact]
-	public void SampleListsCompareCorrectly()
+	[Test]
+	public async Task SampleListsCompareCorrectly()
 	{
 		var results = new[] {
 			true,
@@ -263,7 +263,7 @@ public class Problem
 		};
 
 		foreach (var ((list1, list2), result) in ReadLists(ReadFileLines("inputSample.txt")).Zip(results)/*.Skip(2).Take(1)*/) {
-			Assert.Equal(result, list1.CompareTo(list2) < 0);
+			await Assert.That(list1.CompareTo(list2) < 0).IsEqualTo(result);
 		}
 	}
 }

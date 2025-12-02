@@ -23,14 +23,16 @@ public static class Program
 			var year      = parseResult.GetValue(Commands.Options.Year);
 			var day       = parseResult.GetValue(Commands.Options.Day);
 			var inputName = parseResult.GetValue(Commands.Options.InputName) ?? throw new InvalidOperationException("No input name received from option.");
-			var problem   = Problems.GetProblems(year)[day];
+			var problems  = Problems.GetProblems(parseResult);
 
-			Console.WriteLine($"{ANSI_GREEN}Running year {problem.Year} day {problem.Day:d2}{ANSI_RESET}");
+			foreach (var problem in problems) {
+				Console.WriteLine($"{ANSI_GREEN}Running year {problem.Year} day {problem.Day:d2}{ANSI_RESET}");
 
-			var input = await LoadInput(problem, inputName);
+				var input = await LoadInput(problem, inputName);
 
-			Console.WriteLine(problem.Main(input));
-			Console.WriteLine();
+				Console.WriteLine(problem.Main(input));
+				Console.WriteLine();
+			}
 		});
 
 		return await command.Parse(args).InvokeAsync();

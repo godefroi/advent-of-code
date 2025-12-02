@@ -20,14 +20,14 @@ public class Problem
 		}
 
 		var width = dots.Max(d => d.X);
-		var sb    = new StringBuilder();
+		var sb    = new List<string>();
 
 		foreach (var row in dots.GroupBy(d => d.Y).OrderBy(g => g.Key)) {
 			var lit = row.Select(d => d.X).ToList();
-			sb.AppendLine(new string(Enumerable.Range(0, width + 1).Select(x => row.Any(d => d.X == x) ? '#' : ' ').ToArray()));
+			sb.Add(new string([.. Enumerable.Range(0, width + 1).Select(x => row.Any(d => d.X == x) ? '#' : ' ')]));
 		}
-throw new NotImplementedException("This is broken, fix me");
-		//return (p1, OCR.Recognize(sb.ToString()));
+
+		return (p1, OCR.Recognize([.. sb]));
 	}
 
 	private static void Fold(HashSet<Dot> dots, (char Dimension, int Value) fold)
@@ -52,20 +52,22 @@ throw new NotImplementedException("This is broken, fix me");
 
 	private readonly record struct Dot(int X, int Y);
 
-	[Fact(DisplayName = "Day 13 Sample Input")]
-	public void SampleInputFunctionCorrectly()
+	[Test]
+	[DisplayName("Day 13 Sample Input")]
+	public async Task SampleInputFunctionCorrectly()
 	{
 		var (p1, p2) = Execute(ReadFileLines("input_sample.txt"));
 
-		Assert.Equal(17, p1);
+		await Assert.That(p1).IsEqualTo(17);
 	}
 
-	[Fact(DisplayName = "Day 13 Main Input")]
-	public void MainInputFunctionCorrectly()
+	[Test]
+	[DisplayName("Day 13 Main Input")]
+	public async Task MainInputFunctionCorrectly()
 	{
 		var (p1, p2) = Execute(ReadFileLines("input.txt"));
 
-		Assert.Equal(720, p1);
-		Assert.Equal("AHPRPAUZ", p2);
+		await Assert.That(p1).IsEqualTo(720);
+		await Assert.That(p2).IsEqualTo("AHPRPAUZ");
 	}
 }

@@ -14,7 +14,7 @@ public partial class Problem
 
 	private static (int, long) Solver(string[] input)
 	{
-		using var ctx    = new Context();
+		using var ctx    = new Microsoft.Z3.Context();
 		using var solver = ctx.MkSolver();
 
 		using var x = ctx.MkIntConst("x");

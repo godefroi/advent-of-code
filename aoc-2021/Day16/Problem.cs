@@ -121,107 +121,114 @@ public class Problem
 		return new Packet(tlen, ver, type, null, subs);
 	}
 
-	[Fact(DisplayName = "Day 16 Hex Parsing")]
-	public void HexValuesParseCorrectly()
+	[Test]
+	[DisplayName("Day 16 Hex Parsing")]
+	public async Task HexValuesParseCorrectly()
 	{
-		Assert.Equal( 0, Convert.ToInt32(new string(ParseHex("0")), 2));
-		Assert.Equal( 1, Convert.ToInt32(new string(ParseHex("1")), 2));
-		Assert.Equal( 2, Convert.ToInt32(new string(ParseHex("2")), 2));
-		Assert.Equal( 3, Convert.ToInt32(new string(ParseHex("3")), 2));
-		Assert.Equal( 4, Convert.ToInt32(new string(ParseHex("4")), 2));
-		Assert.Equal( 5, Convert.ToInt32(new string(ParseHex("5")), 2));
-		Assert.Equal( 6, Convert.ToInt32(new string(ParseHex("6")), 2));
-		Assert.Equal( 7, Convert.ToInt32(new string(ParseHex("7")), 2));
-		Assert.Equal( 8, Convert.ToInt32(new string(ParseHex("8")), 2));
-		Assert.Equal( 9, Convert.ToInt32(new string(ParseHex("9")), 2));
-		Assert.Equal(10, Convert.ToInt32(new string(ParseHex("A")), 2));
-		Assert.Equal(11, Convert.ToInt32(new string(ParseHex("B")), 2));
-		Assert.Equal(12, Convert.ToInt32(new string(ParseHex("C")), 2));
-		Assert.Equal(13, Convert.ToInt32(new string(ParseHex("D")), 2));
-		Assert.Equal(14, Convert.ToInt32(new string(ParseHex("E")), 2));
-		Assert.Equal(15, Convert.ToInt32(new string(ParseHex("F")), 2));
+		await Assert.That(Convert.ToInt32(new string(ParseHex("0")), 2)).IsEqualTo(0);
+		await Assert.That(Convert.ToInt32(new string(ParseHex("1")), 2)).IsEqualTo(1);
+		await Assert.That(Convert.ToInt32(new string(ParseHex("2")), 2)).IsEqualTo(2);
+		await Assert.That(Convert.ToInt32(new string(ParseHex("3")), 2)).IsEqualTo(3);
+		await Assert.That(Convert.ToInt32(new string(ParseHex("4")), 2)).IsEqualTo(4);
+		await Assert.That(Convert.ToInt32(new string(ParseHex("5")), 2)).IsEqualTo(5);
+		await Assert.That(Convert.ToInt32(new string(ParseHex("6")), 2)).IsEqualTo(6);
+		await Assert.That(Convert.ToInt32(new string(ParseHex("7")), 2)).IsEqualTo(7);
+		await Assert.That(Convert.ToInt32(new string(ParseHex("8")), 2)).IsEqualTo(8);
+		await Assert.That(Convert.ToInt32(new string(ParseHex("9")), 2)).IsEqualTo(9);
+		await Assert.That(Convert.ToInt32(new string(ParseHex("A")), 2)).IsEqualTo(10);
+		await Assert.That(Convert.ToInt32(new string(ParseHex("B")), 2)).IsEqualTo(11);
+		await Assert.That(Convert.ToInt32(new string(ParseHex("C")), 2)).IsEqualTo(12);
+		await Assert.That(Convert.ToInt32(new string(ParseHex("D")), 2)).IsEqualTo(13);
+		await Assert.That(Convert.ToInt32(new string(ParseHex("E")), 2)).IsEqualTo(14);
+		await Assert.That(Convert.ToInt32(new string(ParseHex("F")), 2)).IsEqualTo(15);
 	}
 
-	[Fact(DisplayName = "Day 16 Main Input")]
-	public void MainInputFunctionCorrectly()
+	[Test]
+	[DisplayName("Day 16 Main Input")]
+	public async Task MainInputFunctionCorrectly()
 	{
 		var (sum, value) = Execute(ReadFileLines("input.txt"));
 
-		Assert.Equal(843,           sum);
-		Assert.Equal(5390807940351, value);
+		await Assert.That(sum).IsEqualTo(843);
+		await Assert.That(value).IsEqualTo(5390807940351);
 	}
 
-	[Fact(DisplayName = "Day 16 Literal Value Parsing")]
-	public void LiteralPacketParsesCorrectly()
+	[Test]
+	[DisplayName("Day 16 Literal Value Parsing")]
+	public async Task LiteralPacketParsesCorrectly()
 	{
 		var binary = ParseHex("D2FE28");
 
-		Assert.Equal<IEnumerable<char>>("110100101111111000101000", binary);
+		await Assert.That(binary).IsEquivalentTo("110100101111111000101000");
 
 		var packet = ParsePacket(binary);
 
-		Assert.Equal(6, packet.Version);
-		Assert.Equal(4, packet.Type);
-		Assert.Equal(2021, packet.Value);
+		await Assert.That(packet.Version).IsEqualTo(6);
+		await Assert.That(packet.Type).IsEqualTo(4);
+		await Assert.That(packet.Value).IsEqualTo(2021);
 	}
 
-	[Fact(DisplayName = "Day 16 Operator Packet Parsing (first)")]
-	public void OperatorPacket1ParsesCorrectly()
+	[Test]
+	[DisplayName("Day 16 Operator Packet Parsing (first)")]
+	public async Task OperatorPacket1ParsesCorrectly()
 	{
 		var binary = ParseHex("38006F45291200");
 
-		Assert.Equal<IEnumerable<char>>("00111000000000000110111101000101001010010001001000000000", binary);
+		await Assert.That(binary).IsEquivalentTo("00111000000000000110111101000101001010010001001000000000");
 
 		var packet = ParsePacket(binary);
 
-		Assert.Equal(1, packet.Version);
-		Assert.Equal(6, packet.Type);
-		Assert.Null(packet.Value);
-		Assert.Equal(2, packet.Contents.Count);
+		await Assert.That(packet.Version).IsEqualTo(1);
+		await Assert.That(packet.Type).IsEqualTo(6);
+		await Assert.That(packet.Value).IsNull();
+		await Assert.That(packet.Contents.Count).IsEqualTo(2);
 
-		Assert.Equal(10, packet.Contents.Skip(0).First().Value);
-		Assert.Equal(20, packet.Contents.Skip(1).First().Value);
+		await Assert.That(packet.Contents.Skip(0).First().Value).IsEqualTo(10);
+		await Assert.That(packet.Contents.Skip(1).First().Value).IsEqualTo(20);
 	}
 
-	[Fact(DisplayName = "Day 16 Operator Packet Parsing (second)")]
-	public void OperatorPacket2ParsesCorrectly()
+	[Test]
+	[DisplayName("Day 16 Operator Packet Parsing (second)")]
+	public async Task OperatorPacket2ParsesCorrectly()
 	{
 		var binary = ParseHex("EE00D40C823060");
 
-		Assert.Equal<IEnumerable<char>>("11101110000000001101010000001100100000100011000001100000", binary);
+		await Assert.That(binary).IsEquivalentTo("11101110000000001101010000001100100000100011000001100000");
 
 		var packet = ParsePacket(binary);
 
-		Assert.Equal(7, packet.Version);
-		Assert.Equal(3, packet.Type);
-		Assert.Null(packet.Value);
-		Assert.Equal(3, packet.Contents.Count);
+		await Assert.That(packet.Version).IsEqualTo(7);
+		await Assert.That(packet.Type).IsEqualTo(3);
+		await Assert.That(packet.Value).IsNull();
+		await Assert.That(packet.Contents.Count).IsEqualTo(3);
 
-		Assert.Equal(1, packet.Contents.Skip(0).First().Value);
-		Assert.Equal(2, packet.Contents.Skip(1).First().Value);
-		Assert.Equal(3, packet.Contents.Skip(2).First().Value);
+		await Assert.That(packet.Contents.Skip(0).First().Value).IsEqualTo(1);
+		await Assert.That(packet.Contents.Skip(1).First().Value).IsEqualTo(2);
+		await Assert.That(packet.Contents.Skip(2).First().Value).IsEqualTo(3);
 	}
 
-	[Fact(DisplayName = "Day 16 Version Sum Samples")]
-	public void PacketSumSamplesWork()
+	[Test]
+	[DisplayName("Day 16 Version Sum Samples")]
+	public async Task PacketSumSamplesWork()
 	{
-		Assert.Equal(16, SumVersions(ParsePacket(ParseHex("8A004A801A8002F478"))));
-		Assert.Equal(12, SumVersions(ParsePacket(ParseHex("620080001611562C8802118E34"))));
-		Assert.Equal(23, SumVersions(ParsePacket(ParseHex("C0015000016115A2E0802F182340"))));
-		Assert.Equal(31, SumVersions(ParsePacket(ParseHex("A0016C880162017C3686B18A3D4780"))));
+		await Assert.That(SumVersions(ParsePacket(ParseHex("8A004A801A8002F478")))).IsEqualTo(16);
+		await Assert.That(SumVersions(ParsePacket(ParseHex("620080001611562C8802118E34")))).IsEqualTo(12);
+		await Assert.That(SumVersions(ParsePacket(ParseHex("C0015000016115A2E0802F182340")))).IsEqualTo(23);
+		await Assert.That(SumVersions(ParsePacket(ParseHex("A0016C880162017C3686B18A3D4780")))).IsEqualTo(31);
 	}
 
-	[Fact(DisplayName = "Day 16 Packet Value Samples")]
-	public void PacketValueSamplesWork()
+	[Test]
+	[DisplayName("Day 16 Packet Value Samples")]
+	public async Task PacketValueSamplesWork()
 	{
-		Assert.Equal(3, CalculateValue(ParsePacket(ParseHex("C200B40A82"))));
-		Assert.Equal(54, CalculateValue(ParsePacket(ParseHex("04005AC33890"))));
-		Assert.Equal(7, CalculateValue(ParsePacket(ParseHex("880086C3E88112"))));
-		Assert.Equal(9, CalculateValue(ParsePacket(ParseHex("CE00C43D881120"))));
-		Assert.Equal(1, CalculateValue(ParsePacket(ParseHex("D8005AC2A8F0"))));
-		Assert.Equal(0, CalculateValue(ParsePacket(ParseHex("F600BC2D8F"))));
-		Assert.Equal(0, CalculateValue(ParsePacket(ParseHex("9C005AC2F8F0"))));
-		Assert.Equal(1, CalculateValue(ParsePacket(ParseHex("9C0141080250320F1802104A08"))));
+		await Assert.That(CalculateValue(ParsePacket(ParseHex("C200B40A82")))).IsEqualTo(3);
+		await Assert.That(CalculateValue(ParsePacket(ParseHex("04005AC33890")))).IsEqualTo(54);
+		await Assert.That(CalculateValue(ParsePacket(ParseHex("880086C3E88112")))).IsEqualTo(7);
+		await Assert.That(CalculateValue(ParsePacket(ParseHex("CE00C43D881120")))).IsEqualTo(9);
+		await Assert.That(CalculateValue(ParsePacket(ParseHex("D8005AC2A8F0")))).IsEqualTo(1);
+		await Assert.That(CalculateValue(ParsePacket(ParseHex("F600BC2D8F")))).IsEqualTo(0);
+		await Assert.That(CalculateValue(ParsePacket(ParseHex("9C005AC2F8F0")))).IsEqualTo(0);
+		await Assert.That(CalculateValue(ParsePacket(ParseHex("9C0141080250320F1802104A08")))).IsEqualTo(1);
 	}
 
 	public class Packet

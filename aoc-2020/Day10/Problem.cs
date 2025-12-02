@@ -1,4 +1,5 @@
 ﻿using Combinatorics.Collections;
+using TUnit.Core;
 
 namespace AdventOfCode.Year2020.Day10;
 
@@ -40,19 +41,19 @@ public class Problem
 		return counter[target];
 	}
 
-	[Fact]
-	public void AdapterCombinationsWorkCorrectly1()
+	[Test]
+	public async Task AdapterCombinationsWorkCorrectly1()
 	{
 		var adapters = ReadFileLines("inputSample1.txt", int.Parse).ToList();
 
-		Assert.Equal(8, ValidCombinations(adapters.Max() + 3, adapters));
+		await Assert.That(ValidCombinations(adapters.Max() + 3, adapters)).IsEqualTo(8);
 	}
 
-	[Fact]
-	public void AdapterCombinationsWorkCorrectly2()
+	[Test]
+	public async Task AdapterCombinationsWorkCorrectly2()
 	{
 		var adapters = ReadFileLines("inputSample2.txt", int.Parse).ToList();
 
-		Assert.Equal(19208, ValidCombinations(adapters.Max() + 3, adapters));
+		await Assert.That(ValidCombinations(adapters.Max() + 3, adapters)).IsEqualTo(19208);
 	}
 }

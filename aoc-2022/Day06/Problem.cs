@@ -26,15 +26,15 @@ public class Problem
 		throw new InvalidDataException("No marker was found.");
 	}
 
-	[Theory]
-	[InlineData(7, 19, "mjqjpqmgbljsphdztnvjfqwrcgsmlb")]
-	[InlineData(5, 23, "bvwbjplbgvbhsrlpgdmjqwftvncz")]
-	[InlineData(6, 23, "nppdvjthqldpwncqszvftbrmjlhg")]
-	[InlineData(10, 29, "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg")]
-	[InlineData(11, 26, "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw")]
-	public void MarkersFoundCorrectly(int expectedPacket, int expectedMessage, string dataStream)
+	[Test]
+	[Arguments(7, 19, "mjqjpqmgbljsphdztnvjfqwrcgsmlb")]
+	[Arguments(5, 23, "bvwbjplbgvbhsrlpgdmjqwftvncz")]
+	[Arguments(6, 23, "nppdvjthqldpwncqszvftbrmjlhg")]
+	[Arguments(10, 29, "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg")]
+	[Arguments(11, 26, "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw")]
+	public async Task MarkersFoundCorrectly(int expectedPacket, int expectedMessage, string dataStream)
 	{
-		Assert.Equal(expectedPacket, FindMarker(dataStream.ToCharArray(), 4));
-		Assert.Equal(expectedMessage, FindMarker(dataStream.ToCharArray(), 14));
+		await Assert.That(FindMarker(dataStream.ToCharArray(), 4)).IsEqualTo(expectedPacket);
+		await Assert.That(FindMarker(dataStream.ToCharArray(), 14)).IsEqualTo(expectedMessage);
 	}
 }

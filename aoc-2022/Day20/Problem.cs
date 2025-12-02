@@ -98,17 +98,17 @@ public class Problem
 		return (int)newPosition;
 	}
 
-	[Theory]
-	[InlineData(0,  1, 7, 1)]
-	[InlineData(0,  2, 7, 2)]
-	[InlineData(1, -3, 7, 4)]
-	[InlineData(2,  3, 7, 5)]
-	[InlineData(2, -2, 7, 0)]
-	[InlineData(3,  0, 7, 3)]
-	[InlineData(5,  4, 7, 3)]
-	[InlineData(6,  4, 7, 4)]
-	public void WrappingWorks(int currentPosition, int shiftCount, int listSize, int newPosition)
+	[Test]
+	[Arguments(0,  1, 7, 1)]
+	[Arguments(0,  2, 7, 2)]
+	[Arguments(1, -3, 7, 4)]
+	[Arguments(2,  3, 7, 5)]
+	[Arguments(2, -2, 7, 0)]
+	[Arguments(3,  0, 7, 3)]
+	[Arguments(5,  4, 7, 3)]
+	[Arguments(6,  4, 7, 4)]
+	public async Task WrappingWorks(int currentPosition, int shiftCount, int listSize, int newPosition)
 	{
-		Assert.Equal(newPosition, WrapPosition(currentPosition, shiftCount, listSize));
+		await Assert.That(WrapPosition(currentPosition, shiftCount, listSize)).IsEqualTo(newPosition);
 	}
 }

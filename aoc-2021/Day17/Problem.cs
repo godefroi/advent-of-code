@@ -80,22 +80,24 @@ public partial class Problem
 		}
 	}
 
-	[Fact(DisplayName = "Day 17 Sample Input")]
-	public void SampleInputFunctionCorrectly()
+	[Test]
+	[DisplayName("Day 17 Sample Input")]
+	public async Task SampleInputFunctionCorrectly()
 	{
 		var (p1, p2) = Execute(ReadFileLines("input_sample.txt"));
 
-		Assert.Equal(45, p1);
-		Assert.Equal(112, p2);
+		await Assert.That(p1).IsEqualTo(45);
+		await Assert.That(p2).IsEqualTo(112);
 	}
 
-	[Fact(DisplayName = "Day 17 Main Input")]
-	public void MainInputFunctionCorrectly()
+	[Test]
+	[DisplayName("Day 17 Main Input")]
+	public async Task MainInputFunctionCorrectly()
 	{
 		var (p1, p2) = Execute(ReadFileLines("input.txt"));
 
-		Assert.Equal(5253, p1);
-		Assert.Equal(1770, p2);
+		await Assert.That(p1).IsEqualTo(5253);
+		await Assert.That(p2).IsEqualTo(1770);
 	}
 
 	[GeneratedRegex("x=(?<xmin>[-\\d]+)\\.\\.(?<xmax>[-\\d]+), y=(?<ymin>[-\\d]+)\\.\\.(?<ymax>[-\\d]+)")]

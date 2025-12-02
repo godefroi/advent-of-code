@@ -111,53 +111,53 @@ public class Problem
 		return ret;
 	}
 
-	[Fact]
-	public void SimpleEastwardMovesWorkCorrectly()
+	[Test]
+	public async Task SimpleEastwardMovesWorkCorrectly()
 	{
 		var map = ParseMap(new[] { "...>>>>>..." });
 
-		Assert.Equal("...>>>>>...", RenderMap(map));
+		await Assert.That(RenderMap(map)).IsEqualTo("...>>>>>...");
 
 		map = Step(map);
 
-		Assert.Equal("...>>>>.>..", RenderMap(map));
+		await Assert.That(RenderMap(map)).IsEqualTo("...>>>>.>..");
 
 		map = Step(map);
 
-		Assert.Equal("...>>>.>.>.", RenderMap(map));
+		await Assert.That(RenderMap(map)).IsEqualTo("...>>>.>.>.");
 
 		map = Step(map);
 
-		Assert.Equal("...>>.>.>.>", RenderMap(map));
+		await Assert.That(RenderMap(map)).IsEqualTo("...>>.>.>.>");
 
 		map = Step(map);
 
-		Assert.Equal(">..>.>.>.>.", RenderMap(map));
+		await Assert.That(RenderMap(map)).IsEqualTo(">..>.>.>.>.");
 	}
 
-	[Fact]
-	public void SimpleCombinedMovesWorkCorrectly()
+	[Test]
+	public async Task SimpleCombinedMovesWorkCorrectly()
 	{
 		var map = ParseMap(@"..........
 .>v....v..
 .......>..
 ..........".Split(Environment.NewLine));
 
-		Assert.Equal(@"..........
+		await Assert.That(RenderMap(map)).IsEqualTo(@"..........
 .>v....v..
 .......>..
-..........", RenderMap(map));
+..........");
 
 		map = Step(map);
 
-		Assert.Equal(@"..........
+		await Assert.That(RenderMap(map)).IsEqualTo(@"..........
 .>........
 ..v....v>.
-..........", RenderMap(map));
+..........");
 	}
 
-	[Fact]
-	public void WrapAroundMovesWorkCorrectly()
+	[Test]
+	public async Task WrapAroundMovesWorkCorrectly()
 	{
 		var map = ParseMap(@"...>...
 .......
@@ -167,62 +167,62 @@ v.....>
 .......
 ..vvv..".Split(Environment.NewLine));
 
-		Assert.Equal(@"...>...
+		await Assert.That(RenderMap(map)).IsEqualTo(@"...>...
 .......
 ......>
 v.....>
 ......>
 .......
-..vvv..", RenderMap(map));
+..vvv..");
 
 		map = Step(map);
 
 		// after 1 step:
-		Assert.Equal(@"..vv>..
+		await Assert.That(RenderMap(map)).IsEqualTo(@"..vv>..
 .......
 >......
 v.....>
 >......
 .......
-....v..", RenderMap(map));
+....v..");
 
 		map = Step(map);
 
 		// after 2 steps:
-		Assert.Equal(@"....v>.
+		await Assert.That(RenderMap(map)).IsEqualTo(@"....v>.
 ..vv...
 .>.....
 ......>
 v>.....
 .......
-.......", RenderMap(map));
+.......");
 
 		map = Step(map);
 
 		// after 3 steps:
-		Assert.Equal(@"......>
+		await Assert.That(RenderMap(map)).IsEqualTo(@"......>
 ..v.v..
 ..>v...
 >......
 ..>....
 v......
-.......", RenderMap(map));
+.......");
 
 		map = Step(map);
 
 		// after 4 steps:
-		Assert.Equal(@">......
+		await Assert.That(RenderMap(map)).IsEqualTo(@">......
 ..v....
 ..>.v..
 .>.v...
 ...>...
 .......
-v......", RenderMap(map));
+v......");
 	}
 
-	[Fact]
-	public void SampleInputStepsCorrectly()
+	[Test]
+	public async Task SampleInputStepsCorrectly()
 	{
-		Assert.Equal(58, Execute(ReadFileLines("input_sample.txt")).Item1);
+		await Assert.That(Execute(ReadFileLines("input_sample.txt")).Item1).IsEqualTo(58);
 	}
 }

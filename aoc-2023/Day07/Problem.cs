@@ -314,22 +314,23 @@ public partial class Problem
 
 	public class CardScoringTests
 	{
-		[Theory]
-		[InlineData("32T3K", 2, -1, -1, -1, -1, -1, Skip = "card scores not implemented here")]
-		[InlineData("T55J5", 4, -1, -1, -1, -1, -1, Skip = "card scores not implemented here")]
-		[InlineData("KK677", 3, -1, -1, -1, -1, -1, Skip = "card scores not implemented here")]
-		[InlineData("KTJJT", 3, -1, -1, -1, -1, -1, Skip = "card scores not implemented here")]
-		[InlineData("QQQJA", 4, -1, -1, -1, -1, -1, Skip = "card scores not implemented here")]
-		public void HandsScoreCorrectly(string hand, int handScore, int card0Score, int card1Score, int card2Score, int card3Score, int card4Score)
+		[Test]
+		[Arguments("32T3K", 2, -1, -1, -1, -1, -1)]
+		[Arguments("T55J5", 4, -1, -1, -1, -1, -1)]
+		[Arguments("KK677", 3, -1, -1, -1, -1, -1)]
+		[Arguments("KTJJT", 3, -1, -1, -1, -1, -1)]
+		[Arguments("QQQJA", 4, -1, -1, -1, -1, -1)]
+		[Skip("card scores not implemented here")]
+		public async Task HandsScoreCorrectly(string hand, int handScore, int card0Score, int card1Score, int card2Score, int card3Score, int card4Score)
 		{
 			var score = ScoreHandPart1(hand.AsSpan());
 
-			Assert.Equal(handScore,  score.HandScore);
-			Assert.Equal(card0Score, score.Card0Score);
-			Assert.Equal(card1Score, score.Card1Score);
-			Assert.Equal(card2Score, score.Card2Score);
-			Assert.Equal(card3Score, score.Card3Score);
-			Assert.Equal(card4Score, score.Card4Score);
+			await Assert.That(score.HandScore).IsEqualTo(handScore);
+			await Assert.That(score.Card0Score).IsEqualTo(card0Score);
+			await Assert.That(score.Card1Score).IsEqualTo(card1Score);
+			await Assert.That(score.Card2Score).IsEqualTo(card2Score);
+			await Assert.That(score.Card3Score).IsEqualTo(card3Score);
+			await Assert.That(score.Card4Score).IsEqualTo(card4Score);
 		}
 	}
 }

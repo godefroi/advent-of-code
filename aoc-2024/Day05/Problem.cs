@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using Microsoft.DotNet.PlatformAbstractions;
 
 namespace AdventOfCode.Year2024.Day05;
 
@@ -89,18 +88,13 @@ public class Problem
 		public int GetHashCode(Rule obj)
 		{
 			// GetHashCode should return the same thing regardless of order
-			var combiner = HashCodeCombiner.Start();
-
-			combiner.Add(Math.Min(obj.Before, obj.After));
-			combiner.Add(Math.Max(obj.Before, obj.After));
-
-			return combiner.CombinedHash;
+			return HashCode.Combine(Math.Min(obj.Before, obj.After), Math.Max(obj.Before, obj.After));
 		}
 	}
 
 	private class RuleComparer(HashSet<Rule> rules) : IComparer<int>
 	{
-		private HashSet<Rule> _rules = rules;
+		private readonly HashSet<Rule> _rules = rules;
 
 		public int Compare(int x, int y)
 		{
@@ -122,17 +116,29 @@ public class Problem
 		}
 	}
 
-	[Fact]
-	private void RuleWorksCorrectlyInHashSet()
+	[Test]
+	public async Task RuleWorksCorrectlyInHashSet()
 	{
 		var rule1 = new Rule(10, 20);
 		var rule2 = new Rule(20, 10);
-		var set   = new HashSet<Rule>(new RuleEqalityComparer());
+		var comp  = new RuleEqalityComparer();
+		var set   = new HashSet<Rule>(comp);
 
-		Assert.True(set.Add(rule1));
-		Assert.Contains(rule1, set);
-		Assert.Contains(rule2, set);
-		Assert.False(set.Add(rule2));
-		Assert.Single(set);
+		await Assert.That(set.Add(rule1)).IsTrue();
+		await Assert.That(set).Contains(rule1, comp);
+		await Assert.That(set).Contains(rule2, comp);
+		await Assert.That(set.Add(rule2)).IsFalse();
+		await Assert.That(set).Count().IsEqualTo(1);
+	}
+
+	[Test]
+	public async Task RuleEqualityComparerWorks()
+	{
+		var rule1 = new Rule(10, 20);
+		var rule2 = new Rule(20, 10);
+		var comp  = new RuleEqalityComparer();
+
+		await Assert.That(comp.GetHashCode(rule1)).IsEqualTo(comp.GetHashCode(rule2));
+		await Assert.That(comp.Equals(rule1, rule2)).IsTrue();
 	}
 }

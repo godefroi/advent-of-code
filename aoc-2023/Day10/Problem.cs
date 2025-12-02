@@ -293,34 +293,34 @@ public partial class Problem
 	{
 		private static char[,] _realMap = ReadFileAsMap("input.txt");
 
-		[Theory]
-		[InlineData(118, 102, 118, 101, false)] // S -> - (north)
-		[InlineData(118, 102, 118, 103, true)]  // S -> | (south)
-		[InlineData(118, 102, 119, 102, false)] // S -> L (east)
-		[InlineData(118, 102, 117, 102, true)]  // S -> L (west)
-		public void IsConnectedReturnsCorrectly(int fromX, int fromY, int toX, int toY, bool connected)
+		[Test]
+		[Arguments(118, 102, 118, 101, false)] // S -> - (north)
+		[Arguments(118, 102, 118, 103, true)]  // S -> | (south)
+		[Arguments(118, 102, 119, 102, false)] // S -> L (east)
+		[Arguments(118, 102, 117, 102, true)]  // S -> L (west)
+		public async Task IsConnectedReturnsCorrectly(int fromX, int fromY, int toX, int toY, bool connected)
 		{
-			Assert.Equal(connected, IsConnected(_realMap, new Coordinate(fromX, fromY), new Coordinate(toX, toY)));
+			await Assert.That(IsConnected(_realMap, new Coordinate(fromX, fromY), new Coordinate(toX, toY))).IsEqualTo(connected);
 		}
 
-		[Theory]
-		[InlineData("samplePart1SquareLoop.txt",   0, 0, false)]
-		[InlineData("samplePart1SquareLoop.txt",   1, 0, false)]
-		[InlineData("samplePart1SquareLoop.txt",   2, 0, false)]
-		[InlineData("samplePart1SquareLoop.txt",   3, 0, false)]
-		[InlineData("samplePart1SquareLoop.txt",   4, 0, false)]
-		[InlineData("samplePart1SquareLoop.txt",   0, 1, false)]
-		[InlineData("samplePart1SquareLoop.txt",   4, 1, false)]
-		[InlineData("samplePart1SquareLoop.txt",   2, 2, true)]
-		[InlineData("samplePart1SquareLoop.txt",   0, 3, false)]
-		[InlineData("samplePart1SquareLoop.txt",   4, 3, false)]
-		[InlineData("samplePart1SquareLoop.txt",   0, 4, false)]
-		[InlineData("samplePart1SquareLoop.txt",   1, 4, false)]
-		[InlineData("samplePart1SquareLoop.txt",   2, 4, false)]
-		[InlineData("samplePart1SquareLoop.txt",   3, 4, false)]
-		[InlineData("samplePart1SquareLoop.txt",   4, 4, false)]
-		[InlineData("samplePart2LargerSample.txt", 4, 4, false)]
-		public void IsInsideLoopReturnsCorrectly(string mapFile, int testX, int testY, bool inside)
+		[Test]
+		[Arguments("samplePart1SquareLoop.txt",   0, 0, false)]
+		[Arguments("samplePart1SquareLoop.txt",   1, 0, false)]
+		[Arguments("samplePart1SquareLoop.txt",   2, 0, false)]
+		[Arguments("samplePart1SquareLoop.txt",   3, 0, false)]
+		[Arguments("samplePart1SquareLoop.txt",   4, 0, false)]
+		[Arguments("samplePart1SquareLoop.txt",   0, 1, false)]
+		[Arguments("samplePart1SquareLoop.txt",   4, 1, false)]
+		[Arguments("samplePart1SquareLoop.txt",   2, 2, true)]
+		[Arguments("samplePart1SquareLoop.txt",   0, 3, false)]
+		[Arguments("samplePart1SquareLoop.txt",   4, 3, false)]
+		[Arguments("samplePart1SquareLoop.txt",   0, 4, false)]
+		[Arguments("samplePart1SquareLoop.txt",   1, 4, false)]
+		[Arguments("samplePart1SquareLoop.txt",   2, 4, false)]
+		[Arguments("samplePart1SquareLoop.txt",   3, 4, false)]
+		[Arguments("samplePart1SquareLoop.txt",   4, 4, false)]
+		[Arguments("samplePart2LargerSample.txt", 4, 4, false)]
+		public async Task IsInsideLoopReturnsCorrectly(string mapFile, int testX, int testY, bool inside)
 		{
 			var map   = ReadFileAsMap(mapFile);
 			var start = FindStartingPoint(map);
@@ -328,7 +328,7 @@ public partial class Problem
 
 			TransformMap(map, boundary, map.GetLength(0), map.GetLength(1));
 
-			Assert.Equal(inside, IsInsideLoop(testX, testY, map, map.GetLength(0), boundary));
+			await Assert.That(IsInsideLoop(testX, testY, map, map.GetLength(0), boundary)).IsEqualTo(inside);
 		}
 	}
 }

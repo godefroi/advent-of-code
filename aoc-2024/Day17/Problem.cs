@@ -134,70 +134,56 @@ public class Problem
 
 		public class InstructionTests
 		{
-			[Fact]
-			public void BstWorksCorrectly()
+			[Test]
+			public async Task BstWorksCorrectly()
 			{
 				var c = new Computer(0, 0, 9, [2, 6]);
 
 				c.ExecuteProgram();
 
-				Assert.Equal(1, c._regB);
+				await Assert.That(c._regB).IsEqualTo(1);
 			}
 
-			[Fact]
-			public void OutWorksCorrectly()
+			[Test]
+			public async Task OutWorksCorrectly()
 			{
 				var c = new Computer(10, 0, 0, [5, 0, 5, 1, 5, 4]);
 
 				c.ExecuteProgram();
 
-				Assert.Collection(c._output,
-					e => Assert.Equal(0, e),
-					e => Assert.Equal(1, e),
-					e => Assert.Equal(2, e));
+				await Assert.That(c._output).IsEquivalentTo([0, 1, 2]);
 			}
 
-			[Fact]
-			public void SimpleProgramWorksCorrectly()
+			[Test]
+			public async Task SimpleProgramWorksCorrectly()
 			{
 				var c = new Computer(2024, 0, 0, [0, 1, 5, 4, 3, 0]);
 
 				c.ExecuteProgram();
 
-				Assert.Collection(c._output,
-					e => Assert.Equal(4, e),
-					e => Assert.Equal(2, e),
-					e => Assert.Equal(5, e),
-					e => Assert.Equal(6, e),
-					e => Assert.Equal(7, e),
-					e => Assert.Equal(7, e),
-					e => Assert.Equal(7, e),
-					e => Assert.Equal(7, e),
-					e => Assert.Equal(3, e),
-					e => Assert.Equal(1, e),
-					e => Assert.Equal(0, e));
+				await Assert.That(c._output).IsEquivalentTo([4, 2, 5, 6, 7, 7, 7, 7, 3, 1, 0]);
 
-				Assert.Equal(0, c._regA);
+				await Assert.That(c._regA).IsEqualTo(0);
 			}
 
-			[Fact]
-			public void BxlWorksCorrectly()
+			[Test]
+			public async Task BxlWorksCorrectly()
 			{
 				var c = new Computer(0, 29, 0, [1, 7]);
 
 				c.ExecuteProgram();
 
-				Assert.Equal(26, c._regB);
+				await Assert.That(c._regB).IsEqualTo(26);
 			}
 
-			[Fact]
-			public void BxcWorksCorrectly()
+			[Test]
+			public async Task BxcWorksCorrectly()
 			{
 				var c = new Computer(0, 2024, 43690, [4, 0]);
 
 				c.ExecuteProgram();
 
-				Assert.Equal(44354, c._regB);
+				await Assert.That(c._regB).IsEqualTo(44354);
 			}
 		}
 	}

@@ -69,40 +69,33 @@ public class Problem
 		return (int.Parse(parts[3]) - 1, int.Parse(parts[5]) - 1, int.Parse(parts[1]));
 	}
 
-	[Fact]
-	public void SampleParsesCorrectly()
+	[Test]
+	public async Task SampleParsesCorrectly()
 	{
 		var (stacks, instructions) = Parse(ReadFileLines("inputSample.txt"));
 
-		Assert.Equal(3, stacks.Length);
+		await Assert.That(stacks.Select(s => s.AsEnumerable())).IsEquivalentTo(new IEnumerable<char>[] {
+			['N', 'Z'],
+			['D', 'C', 'M'],
+			['P']
+		});
 
-		Assert.Collection(stacks,
-			s => Assert.Collection(s.AsEnumerable(),
-				c => Assert.Equal('N', c),
-				c => Assert.Equal('Z', c)),
-			s => Assert.Collection(s.AsEnumerable(),
-				c => Assert.Equal('D', c),
-				c => Assert.Equal('C', c),
-				c => Assert.Equal('M', c)),
-			s => Assert.Collection(s.AsEnumerable(),
-				c => Assert.Equal('P', c)));
-
-		Assert.Collection(instructions,
-			s => Assert.Equal("move 1 from 2 to 1", s),
-			s => Assert.Equal("move 3 from 1 to 3", s),
-			s => Assert.Equal("move 2 from 2 to 1", s),
-			s => Assert.Equal("move 1 from 1 to 2", s));
+		await Assert.That(instructions).IsEquivalentTo([
+			"move 1 from 2 to 1",
+			"move 3 from 1 to 3",
+			"move 2 from 2 to 1",
+			"move 1 from 1 to 2",
+		]);
 	}
 
-	[Fact]
-	public void SampleInstructionsParseCorrectly()
+	[Test]
+	public async Task SampleInstructionsParseCorrectly()
 	{
-		var instructions = Parse(ReadFileLines("inputSample.txt")).Instructions.Select(ParseInstruction);
-
-		Assert.Collection(instructions,
-			i => Assert.Equal((1, 0, 1), i),
-			i => Assert.Equal((0, 2, 3), i),
-			i => Assert.Equal((1, 0, 2), i),
-			i => Assert.Equal((0, 1, 1), i));
+		await Assert.That(Parse(ReadFileLines("inputSample.txt")).Instructions.Select(ParseInstruction)).IsEquivalentTo([
+			(1, 0, 1),
+			(0, 2, 3),
+			(1, 0, 2),
+			(0, 1, 1)
+		]);
 	}
 }

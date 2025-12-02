@@ -68,36 +68,37 @@ public class Problem
 		return new string(digits.ToArray());
 	}
 
-	[Theory]
-	[MemberData(nameof(TestValues))]
-	public void NumbersParseCorrectly(string snafu, long number)
+	public static IEnumerable<(string snafu, long number)> GetTestValues()
 	{
-		Assert.Equal(number, ParseNumber(snafu));
+		yield return ("1",             1);
+		yield return ("2",             2);
+		yield return ("1=",            3);
+		yield return ("1-",            4);
+		yield return ("10",            5);
+		yield return ("11",            6);
+		yield return ("12",            7);
+		yield return ("2=",            8);
+		yield return ("2-",            9);
+		yield return ("20",            10);
+		yield return ("1=0",           15);
+		yield return ("1-0",           20);
+		yield return ("2=-01",         976);
+		yield return ("1=11-2",        2022);
+		yield return ("1-0---0",       12345);
+		yield return ("1121-1110-1=0", 314159265);
 	}
 
-	[Theory]
-	[MemberData(nameof(TestValues))]
-	public void NumbersConvertCorrectly(string snafu, long number)
+	[Test]
+	[MethodDataSource(nameof(GetTestValues))]
+	public async Task NumbersParseCorrectly(string snafu, long number)
 	{
-		Assert.Equal(snafu, ConvertNumber(number));
+		await Assert.That(ParseNumber(snafu)).IsEqualTo(number);
 	}
 
-	public static IEnumerable<object[]> TestValues { get; } = new List<object[]>() {
-		new object[] {             "1",         1 },
-		new object[] {             "2",         2 },
-		new object[] {            "1=",         3 },
-		new object[] {            "1-",         4 },
-		new object[] {            "10",         5 },
-		new object[] {            "11",         6 },
-		new object[] {            "12",         7 },
-		new object[] {            "2=",         8 },
-		new object[] {            "2-",         9 },
-		new object[] {            "20",        10 },
-		new object[] {           "1=0",        15 },
-		new object[] {           "1-0",        20 },
-		new object[] {         "2=-01",       976 },
-		new object[] {        "1=11-2",      2022 },
-		new object[] {       "1-0---0",     12345 },
-		new object[] { "1121-1110-1=0", 314159265 },
-	};
+	[Test]
+	[MethodDataSource(nameof(GetTestValues))]
+	public async Task NumbersConvertCorrectly(string snafu, long number)
+	{
+		await Assert.That(ConvertNumber(number)).IsEqualTo(snafu);
+	}
 }

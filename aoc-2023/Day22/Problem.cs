@@ -199,41 +199,41 @@ public partial class Problem
 
 	public class Tests
 	{
-		[Fact]
-		public void SettleWorks()
+		[Test]
+		public async Task SettleWorks()
 		{
 			var b = new Brick(new Coordinate3(1, 1, 10), new Coordinate3(1, 1, 12));
 
-			Assert.Equal(10, b.MinZ);
-			Assert.Equal(12, b.MaxZ);
-			Assert.Equal(3, b.SizeZ);
+			await Assert.That(b.MinZ).IsEqualTo(10);
+			await Assert.That(b.MaxZ).IsEqualTo(12);
+			await Assert.That(b.SizeZ).IsEqualTo(3);
 
 			b.Settle(5);
 
-			Assert.Equal(5, b.MinZ);
-			Assert.Equal(7, b.MaxZ);
-			Assert.Equal(3, b.SizeZ);
+			await Assert.That(b.MinZ).IsEqualTo(5);
+			await Assert.That(b.MaxZ).IsEqualTo(7);
+			await Assert.That(b.SizeZ).IsEqualTo(3);
 		}
 
-		[Fact]
-		public void SettleOntoWorks()
+		[Test]
+		public async Task SettleOntoWorks()
 		{
 			var b1 = new Brick(new Coordinate3(1, 1, 10), new Coordinate3(1, 1, 12));
 			var b2 = new Brick(new Coordinate3(1, 1, 25), new Coordinate3(1, 1, 27));
 
-			Assert.Equal(10, b1.MinZ);
-			Assert.Equal(12, b1.MaxZ);
-			Assert.Equal(3, b1.SizeZ);
+			await Assert.That(b1.MinZ).IsEqualTo(10);
+			await Assert.That(b1.MaxZ).IsEqualTo(12);
+			await Assert.That(b1.SizeZ).IsEqualTo(3);
 
-			Assert.Equal(25, b2.MinZ);
-			Assert.Equal(27, b2.MaxZ);
-			Assert.Equal(3, b2.SizeZ);
+			await Assert.That(b2.MinZ).IsEqualTo(25);
+			await Assert.That(b2.MaxZ).IsEqualTo(27);
+			await Assert.That(b2.SizeZ).IsEqualTo(3);
 
 			b2.Settle(b1);
 
-			Assert.Equal(13, b2.MinZ);
-			Assert.Equal(15, b2.MaxZ);
-			Assert.Equal(3, b2.SizeZ);
+			await Assert.That(b2.MinZ).IsEqualTo(13);
+			await Assert.That(b2.MaxZ).IsEqualTo(15);
+			await Assert.That(b2.SizeZ).IsEqualTo(3);
 		}
 	}
 }

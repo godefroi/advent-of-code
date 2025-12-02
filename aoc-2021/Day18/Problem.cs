@@ -219,7 +219,7 @@ public class Problem
 		return false;
 	}
 
-	private static Component ParseComponent(char character) => (character) switch {
+	private static Component ParseComponent(char character) => character switch {
 		'[' => new Component(ComponentType.PairStart, null),
 		']' => new Component(ComponentType.PairEnd, null),
 		',' => new Component(ComponentType.Divider, null),
@@ -236,8 +236,10 @@ public class Problem
 		_ => throw new InvalidOperationException($"Invalid character"),
 	};
 
-	[Fact(Skip = "Not used in the current implementation")]
-	public void NodesParseCorrectly()
+	[Test]
+	[DisplayName("Day 18 Nodes Parse Correctly")]
+	[Skip("Unused in the current implementation")]
+	public async Task NodesParseCorrectly()
 	{
 		var strings = new[] {
 			"[1,2]",
@@ -249,29 +251,29 @@ public class Problem
 			"[[[[1,3],[5,3]],[[1,3],[8,7]]],[[[4,9],[6,9]],[[8,2],[7,3]]]]" };
 
 		for (var i = 0; i < strings.Length; i++) {
-			Assert.Equal(strings[i], ParseNode(strings[i].ToCharArray()).Item1.ToString());
+			await Assert.That(ParseNode(strings[i].ToCharArray()).Item1.ToString()).IsEqualTo(strings[i]);
 		}
 	}
 
-	[Theory]
-	[InlineData("[[[[0,9],2],3],4]", "[[[[[9,8],1],2],3],4]")]
-	[InlineData("[7,[6,[5,[7,0]]]]", "[7,[6,[5,[4,[3,2]]]]]")]
-	[InlineData("[[6,[5,[7,0]]],3]", "[[6,[5,[4,[3,2]]]],1]")]
-	[InlineData("[[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]]", "[[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]]")]
-	[InlineData("[[3,[2,[8,0]]],[9,[5,[7,0]]]]", "[[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]]")]
-	public void ExplodeWorksCorrectly(string expected, string number)
+	[Test]
+	[Arguments("[[[[0,9],2],3],4]", "[[[[[9,8],1],2],3],4]")]
+	[Arguments("[7,[6,[5,[7,0]]]]", "[7,[6,[5,[4,[3,2]]]]]")]
+	[Arguments("[[6,[5,[7,0]]],3]", "[[6,[5,[4,[3,2]]]],1]")]
+	[Arguments("[[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]]", "[[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]]")]
+	[Arguments("[[3,[2,[8,0]]],[9,[5,[7,0]]]]", "[[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]]")]
+	public async Task ExplodeWorksCorrectly(string expected, string number)
 	{
 		var list = number.Select(c => ParseComponent(c)).ToList();
 
-		Assert.True(Explode(list));
-		Assert.Equal(expected, Stringify(list));
+		await Assert.That(Explode(list)).IsTrue();
+		await Assert.That(Stringify(list)).IsEqualTo(expected);
 	}
 
-	[Theory]
-	[InlineData("[[5,5],0]", 10)]
-	[InlineData("[[5,6],0]", 11)]
-	[InlineData("[[6,6],0]", 12)]
-	public void SplitWorksCorrectly(string expected, int number)
+	[Test]
+	[Arguments("[[5,5],0]", 10)]
+	[Arguments("[[5,6],0]", 11)]
+	[Arguments("[[6,6],0]", 12)]
+	public async Task SplitWorksCorrectly(string expected, int number)
 	{
 		var list = new List<Component>() {
 			new Component(ComponentType.PairStart, null),
@@ -281,12 +283,12 @@ public class Problem
 			new Component(ComponentType.PairEnd, null)
 		};
 
-		Assert.True(Split(list));
-		Assert.Equal(expected, Stringify(list));
+		await Assert.That(Split(list)).IsTrue();
+		await Assert.That(Stringify(list)).IsEqualTo(expected);
 	}
 
-	[Fact]
-	public void AddWorksCorrectly()
+	[Test]
+	public async Task AddWorksCorrectly()
 	{
 		var left  = "[[[[4,3],4],4],[7,[[8,4],9]]]".Select(c => ParseComponent(c)).ToList();
 		var right = "[1,1]".Select(c => ParseComponent(c)).ToList();
@@ -294,14 +296,14 @@ public class Problem
 
 		Reduce(list);
 
-		Assert.Equal("[[[[0,7],4],[[7,8],[6,0]]],[8,1]]", Stringify(list));
+		await Assert.That(Stringify(list)).IsEqualTo("[[[[0,7],4],[[7,8],[6,0]]],[8,1]]");
 	}
 
-	[Theory]
-	[InlineData(new[] { "[1,1]", "[2,2]", "[3,3]", "[4,4]" }, "[[[[1,1],[2,2]],[3,3]],[4,4]]")]
-	[InlineData(new[] { "[1,1]", "[2,2]", "[3,3]", "[4,4]", "[5,5]" }, "[[[[3,0],[5,3]],[4,4]],[5,5]]")]
-	[InlineData(new[] { "[1,1]", "[2,2]", "[3,3]", "[4,4]", "[5,5]", "[6,6]" }, "[[[[5,0],[7,4]],[5,5]],[6,6]]")]
-	public void AddMultipleWorksCorrectly(string[] inputs, string output)
+	[Test]
+	[Arguments(new[] { "[1,1]", "[2,2]", "[3,3]", "[4,4]" }, "[[[[1,1],[2,2]],[3,3]],[4,4]]")]
+	[Arguments(new[] { "[1,1]", "[2,2]", "[3,3]", "[4,4]", "[5,5]" }, "[[[[3,0],[5,3]],[4,4]],[5,5]]")]
+	[Arguments(new[] { "[1,1]", "[2,2]", "[3,3]", "[4,4]", "[5,5]", "[6,6]" }, "[[[[5,0],[7,4]],[5,5]],[6,6]]")]
+	public async Task AddMultipleWorksCorrectly(string[] inputs, string output)
 	{
 		var left = inputs[0].Select(c => ParseComponent(c)).ToList();
 
@@ -313,10 +315,10 @@ public class Problem
 			Reduce(left);
 		}
 
-		Assert.Equal(output, Stringify(left));
+		await Assert.That(Stringify(left)).IsEqualTo(output);
 	}
 
-	[Fact]
+	[Test]
 	public void MaxMagnitudeWorksCorrectly()
 	{
 		var inputs = new[] {
@@ -368,13 +370,14 @@ public class Problem
 		Console.WriteLine(mr);
 	}
 
-	[Fact(DisplayName = "Day 18 Main Input")]
-	public void MainInputFunctionCorrectly()
+	[Test]
+	[DisplayName("Day 18 Main Input")]
+	public async Task MainInputFunctionCorrectly()
 	{
 		var (p1, p2) = Execute(ReadFileLines("input.txt"));
 
-		Assert.Equal(3981, p1);
-		Assert.Equal(4687, p2);
+		await Assert.That(p1).IsEqualTo(3981);
+		await Assert.That(p2).IsEqualTo(4687);
 	}
 
 	public enum ComponentType

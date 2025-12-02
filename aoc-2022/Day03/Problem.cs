@@ -26,45 +26,45 @@ public class Problem
 		public IEnumerable<char> Contents => First.Concat(Second);
 	}
 
-	[Theory]
-	[InlineData("vJrwpWtwJgWrhcsFMMfFFhFp")]
-	public void LinesParseCorrectly(string line)
+	[Test]
+	[Arguments("vJrwpWtwJgWrhcsFMMfFFhFp")]
+	public async Task LinesParseCorrectly(string line)
 	{
 		var (first, second) = Parse(line);
 
-		Assert.Equal(first.Length, second.Length);
+		await Assert.That(first.Length).IsEqualTo(second.Length);
 	}
 
-	[Theory]
-	[InlineData("vJrwpWtwJgWrhcsFMMfFFhFp", 'p')]
-	public void IntersectionCalculatesCorrectly(string line, char duplicated)
+	[Test]
+	[Arguments("vJrwpWtwJgWrhcsFMMfFFhFp", 'p')]
+	public async Task IntersectionCalculatesCorrectly(string line, char duplicated)
 	{
 		var (first, second) = Parse(line);
 
-		Assert.Equal(duplicated, first.Intersect(second).Single());
+		await Assert.That(first.Intersect(second).Single()).IsEqualTo(duplicated);
 	}
 
-	[Theory]
-	[InlineData('a', 1)]
-	[InlineData('b', 2)]
-	[InlineData('z', 26)]
-	[InlineData('A', 27)]
-	[InlineData('B', 28)]
-	[InlineData('Z', 52)]
-	public void PrioritiesAreCorrect(char item, int priority)
+	[Test]
+	[Arguments('a', 1)]
+	[Arguments('b', 2)]
+	[Arguments('z', 26)]
+	[Arguments('A', 27)]
+	[Arguments('B', 28)]
+	[Arguments('Z', 52)]
+	public async Task PrioritiesAreCorrect(char item, int priority)
 	{
-		Assert.Equal(priority, _priorities[item]);
+		await Assert.That(_priorities[item]).IsEqualTo(priority);
 	}
 
-	[Fact]
-	public void Part1CalculatesCorrectly()
+	[Test]
+	public async Task Part1CalculatesCorrectly()
 	{
-		Assert.Equal(157, Execute(ReadFileLines("inputSample.txt")).Item1);
+		await Assert.That(Execute(ReadFileLines("inputSample.txt")).Item1).IsEqualTo(157);
 	}
 
-	[Fact]
-	public void Part2CalculatesCorrectly()
+	[Test]
+	public async Task Part2CalculatesCorrectly()
 	{
-		Assert.Equal(70, Execute(ReadFileLines("inputSample.txt")).Item2);
+		await Assert.That(Execute(ReadFileLines("inputSample.txt")).Item2).IsEqualTo(70);
 	}
 }

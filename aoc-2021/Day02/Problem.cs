@@ -37,21 +37,23 @@ public class Problem
 		return (part_1_position.X * part_1_position.Depth, part_2_position.X * part_2_position.Depth);
 	}
 
-	[Fact(DisplayName = "Day 02 Sample Input")]
-	public void SampleInputFunctionCorrectly()
+	[Test]
+	[DisplayName("Day 02 Sample Input")]
+	public async Task SampleInputFunctionCorrectly()
 	{
 		var (p1, p2) = Execute(ReadFileLines("input_sample.txt"));
 
-		Assert.Equal(150, p1);
-		Assert.Equal(900, p2);
+		await Assert.That(p1).IsEqualTo(150);
+		await Assert.That(p2).IsEqualTo(900);
 	}
 
-	[Fact(DisplayName = "Day 02 Main Input")]
-	public void MainInputFunctionCorrectly()
+	[Test]
+	[DisplayName("Day 02 Main Input")]
+	public async Task MainInputFunctionCorrectly()
 	{
 		var (p1, p2) = Execute(ReadFileLines("input.txt"));
 
-		Assert.Equal(   1660158, p1);
-		Assert.Equal(1604592846, p2);
+		await Assert.That(p1).IsEqualTo(1660158);
+		await Assert.That(p2).IsEqualTo(1604592846);
 	}
 }

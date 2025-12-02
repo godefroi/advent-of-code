@@ -210,22 +210,23 @@ public class Problem
 		return ret;
 	}
 
-	[Fact]
-	public void TransformTestsExecuteCorrectly()
+	[Test]
+	public async Task TransformTestsExecuteCorrectly()
 	{
 		static string StringRep(IEnumerable<(int x, int y, int z)> items) => string.Join(';', items.Select(b => b.ToString()).OrderBy(s => s));
 
 		var input = ParseInput(ReadFileLines("transform_tests.txt"));
 
-		Assert.Equal(5, input.Count);
-		Assert.All(input, i => Assert.Equal(0, i.Id));
+		await Assert.That(input.Count).IsEqualTo(5);
+
+		foreach (var i in input) {
+			await Assert.That(i.Id).IsEqualTo(0);
+		}
 
 		var reference = StringRep(input[0].Beacons);
 
 		for (var i = 1; i < input.Count; i++) {
-#pragma warning disable xUnit2012 // Do not use Enumerable.Any() to check if a value exists in a collection
-			Assert.True(_transforms.Any(t => StringRep(input[i].Beacons.Select(b => t(b))) == reference));
-#pragma warning restore xUnit2012 // Do not use Enumerable.Any() to check if a value exists in a collection
+			await Assert.That(_transforms.Any(t => StringRep(input[i].Beacons.Select(b => t(b))) == reference)).IsTrue();
 		}
 	}
 

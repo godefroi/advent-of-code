@@ -37,31 +37,32 @@ public class Problem
 		}
 	}
 
-	[Fact]
-	public void PairsParseCorrectly()
+	[Test]
+	public async Task PairsParseCorrectly()
 	{
-		Assert.Collection(ReadFileLines("inputSample.txt", AssignmentPair.Parse),
-			a => { Assert.Equal(2, a.From1); Assert.Equal(4, a.To1); Assert.Equal(6, a.From2); Assert.Equal(8, a.To2); Assert.Equal(a.Range1, new[] { 2, 3, 4 }); Assert.Equal(a.Range2, new[] { 6, 7, 8 }); },
-			a => { Assert.Equal(2, a.From1); Assert.Equal(3, a.To1); Assert.Equal(4, a.From2); Assert.Equal(5, a.To2); Assert.Equal(a.Range1, new[] { 2, 3 }); Assert.Equal(a.Range2, new[] { 4, 5 }); },
-			a => { Assert.Equal(5, a.From1); Assert.Equal(7, a.To1); Assert.Equal(7, a.From2); Assert.Equal(9, a.To2); Assert.Equal(a.Range1, new[] { 5, 6, 7 }); Assert.Equal(a.Range2, new[] { 7, 8, 9 }); },
-			a => { Assert.Equal(2, a.From1); Assert.Equal(8, a.To1); Assert.Equal(3, a.From2); Assert.Equal(7, a.To2); Assert.Equal(a.Range1, new[] { 2, 3, 4, 5, 6, 7, 8 }); Assert.Equal(a.Range2, new[] { 3, 4, 5, 6, 7 }); },
-			a => { Assert.Equal(6, a.From1); Assert.Equal(6, a.To1); Assert.Equal(4, a.From2); Assert.Equal(6, a.To2); Assert.Equal(a.Range1, new[] { 6 }); Assert.Equal(a.Range2, new[] { 4, 5, 6 }); },
-			a => { Assert.Equal(2, a.From1); Assert.Equal(6, a.To1); Assert.Equal(4, a.From2); Assert.Equal(8, a.To2); Assert.Equal(a.Range1, new[] { 2, 3, 4, 5, 6 }); Assert.Equal(a.Range2, new[] { 4, 5, 6, 7, 8 }); });
+		await Assert.That(ReadFileLines("inputSample.txt", AssignmentPair.Parse)).IsEquivalentTo([
+			new AssignmentPair(2, 4, 6, 8),
+			new AssignmentPair(2, 3, 4, 5),
+			new AssignmentPair(5, 7, 7, 9),
+			new AssignmentPair(2, 8, 3, 7),
+			new AssignmentPair(6, 6, 4, 6),
+			new AssignmentPair(2, 6, 4, 8),
+		]);
 	}
 
-	[Theory]
-	[InlineData("inputSample.txt", 2)]
-	[InlineData("input.txt", 556)]
-	public void Part1CalculatesCorrectly(string fileName, int expectedPart1)
+	[Test]
+	[Arguments("inputSample.txt", 2)]
+	[Arguments("input.txt", 556)]
+	public async Task Part1CalculatesCorrectly(string fileName, int expectedPart1)
 	{
-		Assert.Equal(expectedPart1, Execute(ReadFileLines(fileName)).Item1);
+		await Assert.That(Execute(ReadFileLines(fileName)).Item1).IsEqualTo(expectedPart1);
 	}
 
-	[Theory]
-	[InlineData("inputSample.txt", 4)]
-	[InlineData("input.txt", 876)]
-	public void Part2CalculatesCorrectly(string fileName, int expectedPart2)
+	[Test]
+	[Arguments("inputSample.txt", 4)]
+	[Arguments("input.txt", 876)]
+	public async Task Part2CalculatesCorrectly(string fileName, int expectedPart2)
 	{
-		Assert.Equal(expectedPart2, Execute(ReadFileLines(fileName)).Item2);
+		await Assert.That(Execute(ReadFileLines(fileName)).Item2).IsEqualTo(expectedPart2);
 	}
 }

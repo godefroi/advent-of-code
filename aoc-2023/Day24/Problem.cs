@@ -66,7 +66,7 @@ public partial class Problem
 
 	private static long SolvePart2(IEnumerable<Hailstone> hailstones)
 	{
-		using var ctx    = new Context();
+		using var ctx    = new Microsoft.Z3.Context();
 		using var solver = ctx.MkSolver();
 		using var xr     = ctx.MkIntConst("xr");
 		using var yr     = ctx.MkIntConst("yr");

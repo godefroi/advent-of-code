@@ -1,6 +1,5 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.DotNet.PlatformAbstractions;
-using Xunit.Internal;
 
 namespace AdventOfCode.Year2024.Day16;
 
@@ -27,6 +26,12 @@ public class Problem
 		var part1 = FindBestPath(map, startPos, end);
 		//var part2 = CountTilesOnPaths(map, startPos, end, part1);
 		var part2 = 0;
+
+/*
+https://www.reddit.com/r/adventofcode/comments/1hg4jf7/2024_day_16_part_2_what_modification_do_i_need_to/
+https://www.reddit.com/r/adventofcode/comments/1hfboft/2024_day_16_solutions/
+https://github.com/Matt90hz/AdventOfCode/blob/master/AdventOfCode2024/Day16/ReindeerMaze.cs
+*/
 
 		return (part1, part2);
 	}
@@ -93,7 +98,9 @@ Console.WriteLine($"current cost: {cost}");
 			// if this state is a winner, then add all the tiles from the path
 			// and then we're done with it
 			if (position.Location == end && cost == targetCost) {
-				tiles.AddRange(path);
+				foreach (var c in path) {
+					tiles.Add(c);
+				}
 				continue;
 			}
 
@@ -167,19 +174,19 @@ Console.WriteLine($"current cost: {cost}");
 
 	private static int Hash(SearchState state)
 	{
-		var combiner = HashCodeCombiner.Start();
+		var ret = new HashCode();
 
-		combiner.Add(state.CurrentPosition.Location.X);
-		combiner.Add(state.CurrentPosition.Location.Y);
-		combiner.Add(state.CurrentPosition.Direction);
-		combiner.Add(state.Cost);
+		ret.Add(state.CurrentPosition.Location.X);
+		ret.Add(state.CurrentPosition.Location.Y);
+		ret.Add(state.CurrentPosition.Direction);
+		ret.Add(state.Cost);
 
 		foreach (var c in state.Path.Distinct().OrderBy(c => c.X).ThenBy(c => c.Y)) {
-			combiner.Add(c.X);
-			combiner.Add(c.Y);
+			ret.Add(c.X);
+			ret.Add(c.Y);
 		}
 
-		return combiner.CombinedHash;
+		return ret.ToHashCode();
 	}
 
 	private enum Direction

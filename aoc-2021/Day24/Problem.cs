@@ -92,7 +92,7 @@ public class Problem
 
 	private static (int w, int x, int y, int z) RunProgram(string fileName, IEnumerable<int> inputValues)
 	{
-		var program = File.ReadAllLines(GetFilePath(fileName)).Select(line => line.Split(' ')).ToList();
+		var program = ReadFileLines(fileName).Select(line => line.Split(' ')).ToList();
 		var input   = new Queue<int>();
 		var state   = new Dictionary<char, int>() {
 			{ 'w', 0 },
@@ -165,18 +165,14 @@ public class Problem
 		}
 	}
 
-	public static IEnumerable<object[]> TestData => new[] {
-		new object[] { "input_trivial_multiply.txt",   new[] { 1 }, (0, -1, 0, 0) },
-		new object[] { "input_three_times_larger.txt", new[] { 5, 15 } , (0, 15, 0, 1) },
-		new object[] { "input_three_times_larger.txt", new[] { 5, 16 } , (0, 16, 0, 0) },
-	};
-
-	[Theory]
-	[MemberData(nameof(TestData))]
-	public void SampleProgramsFunctionCorrectly(string fileName, int[] input, (int w, int x, int y, int z) output)
+	[Test]
+	[Arguments("input_trivial_multiply.txt",   new[] { 1 },     0, -1, 0, 0)]
+	[Arguments("input_three_times_larger.txt", new[] { 5, 15 }, 0, 15, 0, 1)]
+	[Arguments("input_three_times_larger.txt", new[] { 5, 16 }, 0, 16, 0, 0)]
+	public async Task SampleProgramsFunctionCorrectly(string fileName, int[] input, int w, int x, int y, int z)
 	{
 		var ret = RunProgram(fileName, input);
 
-		Assert.Equal(output, ret);
+		await Assert.That(ret).IsEqualTo((w, x, y, z));
 	}
 }
