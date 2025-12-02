@@ -8,6 +8,7 @@
     <ProjectReference Include="..\aoc-2022\aoc-2022.csproj" />
     <ProjectReference Include="..\aoc-2023\aoc-2023.csproj" />
     <ProjectReference Include="..\aoc-2024\aoc-2024.csproj" />
+    <ProjectReference Include="..\aoc-2025\aoc-2025.csproj" />
     <ProjectReference Include="..\AdventTools\AdventTools.csproj" />
   </ItemGroup>
 

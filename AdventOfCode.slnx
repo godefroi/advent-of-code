@@ -10,4 +10,5 @@
   <Project Path="aoc-2022/aoc-2022.csproj" />
   <Project Path="aoc-2023/aoc-2023.csproj" />
   <Project Path="aoc-2024/aoc-2024.csproj" />
+  <Project Path="aoc-2025/aoc-2025.csproj" />
 </Solution>

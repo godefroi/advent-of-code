@@ -58,6 +58,6 @@ public static class Time
 		}
 
 		Console.WriteLine($"output: {output}");
-		Console.WriteLine($"avg: {sw.Elapsed.TotalMilliseconds / executions}");
+		Console.WriteLine($"avg: {sw.Elapsed.TotalMilliseconds / executions:F3}ms");
 	}
 }
