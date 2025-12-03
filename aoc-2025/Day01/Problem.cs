@@ -8,6 +8,8 @@ public class Problem
 
 	public static (long, long) Execute(string[] input)
 	{
+		// TODO: this is brute-force, and could be *massively* improved performance-wise.
+
 		var cur = 50;
 		var p1  = 0;
 		var p2  = 0;
