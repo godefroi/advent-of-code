@@ -6,50 +6,85 @@ public class Problem
 
 	public static (long, long) Execute(string[] input)
 	{
-		var rolls = input
-			.Index()
-			.SelectMany(row => row.Item
-				.Index()
-				.Where(c => c.Item == '@')
-				.Select(col => (col.Index, row.Index)))
-			.ToHashSet();
+		var width  = input[0].Length;
+		var height = input.Length;
+		var bRolls = new bool[input.Length * input[0].Length];
 
-		var removable = FindRemovable(rolls);
-		var p1        = removable.Count;
-		var p2        = 0;
+		for (var y = 0; y < height; y++) {
+			var row = input[y];
+			for (var x = 0; x < width; x++) {
+				bRolls[y * width + x] = row[x] == '@';
+			}
+		}
 
-		while (removable.Count > 0) {
-			// count the ones we're going to remove
-			p2 += removable.Count;
+		var p1 = CountRemovable(bRolls, width, height);
+		var p2 = 0;
 
-			// remove them
-			foreach (var rr in removable) {
-				rolls.Remove(rr);
+		while (true) {
+			var cp2 = p2;
+
+			for (var y = 0; y < height; y++) {
+				for (var x = 0; x < width; x++) {
+					if (Removable(bRolls, width, height, x, y)) {
+						p2++;
+						bRolls[(y * width) + x] = false;
+					}
+				}
 			}
 
-			// get the next list of removable rolls
-			removable = FindRemovable(rolls);
+			if (cp2 == p2) {
+				break;
+			}
 		}
 
 		return (p1, p2);
 	}
 
-	private static List<Coordinate> FindRemovable(HashSet<(int X, int Y)> rolls)
+	private static int CountRemovable(bool[] bRolls, int width, int height)
 	{
-		return [.. rolls.Where(r => {
-			var adacentCount = 0;
+		var cnt = 0;
 
-			if ((adacentCount += rolls.Contains((r.X - 1, r.Y - 1)) ? 1 : 0) > 3) return false;
-			if ((adacentCount += rolls.Contains((r.X    , r.Y - 1)) ? 1 : 0) > 3) return false;
-			if ((adacentCount += rolls.Contains((r.X + 1, r.Y - 1)) ? 1 : 0) > 3) return false;
-			if ((adacentCount += rolls.Contains((r.X - 1, r.Y    )) ? 1 : 0) > 3) return false;
-			if ((adacentCount += rolls.Contains((r.X + 1, r.Y    )) ? 1 : 0) > 3) return false;
-			if ((adacentCount += rolls.Contains((r.X - 1, r.Y + 1)) ? 1 : 0) > 3) return false;
-			if ((adacentCount += rolls.Contains((r.X    , r.Y + 1)) ? 1 : 0) > 3) return false;
-			if ((adacentCount += rolls.Contains((r.X + 1, r.Y + 1)) ? 1 : 0) > 3) return false;
+		for (var y = 0; y < height; y++) {
+			for (var x = 0; x < width; x++) {
+				if (Removable(bRolls, width, height, x, y)) {
+					cnt++;
+				}
+			}
+		}
 
-			return true;
-		})];
+		return cnt;
+	}
+
+	private static bool Removable(bool[] bRolls, int width, int height, int x, int y)
+	{
+		var adjacentCount = 0;
+
+		if (!bRolls[(y * width) + x]) {
+			return false;
+		}
+
+		// check row above
+		if (y > 0) {
+			var above = (y - 1) * width;
+			if ((adjacentCount += (x > 0         && bRolls[above + (x - 1)]) ? 1 : 0) > 3) { return false; }
+			if ((adjacentCount += (                 bRolls[above + (x    )]) ? 1 : 0) > 3) { return false; }
+			if ((adjacentCount += (x < width - 1 && bRolls[above + (x + 1)]) ? 1 : 0) > 3) { return false; }
+		}
+
+		// check this row
+		var ourRow = y * width;
+		if ((adjacentCount += (x > 0         && bRolls[ourRow + (x - 1)]) ? 1 : 0) > 3) { return false; }
+		if ((adjacentCount += (x < width - 1 && bRolls[ourRow + (x + 1)]) ? 1 : 0) > 3) { return false; }
+
+		// check row below
+		if (y < height - 1) {
+			var below = (y + 1) * width;
+			if ((adjacentCount += (x > 0         && bRolls[below + (x - 1)]) ? 1 : 0) > 3) { return false; }
+			if ((adjacentCount += (                 bRolls[below + (x    )]) ? 1 : 0) > 3) { return false; }
+			if ((adjacentCount += (x < width - 1 && bRolls[below + (x + 1)]) ? 1 : 0) > 3) { return false; }
+		}
+
+		return true;
 	}
 
 	public class Day04Tests
