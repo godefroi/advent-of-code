@@ -6,7 +6,8 @@ public class Problem
 
 	public static (long, long) Execute(string[] input)
 	{
-		var beams = new long[input[0].Length];
+		//var beams = new long[input[0].Length];
+		Span<int> beams = stackalloc int[input[0].Length];
 		var p1    = 0;
 
 		// mark the starting point
@@ -27,7 +28,13 @@ public class Problem
 			}
 		}
 
-		return (p1, beams.Sum());
+		var p2 = 0L;
+
+		for (var i = 0; i < beams.Length; i++) {
+			p2 += beams[i];
+		}
+
+		return (p1, p2);
 	}
 
 	public class Day07Tests
