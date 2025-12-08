@@ -29,12 +29,13 @@ public static class Time
 		var warmups    = parseResult.GetValue(Options.Warmups);
 		var executions = parseResult.GetValue(Options.Executions);
 		var problem    = Problems.GetProblems(year)[day];
+		var input      = new ProblemInput(problem);
 		var console    = Console.Out;
 		var sw         = new Stopwatch();
-		var output     = default(string);
+		var output     = default(object);
 
 		// load the input
-		var input = await Program.LoadInput(problem, "input.txt");
+		await input.LoadInput("input.txt");
 
 		// warmup the problem
 		try {

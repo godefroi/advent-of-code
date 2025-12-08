@@ -10,82 +10,75 @@ public partial record ProblemMetadata
 	[SetsRequiredMembers]
 	public ProblemMetadata(Func<string[], (long, long)> main, Type problemType, Type? benchmarkType, [CallerFilePath]string filePath = "")
 	{
-		var match = GetDateRegex().Match(filePath);
-
-		if (!match.Success) {
-			throw new InvalidOperationException($"Unable to parse year and day from file path {filePath}");
-		}
-
-		Year       = int.Parse(match.Groups["year"].Value);
-		Day        = int.Parse(match.Groups["day"].Value);
-		Main       = input => main(input).ToString();
-		Path       = System.IO.Path.GetDirectoryName(filePath) ?? throw new InvalidOperationException("Unable to find directory name.");
-		Problem    = problemType;
-		Benchmarks = benchmarkType;
+		(Year, Day) = ParsePath(filePath);
+		Main        = input => main(input.Strings);
+		Path        = System.IO.Path.GetDirectoryName(filePath) ?? throw new InvalidOperationException("Unable to find directory name.");
+		Problem     = problemType;
+		Benchmarks  = benchmarkType;
 	}
 
 	[SetsRequiredMembers]
 	public ProblemMetadata(Func<string[], (long, string)> main, Type problemType, Type? benchmarkType, [CallerFilePath]string filePath = "")
 	{
-		var match = GetDateRegex().Match(filePath);
-
-		if (!match.Success) {
-			throw new InvalidOperationException($"Unable to parse year and day from file path {filePath}");
-		}
-
-		Year       = int.Parse(match.Groups["year"].Value);
-		Day        = int.Parse(match.Groups["day"].Value);
-		Main       = input => main(input).ToString();
-		Path       = System.IO.Path.GetDirectoryName(filePath) ?? throw new InvalidOperationException("Unable to find directory name.");
-		Problem    = problemType;
-		Benchmarks = benchmarkType;
+		(Year, Day) = ParsePath(filePath);
+		Main        = input => main(input.Strings);
+		Path        = System.IO.Path.GetDirectoryName(filePath) ?? throw new InvalidOperationException("Unable to find directory name.");
+		Problem     = problemType;
+		Benchmarks  = benchmarkType;
 	}
 
 	[SetsRequiredMembers]
 	public ProblemMetadata(Func<string[], (string, long)> main, Type problemType, Type? benchmarkType, [CallerFilePath]string filePath = "")
 	{
-		var match = GetDateRegex().Match(filePath);
-
-		if (!match.Success) {
-			throw new InvalidOperationException($"Unable to parse year and day from file path {filePath}");
-		}
-
-		Year       = int.Parse(match.Groups["year"].Value);
-		Day        = int.Parse(match.Groups["day"].Value);
-		Main       = input => main(input).ToString();
-		Path       = System.IO.Path.GetDirectoryName(filePath) ?? throw new InvalidOperationException("Unable to find directory name.");
-		Problem    = problemType;
-		Benchmarks = benchmarkType;
+		(Year, Day) = ParsePath(filePath);
+		Main        = input => main(input.Strings);
+		Path        = System.IO.Path.GetDirectoryName(filePath) ?? throw new InvalidOperationException("Unable to find directory name.");
+		Problem     = problemType;
+		Benchmarks  = benchmarkType;
 	}
 
 	[SetsRequiredMembers]
 	public ProblemMetadata(Func<string[], (string, string)> main, Type problemType, Type? benchmarkType, [CallerFilePath]string filePath = "")
 	{
-		var match = GetDateRegex().Match(filePath);
+		(Year, Day) = ParsePath(filePath);
+		Main        = input => main(input.Strings);
+		Path        = System.IO.Path.GetDirectoryName(filePath) ?? throw new InvalidOperationException("Unable to find directory name.");
+		Problem     = problemType;
+		Benchmarks  = benchmarkType;
+	}
 
-		if (!match.Success) {
-			throw new InvalidOperationException($"Unable to parse year and day from file path {filePath}");
-		}
-
-		Year       = int.Parse(match.Groups["year"].Value);
-		Day        = int.Parse(match.Groups["day"].Value);
-		Main       = input => main(input).ToString();
-		Path       = System.IO.Path.GetDirectoryName(filePath) ?? throw new InvalidOperationException("Unable to find directory name.");
-		Problem    = problemType;
-		Benchmarks = benchmarkType;
+	[SetsRequiredMembers]
+	public ProblemMetadata(Func<char[], (long, long)> main, Type problemType, Type? benchmarkType, [CallerFilePath]string filePath = "")
+	{
+		(Year, Day) = ParsePath(filePath);
+		Main        = input => main(input.Chars);
+		Path        = System.IO.Path.GetDirectoryName(filePath) ?? throw new InvalidOperationException("Unable to find directory name.");
+		Problem     = problemType;
+		Benchmarks  = benchmarkType;
 	}
 
 	public required int Year { get; init; }
 
 	public required int Day { get; init; }
 
-	public required Func<string[], string> Main { get; init; }
+	public required Func<ProblemInput, object> Main { get; init; }
 
 	public required string Path { get; init; }
 
 	public required Type Problem { get; init; }
 
 	public Type? Benchmarks { get; init; }
+
+	private static (int Year, int Day) ParsePath(string filePath)
+	{
+		var match = GetDateRegex().Match(filePath);
+
+		if (!match.Success) {
+			throw new InvalidOperationException($"Unable to parse year and day from file path {filePath}");
+		}
+
+		return (int.Parse(match.Groups["year"].Value), int.Parse(match.Groups["day"].Value));
+	}
 
 	public static IEnumerable<ProblemMetadata> FindMetadata(Assembly assembly)
 	{

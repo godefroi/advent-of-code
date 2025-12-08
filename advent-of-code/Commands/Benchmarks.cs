@@ -13,6 +13,8 @@ public static class Benchmarks
 	public static Command GetCommand()
 	{
 		var command = new Command("benchmarks", "Execute benchmarks associated with a problem") {
+			Options.Year,
+			Options.Day,
 		};
 
 		command.SetAction(Execute);
@@ -22,29 +24,23 @@ public static class Benchmarks
 
 	private static void Execute(ParseResult parseResult)
 	{
-		if (Problems.CurrentProblem.Benchmarks == null) {
-			Console.Error.WriteLine($"No benchmarks defined for problem {Problems.CurrentProblem.Year}/{Problems.CurrentProblem.Day:00}");
+		var year    = parseResult.GetValue(Options.Year);
+		var day     = parseResult.GetValue(Options.Day);
+		var problem = Problems.GetProblems(year)[day];
+
+		if (problem.Benchmarks == null) {
+			Console.Error.WriteLine($"No benchmarks defined for problem {problem.Year}/{problem.Day:00}");
 			return;
 		}
-
-		// var runMethod     = typeof(BenchmarkRunner).GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).SingleOrDefault(m => m.Name == "Run" && m.IsGenericMethod) ?? throw new InvalidOperationException("No Run method found.");
-		// var genericMethod = runMethod.MakeGenericMethod(Problems.CurrentProblem.Benchmarks);
-
-		// genericMethod.Invoke(null, [null, null]);
-		//BenchmarkRunner.Run<AdventOfCode.Year2023.Day01.Problem>()
 
 		var job = new Job()
 			.DontEnforcePowerPlan()
 			.Apply(Job.InProcessDontLogOutput)
 			//.Apply(Job.InProcess)
+			//.Apply(Job.ShortRun)
+			//.Apply(Job.InProcessDontLogOutput)
 			;
 
-		//job.Apply(Job.ShortRun);
-		//job.Apply(Job.InProcessDontLogOutput);
-
-		//var config = ManualConfig.CreateMinimumViable();
-		//foreach (var cp in config.GetColumnProviders()) { Console.WriteLine(cp.GetType().FullName); }
-		//return;
 		var config = ManualConfig.CreateEmpty();
 
 		//config.AddLogger(new MyLogger());
@@ -63,11 +59,9 @@ public static class Benchmarks
 
 		config.AddJob(job);
 
-		var summary = BenchmarkSwitcher.FromTypes([Problems.CurrentProblem.Benchmarks]).RunAllJoined(config);
-
-		foreach (var bc in summary.BenchmarksCases) {
-			Console.WriteLine(bc.Descriptor.WorkloadMethodDisplayInfo);
-		}
+		BenchmarkSwitcher
+			.FromTypes([problem.Benchmarks])
+			.RunAllJoined(config);
 	}
 
 	private class MyLogger : ILogger
