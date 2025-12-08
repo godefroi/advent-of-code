@@ -7,7 +7,7 @@ public class Problem
 	public static (long, long) Execute(string[] input)
 	{
 		//var beams = new long[input[0].Length];
-		Span<int> beams = stackalloc int[input[0].Length];
+		Span<long> beams = stackalloc long[input[0].Length];
 		var p1    = 0;
 
 		// mark the starting point
