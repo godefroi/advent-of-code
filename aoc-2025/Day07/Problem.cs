@@ -6,7 +6,6 @@ public class Problem
 {
 	public static ProblemMetadata Metadata { get; } = new(ExecuteCA, typeof(Problem), typeof(Day07Benchmarks));
 
-
 	public static (long, long) ExecuteSA(string[] input)
 	{
 		//var beams = new long[input[0].Length];

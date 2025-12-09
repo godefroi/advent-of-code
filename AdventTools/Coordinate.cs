@@ -18,7 +18,7 @@ public readonly record struct Coordinate(int X, int Y)
 
 	public static int ManhattanDistance(Coordinate from, Coordinate to) => Math.Abs(from.X - to.X) + Math.Abs(from.Y - to.Y);
 
-	public static Coordinate Empty { get; } = new Coordinate(int.MinValue, int.MinValue);
+	public static Coordinate Empty { get; } = new(int.MinValue, int.MinValue);
 
 	public override string ToString() => $"[{X},{Y}]";
 }

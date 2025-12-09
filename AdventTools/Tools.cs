@@ -194,6 +194,10 @@ public static class Tools
 		}
 	}
 
+	/// <summary>
+	/// Generate combinations (fewer than permutations) using Chase's Twiddle
+	/// https://web.archive.org/web/20221024045742/http://www.netlib.no/netlib/toms/382
+	/// </summary>
 	public static void GenerateCombinations<T>(ReadOnlySpan<T> array, int k, Action<ReadOnlySpan<T>, ReadOnlySpan<int>, int> action)
 	{
 		Span<int> indices = stackalloc int[k];
@@ -223,6 +227,23 @@ public static class Tools
 		}
 	}
 
+	/// <summary>
+	/// Generate combinations (fewer than permutations) using Chase's Twiddle
+	/// https://web.archive.org/web/20221024045742/http://www.netlib.no/netlib/toms/382
+	/// </summary>
+	/// <example>
+	/// void PrintCombination(char[] span, int[] indices, int k)
+	/// {
+	/// 	for (var i = 0; i < k; i++) {
+	/// 		Console.Write(span[indices[i]]);
+	/// 	}
+	/// 	Console.WriteLine();
+	/// }
+	///
+	/// var k = 2;
+	/// Console.WriteLine($"Combinations of {input} (size {k}):");
+	/// GenerateCombinations("abc".ToCharArray(), k, PrintCombination);
+	/// </example>
 	public static void GenerateCombinations<T>(T array, int arrayLength, int k, Action<T, ReadOnlySpan<int>, int> action)
 	{
 		Span<int> indices = stackalloc int[k];
@@ -237,6 +258,42 @@ public static class Tools
 			var i = k - 1;
 
 			while (i >= 0 && indices[i] == arrayLength - k + i) {
+				i--;
+			}
+
+			if (i == -1) {
+				break;
+			}
+
+			indices[i]++;
+
+			for (int j = i + 1; j < k; j++) {
+				indices[j] = indices[j - 1] + 1;
+			}
+		}
+	}
+
+	/// <summary>
+	/// Generate 2-combinations (fewer than permutations) using Chase's Twiddle
+	/// https://web.archive.org/web/20221024045742/http://www.netlib.no/netlib/toms/382
+	/// </summary>
+	public static IEnumerable<(T, T)> EnumerateCombinations2<T>(T[] array)
+	{
+		const int k = 2;
+
+		var n = array.Length;
+		var indices = new int[k];
+
+		for (var i = 0; i < k; i++) {
+			indices[i] = i;
+		}
+
+		while (true) {
+			yield return (array[indices[0]], array[indices[1]]);
+
+			var i = k - 1;
+
+			while (i >= 0 && indices[i] == n - k + i) {
 				i--;
 			}
 

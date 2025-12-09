@@ -1,4 +1,6 @@
-﻿namespace AdventOfCode;
+﻿using System.Runtime.CompilerServices;
+
+namespace AdventOfCode;
 
 public readonly record struct Coordinate3(long X, long Y, long Z)
 {
@@ -21,6 +23,14 @@ public readonly record struct Coordinate3(long X, long Y, long Z)
 
 		return new Coordinate3(long.Parse(characterSpan[ranges[0]]), long.Parse(characterSpan[ranges[1]]), long.Parse(characterSpan[ranges[2]]));
 	}
+
+	public static double EuclideanDistance(Coordinate3 from, Coordinate3 to) => Math.Sqrt(
+		((from.X - to.X) * (from.X - to.X)) +
+		((from.Y - to.Y) * (from.Y - to.Y)) +
+		((from.Z - to.Z) * (from.Z - to.Z))
+	);
+
+	public static Coordinate3 Empty { get; } = new(long.MinValue, long.MinValue, long.MinValue);
 
 	public override string ToString() => $"[{X},{Y},{Z}]";
 }
