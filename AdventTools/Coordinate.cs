@@ -16,6 +16,13 @@ public readonly record struct Coordinate(int X, int Y)
 
 	public static Coordinate operator -(Coordinate operand) => new(-operand.X, -operand.Y);
 
+	public static Coordinate Parse(ReadOnlySpan<char> chars)
+	{
+		var split = chars.IndexOf(',');
+
+		return new Coordinate(int.Parse(chars[..split]), int.Parse(chars[(split + 1)..]));
+	}
+
 	public static int ManhattanDistance(Coordinate from, Coordinate to) => Math.Abs(from.X - to.X) + Math.Abs(from.Y - to.Y);
 
 	public static Coordinate Empty { get; } = new(int.MinValue, int.MinValue);

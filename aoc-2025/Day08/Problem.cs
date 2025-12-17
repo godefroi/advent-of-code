@@ -29,14 +29,15 @@ public class Problem
 			queue.Enqueue((indices[0], indices[1]), dist);
 		});
 
+		// TODO: we could do better with a disjoint set here
 		for (var i = 0; queue.Count > 0; i++) {
 			var (i1, i2) = queue.Dequeue();
 			var c1       = coords[i1];
 			var c2       = coords[i2];
 
 			// add c1 and c2 to a circuit
-			var circuit1 = circuits.SingleOrDefault(c => c.Contains(c1)); // PERF: this could be FirstOrDefault() once we know this works
-			var circuit2 = circuits.SingleOrDefault(c => c.Contains(c2)); // PERF: this could be FirstOrDefault() once we know this works
+			var circuit1 = circuits.FirstOrDefault(c => c.Contains(c1));
+			var circuit2 = circuits.FirstOrDefault(c => c.Contains(c2));
 
 			if (circuit1 != null && circuit2 != null) {
 				if (circuit1 != circuit2) {

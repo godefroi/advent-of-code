@@ -1,7 +1,5 @@
 <Solution>
-  <Folder Name="/Common/">
-    <Project Path="AdventTools/AdventTools.csproj" />
-  </Folder>
+  <Project Path="AdventTools/AdventTools.csproj" />
   <Project Path="advent-of-code/advent-of-code.csproj" />
   <Project Path="aoc-2016/aoc-2016.csproj" />
   <Project Path="aoc-2019/aoc-2019.csproj" />
