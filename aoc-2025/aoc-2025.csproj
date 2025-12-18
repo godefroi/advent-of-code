@@ -13,6 +13,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.Z3" Version="4.12.2" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Using Include="AdventOfCode" />
 		<Using Include="AdventOfCode.Tools" Static="true" />
 
