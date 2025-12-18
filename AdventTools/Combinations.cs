@@ -4,6 +4,8 @@ public static class Combinations
 {
 	public static CombinationsEnumerator<T> EnumerateCombinations<T>(this ReadOnlySpan<T> items, int k) => new(items, k);
 
+	public static PowerSetEnumerator<T> EnumeratePowerSet<T>(this ReadOnlySpan<T> items) => new(items);
+
 	public ref struct CombinationsEnumerator<T>(ReadOnlySpan<T> items, int k)
 	{
 		private readonly ReadOnlySpan<T> _items = items;
@@ -59,6 +61,37 @@ public static class Combinations
 			}
 		}
 	}
+
+	public ref struct PowerSetEnumerator<T>(ReadOnlySpan<T> items)
+	{
+		private readonly ReadOnlySpan<T> _items = items;
+		private readonly Span<T> _current = new T[items.Length];
+		private int _currentCnt = 0;
+		private int _mask = 0;
+
+		public readonly PowerSetEnumerator<T> GetEnumerator() => this;
+
+		public bool MoveNext()
+		{
+			if (_mask >= (1 << _items.Length)) {
+				return false;
+			}
+
+			_currentCnt = 0;
+
+			for (var i = 0; i < _items.Length; i++) {
+				if ((_mask & (1 << i)) != 0) {
+					_current[_currentCnt++] = _items[i];
+				}
+			}
+
+			_mask++;
+
+			return true;
+		}
+
+		public readonly ReadOnlySpan<T> Current => _current[.._currentCnt];
+	}
 }
 
 public class CombinationsEnumeratorTests
@@ -79,5 +112,50 @@ public class CombinationsEnumeratorTests
 		}
 
 		await Assert.That(combosIter).IsEquivalentTo(combosGen);
+	}
+}
+
+public class PowerSetEnumeratorTests
+{
+	[Test]
+	public async Task EnumeratorWorks()
+	{
+		var testData = new[] { "A", "B", "C" };
+		var expectedSets = new[] {
+			Array.Empty<string>(),
+			["A"],
+			["B"],
+			["C"],
+			["A", "B"],
+			["A", "C"],
+			["B", "C"],
+			["A", "B", "C"]
+		};
+		var actualSets = new List<string[]>();
+
+		foreach (var items in testData.EnumeratePowerSet()) {
+			actualSets.Add([.. items.ToArray().Order()]);
+		}
+
+		actualSets.Sort(CompareArrays);
+
+		await Assert.That(actualSets).IsEquivalentTo(expectedSets);
+	}
+
+	private static int CompareArrays(string[] left, string[] right)
+	{
+		var minLength = Math.Min(left.Length, right.Length);
+
+		// Compare element by element up to the minimum length
+		for (var i = 0; i < minLength; i++) {
+			var elementComparison = left[i].CompareTo(right[i]);
+
+			if (elementComparison != 0) {
+				return elementComparison;
+			}
+		}
+
+		// If all compared elements are equal, the shorter array comes first
+		return left.Length.CompareTo(right.Length);
 	}
 }
