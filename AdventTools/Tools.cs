@@ -41,7 +41,6 @@ public static class Tools
 		return map;
 	}
 
-
 	public static void PrintMap<T>(T[,] map)
 	{
 		var sb = new System.Text.StringBuilder();

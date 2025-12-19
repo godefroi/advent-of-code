@@ -9,6 +9,8 @@ public class Problem
 		var p1 = input.Sum(l => Part1(l));
 		var p2 = input.Sum(Part2Z3);
 
+		// part 2 without a solver: https://www.reddit.com/r/adventofcode/comments/1pp98cr/2025_day_10_part_2_solution_without_using_a_3rd/
+
 		return (p1, p2);
 	}
 
