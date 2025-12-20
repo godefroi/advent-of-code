@@ -6,36 +6,45 @@ public class Problem
 
 	public static (long p1, long p2) Execute(string[] input)
 	{
-		var numbers  = input.First().Split(',').Select(int.Parse).ToList();
-		var buckets = Enumerable.Range(0, 9).Select(i => numbers.LongCount(n => n == i)).ToArray();
+		Span<long> buckets  = stackalloc long[9];
+		Span<long> nbuckets = stackalloc long[9];
+
 		long p1 = 0, p2 = 0;
 
-		//Console.WriteLine(input.Count);
-		//Console.WriteLine($"Initial state: {string.Join(",", input)}");
+		for (var i = 0; i < input[0].Length; i += 2) {
+			buckets[input[0][i] - '0']++;
+		}
 
 		for (var day = 0; day < 256; day++) {
-			var nbuckets = new long[9];
-
 			// age everyone one day
-			Array.Copy(buckets, 1, nbuckets, 0, 8);
+			for (var i = 1; i < buckets.Length; i++) {
+				nbuckets[i - 1] = buckets[i];
+			}
 
 			// reset everyone who produced a fish
 			nbuckets[6] += buckets[0];
 
 			// add any new fish
 			nbuckets[8] = buckets[0];
-			buckets     = nbuckets;
 
-			//Console.WriteLine($"After {day + 1} days: {string.Join(",", buckets)}");
+			// copy back to nbuckets
+			for (var i = 0; i < buckets.Length; i++) {
+				buckets[i] = nbuckets[i];
+			}
+
 			if (day == 79) {
-				p1 = buckets.Sum();
+				for (var i = 0; i < buckets.Length; i++) {
+					p1 += buckets[i];
+				}
 			}
 		}
 
-		p2 = buckets.Sum();
+		for (var i = 0; i < buckets.Length; i++) {
+			p2 += buckets[i];
+		}
 
-		Console.WriteLine($"part 1: {p1}"); // part 1 is 346063
-		Console.WriteLine($"part 2: {p2}"); // part 2 is 1572358335990
+		// Console.WriteLine($"part 1: {p1}"); // part 1 is 346063
+		// Console.WriteLine($"part 2: {p2}"); // part 2 is 1572358335990
 
 		return (p1, p2);
 	}
