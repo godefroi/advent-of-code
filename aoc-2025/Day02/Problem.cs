@@ -3,9 +3,9 @@ using static AdventOfCode.SpanTools;
 
 namespace AdventOfCode.Year2025.Day02;
 
-public partial class ProblemDay02
+public partial class Problem
 {
-	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(ProblemDay02), null);
+	public static ProblemMetadata Metadata { get; } = new(Execute, typeof(Problem), null);
 
 	public static (long, long) Execute(string[] input)
 	{
