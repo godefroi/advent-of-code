@@ -6,6 +6,7 @@ public static class Problems
 		{ 2019, new Lazy<IReadOnlyDictionary<int, ProblemMetadata2>>(() => Year2019.Problems.All) },
 		{ 2020, new Lazy<IReadOnlyDictionary<int, ProblemMetadata2>>(() => Year2020.Problems.All) },
 		{ 2021, new Lazy<IReadOnlyDictionary<int, ProblemMetadata2>>(() => Year2021.Problems.All) },
+		{ 2022, new Lazy<IReadOnlyDictionary<int, ProblemMetadata2>>(() => Year2022.Problems.All) },
 		{ 2023, new Lazy<IReadOnlyDictionary<int, ProblemMetadata2>>(() => Year2023.Problems.All) },
 	};
 

@@ -2,11 +2,13 @@
 
 public class Problem
 {
+	public static ProblemMetadata2 Metadata { get; } = new(Main, typeof(Problem));
+
 	private static readonly Dictionary<char, int> _priorities = Enumerable.Range('a', 'z' - 'a' + 1).Concat(Enumerable.Range('A', 'Z' - 'A' + 1)).Select((c, i) => ((char) c, i)).ToDictionary(item => item.Item1, item => item.i + 1);
 
-	public static (int, int) Main(string fileName)
+	public static (long, long) Main(string[] lines)
 	{
-		var rucksacks = ReadFileLines(fileName, Parse);
+		var rucksacks = lines.Select(Parse).ToList();
 
 		var part1 = rucksacks.Select(sack => sack.First.Intersect(sack.Second).Single()).Sum(item => _priorities[item]);
 		var part2 = rucksacks.Chunk(3).Select(sacks => sacks[0].Contents.Intersect(sacks[1].Contents).Intersect(sacks[2].Contents).Single()).Sum(item => _priorities[item]);
@@ -57,12 +59,12 @@ public class Problem
 	[Fact]
 	public void Part1CalculatesCorrectly()
 	{
-		Assert.Equal(157, Main("inputSample.txt").Item1);
+		Assert.Equal(157, Main(ReadFileLines("inputSample.txt")).Item1);
 	}
 
 	[Fact]
 	public void Part2CalculatesCorrectly()
 	{
-		Assert.Equal(70, Main("inputSample.txt").Item2);
+		Assert.Equal(70, Main(ReadFileLines("inputSample.txt")).Item2);
 	}
 }
